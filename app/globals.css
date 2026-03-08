@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-graphite text-white antialiased;
+  background-image: radial-gradient(circle at top right, rgba(200, 214, 0, 0.14), transparent 40%);
+}
+
+.section-title {
+  @apply text-3xl md:text-5xl font-black tracking-tight;
+}
+
+.section-subtitle {
+  @apply mt-4 max-w-3xl text-base md:text-lg text-light/80;
+}
