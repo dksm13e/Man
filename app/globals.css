@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: radial-gradient(circle at 20% 0%, #3a3a34 0%, #24241f 45%, #1a1a16 100%);
+  color: #f3f3ef;
+  scroll-behavior: smooth;
+}
+
+* {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.section-wrap {
+  @apply mx-auto w-full max-w-7xl px-4 md:px-8;
+}
+
+.soft-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
