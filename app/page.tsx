@@ -1,13 +1,55 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { CSSProperties, useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type DaySchedule = { day: string; classes: string[] };
 
-const clubImages = Array.from({ length: 12 }, (_, i) => `/images/club-atmosphere/club-${i + 1}.svg`);
-const scheduleImages = ['/images/schedule/schedule-main.svg'];
+const buildClubImageSources = (index: number) => {
+  const order = index + 1;
+  return [
+    `/imgs/club-atmosphere/club-${order}.jpg`,
+    `/imgs/club-atmosphere/club-${order}.jpeg`,
+    `/imgs/club-atmosphere/${order}.jpg`,
+    `/imgs/club-atmosphere/${order}.jpeg`,
+    `/images/club-atmosphere/club-${order}.jpg`,
+    `/images/club-atmosphere/club-${order}.jpeg`,
+    `/images/club-atmosphere/club-${order}.svg`
+  ];
+};
+
+const clubImages = Array.from({ length: 12 }, (_, i) => buildClubImageSources(i));
+const scheduleImages = [['/imgs/schedule/3.jpg', '/images/schedule/schedule-main.jpg', '/images/schedule/schedule-main.svg']];
+
+type FallbackImageProps = {
+  sources: string[];
+  alt: string;
+  className: string;
+  loading?: 'lazy' | 'eager';
+  style?: CSSProperties;
+  onDoubleClick?: () => void;
+};
+
+function FallbackImage({ sources, alt, className, loading, style, onDoubleClick }: FallbackImageProps) {
+  const [sourceIndex, setSourceIndex] = useState(0);
+
+  useEffect(() => {
+    setSourceIndex(0);
+  }, [sources]);
+
+  return (
+    <img
+      src={sources[sourceIndex]}
+      alt={alt}
+      className={className}
+      loading={loading}
+      style={style}
+      onDoubleClick={onDoubleClick}
+      onError={() => setSourceIndex((prev) => (prev < sources.length - 1 ? prev + 1 : prev))}
+    />
+  );
+}
 
 const phones = [
   { label: 'Основной номер', display: '8-904-31-444-31', href: 'tel:+79043144431' },
@@ -140,9 +182,9 @@ export default function Home() {
       <section className="section-shell section-accent pt-12 md:pt-16">
         <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 md:gap-6">
-          {clubImages.map((src, i) => (
-            <motion.button key={src} type="button" onClick={() => openGallery(i)} whileHover={{ y: -4 }} transition={{ duration: 0.25 }} className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]">
-              <img src={src} alt="Атмосфера клуба" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" loading="lazy" />
+          {clubImages.map((sources, i) => (
+            <motion.button key={sources[0]} type="button" onClick={() => openGallery(i)} whileHover={{ y: -4 }} transition={{ duration: 0.25 }} className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]">
+              <FallbackImage sources={sources} alt="Атмосфера клуба" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" loading="lazy" />
             </motion.button>
           ))}
         </div>
@@ -337,7 +379,7 @@ export default function Home() {
                   if (zoom < 1.03) setZoom(1);
                 }}
               >
-                <img src={currentPhoto} alt="Фото" className="max-h-[88vh] max-w-full object-contain transition-transform duration-200" style={{ transform: `scale(${zoom})` }} onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))} />
+                <FallbackImage sources={currentPhoto} alt="Фото" className="max-h-[88vh] max-w-full object-contain transition-transform duration-200" style={{ transform: `scale(${zoom})` }} onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))} />
               </div>
                 </motion.div>
               </motion.div>
