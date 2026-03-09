@@ -134,7 +134,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-shell pt-16">
+      <section className="section-shell section-accent pt-16">
         <h2 className="text-2xl font-semibold text-white md:text-3xl">Групповые программы</h2>
         <p className="mt-2 max-w-2xl text-soft/75">Сильная сетка направлений без перегруженных описаний — только понятная и современная навигация по программам.</p>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
@@ -182,7 +182,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-shell pt-16">
+      <section className="section-shell section-accent pt-16">
         <h2 className="text-2xl font-semibold text-white md:text-3xl">Частые вопросы</h2>
         <div className="mt-5 space-y-3">
           {faq.map((entry, index) => (
