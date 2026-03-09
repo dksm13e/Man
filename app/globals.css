@@ -35,11 +35,13 @@ body {
 .site-bg {
   position: relative;
   isolation: isolate;
-  background:
-    linear-gradient(160deg, #24241f 0%, #2b2b26 52%, #23231f 100%);
+  min-height: 100vh;
+  background: linear-gradient(160deg, #24241f 0%, #2b2b26 52%, #23231f 100%);
 }
 
-.site-texture {
+.site-bg::before,
+.site-bg::after {
+  content: '';
   position: fixed;
   inset: -8vh -6vw;
   pointer-events: none;
@@ -47,15 +49,8 @@ body {
   transform: translateZ(0);
 }
 
-.site-texture::before,
-.site-texture::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-}
-
 /* depth 2: крупные графитовые панели-надрезы */
-.site-texture::before {
+.site-bg::before {
   opacity: 0.88;
   background:
     linear-gradient(136deg, transparent 0 22%, rgba(58,58,52,0.56) 22% 41%, transparent 41% 100%),
@@ -63,13 +58,15 @@ body {
 }
 
 /* depth 3: лаймовые рваные фирменные мазки */
-.site-texture::after {
+.site-bg::after {
   opacity: 0.44;
   background:
     linear-gradient(129deg, transparent 0 14%, rgba(200,214,0,0.2) 14% 18%, transparent 18% 100%),
     linear-gradient(151deg, transparent 0 68%, rgba(216,230,0,0.16) 68% 73%, transparent 73% 100%);
   filter: saturate(1.04);
 }
+
+
 
 .hero-backdrop {
   background:

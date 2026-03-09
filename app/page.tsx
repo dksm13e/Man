@@ -87,7 +87,6 @@ export default function Home() {
 
   return (
     <main className="site-bg relative overflow-x-hidden bg-carbon text-soft">
-      <div className="site-texture" />
 
       <section className="hero-backdrop section-accent hero-scene relative pt-12 md:pt-16">
         <motion.div
