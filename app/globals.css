@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-carbon text-soft antialiased;
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+
+.glass-card {
+  @apply border border-white/10 bg-white/5 backdrop-blur;
+}
+
+.lime-gradient {
+  background: linear-gradient(120deg, #c8d600 0%, #d8e600 100%);
+}
