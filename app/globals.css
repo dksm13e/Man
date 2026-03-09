@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #24241f;
+  color: #f3f3ef;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 py-16 md:px-8 md:py-24;
+}
+
+.energy-gradient {
+  background: linear-gradient(135deg, #c8d600, #d8e600 60%, #9ca600);
+}
+
+.grid-lines {
+  background-image: linear-gradient(rgba(243, 243, 239, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(243, 243, 239, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.glass {
+  @apply border border-white/10 bg-white/5 backdrop-blur-md;
+}
