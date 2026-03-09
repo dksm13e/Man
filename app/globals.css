@@ -46,6 +46,12 @@ body {
   filter: blur(20px);
 }
 
+.hero-grain {
+  background: linear-gradient(160deg, rgba(255,255,255,0.04), transparent 42%), repeating-linear-gradient(120deg, rgba(255,255,255,0.02) 0 2px, transparent 2px 6px);
+  mix-blend-mode: soft-light;
+  opacity: 0.45;
+}
+
 .schedule-preview {
   background:
     linear-gradient(130deg, rgba(216, 230, 0, 0.09), transparent 40%),
