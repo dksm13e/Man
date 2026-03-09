@@ -2,57 +2,94 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-* { box-sizing: border-box; }
-html, body {
-  margin: 0; padding: 0; background: #24241f; color: #f3f3ef;
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #24241f;
+  color: #f3f3ef;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   scroll-behavior: smooth;
 }
 
 body {
-  background:
-    linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%);
+  background: linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%);
 }
 
-.section-shell { @apply mx-auto w-full max-w-7xl px-4 md:px-6; }
-.glass-card { @apply border border-white/10 bg-white/[0.03] backdrop-blur; }
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 md:px-6;
+}
+
+.glass-card {
+  @apply border border-white/10 bg-white/[0.03] backdrop-blur;
+}
+
+.site-bg {
+  position: relative;
+  background:
+    linear-gradient(168deg, rgba(255, 255, 255, 0.03) 0%, transparent 34%),
+    linear-gradient(125deg, rgba(200, 214, 0, 0.07) 0%, transparent 30%),
+    linear-gradient(154deg, #1f1f1b 0%, #2b2b26 46%, #24241f 100%);
+}
+
+.site-texture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.52;
+  background:
+    repeating-linear-gradient(138deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 22px),
+    repeating-linear-gradient(166deg, rgba(200, 214, 0, 0.07) 0 1px, transparent 1px 36px),
+    linear-gradient(150deg, transparent 0 70%, rgba(255, 255, 255, 0.035) 70% 71%, transparent 71% 100%);
+  z-index: 0;
+}
 
 .hero-backdrop {
   background:
-    linear-gradient(132deg, rgba(216,230,0,0.12) 0 2%, transparent 2% 42%, rgba(255,255,255,0.04) 42% 43%, transparent 43% 100%),
-    repeating-linear-gradient(152deg, rgba(255,255,255,0.024) 0 2px, transparent 2px 20px),
-    linear-gradient(160deg, #21211d 0%, #2a2a25 45%, #1f1f1a 100%);
+    linear-gradient(132deg, rgba(216, 230, 0, 0.18) 0 3%, transparent 3% 46%, rgba(243, 243, 239, 0.05) 46% 47%, transparent 47% 100%),
+    linear-gradient(160deg, rgba(58, 58, 52, 0.8) 0%, rgba(36, 36, 31, 0.25) 35%, transparent 70%);
 }
 
-.schedule-preview {
-  background:
-    linear-gradient(130deg, rgba(216, 230, 0, 0.09), transparent 40%),
-    repeating-linear-gradient(148deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 16px),
-    linear-gradient(180deg, #33332e 0%, #262621 100%);
+.hero-scene {
+  overflow: hidden;
 }
 
-.brand-button {
-  @apply inline-flex items-center gap-2 rounded-full border border-lime/70 px-6 py-3 text-sm font-medium text-carbon transition-all duration-300;
-  background: linear-gradient(135deg, #d8e600, #c8d600);
-  box-shadow: 0 12px 35px rgba(200, 214, 0, 0.25);
+.hero-slash {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0.5px);
 }
-.brand-button:hover { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(200, 214, 0, 0.35); }
 
-.ghost-button { @apply inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-medium text-soft transition-all duration-300; }
-.ghost-button:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+.hero-slash-a {
+  width: 54vw;
+  height: 42vh;
+  top: 2rem;
+  left: -7vw;
+  background: linear-gradient(128deg, rgba(216, 230, 0, 0.19), rgba(200, 214, 0, 0.03) 56%, transparent 56%);
+  clip-path: polygon(0 18%, 78% 0, 100% 28%, 16% 54%);
+}
 
-
-.site-bg {
-  background:
-    linear-gradient(145deg, rgba(255,255,255,0.03) 0%, transparent 35%),
-    repeating-linear-gradient(126deg, rgba(255,255,255,0.028) 0 2px, transparent 2px 16px),
-    repeating-linear-gradient(168deg, rgba(200,214,0,0.045) 0 1px, transparent 1px 28px),
-    linear-gradient(160deg, #1f1f1b 0%, #2b2b26 46%, #24241f 100%);
+.hero-slash-b {
+  width: 52vw;
+  height: 46vh;
+  right: -6vw;
+  bottom: -2rem;
+  background: linear-gradient(154deg, rgba(243, 243, 239, 0.09), rgba(216, 230, 0, 0.07) 44%, transparent 44%);
+  clip-path: polygon(28% 0, 100% 18%, 76% 86%, 0 54%);
 }
 
 .section-accent {
   position: relative;
+  z-index: 1;
 }
 
 .section-accent::before {
@@ -61,12 +98,43 @@ body {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(130deg, transparent 0 64%, rgba(200,214,0,0.08) 64% 66%, transparent 66% 100%),
-    linear-gradient(156deg, transparent 0 18%, rgba(255,255,255,0.04) 18% 19%, transparent 19% 100%);
-  opacity: .55;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    linear-gradient(134deg, transparent 0 64%, rgba(200, 214, 0, 0.08) 64% 66%, transparent 66% 100%),
+    linear-gradient(156deg, transparent 0 22%, rgba(255, 255, 255, 0.042) 22% 23%, transparent 23% 100%);
+  opacity: 0.5;
+}
+
+.schedule-preview {
+  background:
+    linear-gradient(130deg, rgba(216, 230, 0, 0.09), transparent 40%),
+    linear-gradient(148deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 12px),
+    linear-gradient(180deg, #33332e 0%, #262621 100%);
+}
+
+.brand-button {
+  @apply inline-flex items-center gap-2 rounded-full border border-lime/70 px-6 py-3 text-sm font-medium text-carbon transition-all duration-300;
+  background: linear-gradient(135deg, #d8e600, #c8d600);
+  box-shadow: 0 12px 35px rgba(200, 214, 0, 0.25);
+}
+
+.brand-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px rgba(200, 214, 0, 0.35);
+}
+
+.ghost-button {
+  @apply inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-medium text-soft transition-all duration-300;
+}
+
+.ghost-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
 }
 
 .premium-transition {
-  transition: transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s cubic-bezier(.22,.61,.36,1), background-color .28s ease, border-color .28s ease, opacity .28s ease;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    opacity 0.28s ease;
 }
