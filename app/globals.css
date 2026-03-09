@@ -10,21 +10,25 @@ html, body {
   scroll-behavior: smooth;
 }
 
+body {
+  background:
+    linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%);
+}
+
 .section-shell { @apply mx-auto w-full max-w-7xl px-4 md:px-6; }
 .glass-card { @apply border border-white/10 bg-white/[0.03] backdrop-blur; }
 
 .hero-backdrop {
   background:
-    radial-gradient(80% 80% at 12% 10%, rgba(216, 230, 0, 0.16), transparent 55%),
-    radial-gradient(72% 86% at 88% 12%, rgba(112, 122, 35, 0.2), transparent 57%),
-    radial-gradient(55% 65% at 52% 75%, rgba(255,255,255,0.06), transparent 70%),
+    linear-gradient(132deg, rgba(216,230,0,0.12) 0 2%, transparent 2% 42%, rgba(255,255,255,0.04) 42% 43%, transparent 43% 100%),
+    repeating-linear-gradient(152deg, rgba(255,255,255,0.024) 0 2px, transparent 2px 20px),
     linear-gradient(160deg, #21211d 0%, #2a2a25 45%, #1f1f1a 100%);
 }
 
 .schedule-preview {
   background:
     linear-gradient(130deg, rgba(216, 230, 0, 0.09), transparent 40%),
-    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.08), transparent 42%),
+    repeating-linear-gradient(148deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 16px),
     linear-gradient(180deg, #33332e 0%, #262621 100%);
 }
 
@@ -37,3 +41,32 @@ html, body {
 
 .ghost-button { @apply inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-medium text-soft transition-all duration-300; }
 .ghost-button:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+
+.site-bg {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.03) 0%, transparent 35%),
+    repeating-linear-gradient(126deg, rgba(255,255,255,0.028) 0 2px, transparent 2px 16px),
+    repeating-linear-gradient(168deg, rgba(200,214,0,0.045) 0 1px, transparent 1px 28px),
+    linear-gradient(160deg, #1f1f1b 0%, #2b2b26 46%, #24241f 100%);
+}
+
+.section-accent {
+  position: relative;
+}
+
+.section-accent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(130deg, transparent 0 64%, rgba(200,214,0,0.08) 64% 66%, transparent 66% 100%),
+    linear-gradient(156deg, transparent 0 18%, rgba(255,255,255,0.04) 18% 19%, transparent 19% 100%);
+  opacity: .55;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.premium-transition {
+  transition: transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s cubic-bezier(.22,.61,.36,1), background-color .28s ease, border-color .28s ease, opacity .28s ease;
+}
