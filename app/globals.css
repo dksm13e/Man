@@ -69,10 +69,7 @@ body {
 
 
 .hero-backdrop {
-  background:
-    linear-gradient(124deg, rgba(43,43,38,0.86) 0 42%, rgba(58,58,52,0.42) 42% 58%, transparent 58% 100%),
-    linear-gradient(156deg, transparent 0 20%, rgba(216,230,0,0.2) 20% 24%, transparent 24% 100%),
-    linear-gradient(166deg, #24241f 0%, #2b2b26 56%, #23231f 100%);
+  background: transparent;
 }
 
 .hero-scene {
@@ -115,7 +112,7 @@ body {
   inset: 0;
   pointer-events: none;
   background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 22%, transparent 78%, rgba(255,255,255,0.015));
-  opacity: 0.7;
+  opacity: 0.38;
 }
 
 .schedule-preview {
