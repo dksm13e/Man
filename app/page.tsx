@@ -1,21 +1,41 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
 
 type DaySchedule = {
   day: string;
   classes: string[];
 };
 
-const clubImages = [
-  'https://ibb.co/RpSy5WSd',
-  'https://ibb.co/F4XvgY8q',
-  'https://ibb.co/LD5gmrGM',
-  'https://ibb.co/ZjPPHNJ'
+type GalleryPhoto = {
+  src: string;
+  alt: string;
+  badge: string;
+};
+
+const clubImages: GalleryPhoto[] = [
+  { src: 'https://ibb.co/RpSy5WSd', alt: 'Интерьер клуба 1', badge: 'Зона тренировок' },
+  { src: 'https://ibb.co/F4XvgY8q', alt: 'Интерьер клуба 2', badge: 'Атмосфера клуба' },
+  { src: 'https://ibb.co/LD5gmrGM', alt: 'Интерьер клуба 3', badge: 'Городской ритм' },
+  { src: 'https://ibb.co/ZjPPHNJ', alt: 'Интерьер клуба 4', badge: 'Сильная энергия' },
+  { src: 'https://ibb.co/3y9dMMHp', alt: 'Интерьер клуба 5', badge: 'Свет и глубина' },
+  { src: 'https://ibb.co/7Jf0bk5y', alt: 'Интерьер клуба 6', badge: 'Фирменный стиль' },
+  { src: 'https://ibb.co/b57dYxXc', alt: 'Интерьер клуба 7', badge: 'Тренировочная зона' },
+  { src: 'https://ibb.co/qL0B48YR', alt: 'Интерьер клуба 8', badge: 'Рабочая атмосфера' },
+  { src: 'https://ibb.co/y9KzYfh', alt: 'Интерьер клуба 9', badge: 'Клубный настрой' },
+  { src: 'https://ibb.co/4gtrrbqg', alt: 'Интерьер клуба 10', badge: 'Динамика пространства' },
+  { src: 'https://ibb.co/Y4hS3xYb', alt: 'Интерьер клуба 11', badge: 'Современный зал' },
+  { src: 'https://ibb.co/23njvXy7', alt: 'Интерьер клуба 12', badge: 'Визуальный характер' }
 ];
 
 const schedulePhoto = 'https://ibb.co/xKQMk6ZT';
+
+const phones = [
+  { label: 'Клуб', display: '8-904-31-444-31', href: 'tel:+79043144431' },
+  { label: 'Администратор', display: '8-912-456-62-56', href: 'tel:+79124566256' }
+];
 
 const programCategories = [
   {
@@ -71,18 +91,32 @@ const faq = [
 
 export default function Home() {
   const [activeDay, setActiveDay] = useState('Пн');
-  const [scheduleModal, setScheduleModal] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [callModal, setCallModal] = useState(false);
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
 
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setLightbox(null);
+        setCallModal(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   return (
     <main className="relative overflow-x-hidden bg-carbon text-soft">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-texture" />
+      <div className="pointer-events-none absolute inset-0 -z-20 bg-texture" />
 
       <section className="section-shell relative pt-12 md:pt-16">
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="glass-card relative overflow-hidden rounded-3xl px-6 py-12 md:px-12 md:py-16">
-          <div className="absolute inset-0 bg-gradient-to-br from-lime/10 via-transparent to-transparent" />
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="glass-card hero-bg relative overflow-hidden rounded-3xl px-6 py-12 md:px-12 md:py-16">
+          <motion.div initial={{ opacity: 0.3, x: -20 }} animate={{ opacity: 0.5, x: 20 }} transition={{ duration: 6, repeat: Infinity, repeatType: 'mirror' }} className="hero-orb-left absolute -left-24 top-0 h-72 w-72 rounded-full" />
+          <motion.div initial={{ opacity: 0.25, x: 24 }} animate={{ opacity: 0.45, x: -16 }} transition={{ duration: 7, repeat: Infinity, repeatType: 'mirror' }} className="hero-orb-right absolute -right-24 bottom-2 h-72 w-72 rounded-full" />
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3, duration: 1.1 }} className="absolute left-0 top-8 h-px w-52 bg-gradient-to-r from-transparent via-lime to-transparent" />
           <p className="mb-2 text-xs uppercase tracking-[0.4em] text-lime/90">Сарапул • Первомайская 34</p>
           <h1 className="text-[2.55rem] font-black uppercase leading-[0.84] tracking-[0.2em] text-white md:text-[6.4rem] md:tracking-[0.28em]">ЭНЕРДЖИ</h1>
@@ -95,7 +129,7 @@ export default function Home() {
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mt-8 flex flex-wrap gap-4">
             <a href="#schedule" className="brand-button">Смотреть расписание</a>
-            <a href="tel:+79000000000" className="ghost-button">Позвонить</a>
+            <button onClick={() => setCallModal(true)} className="ghost-button">Позвонить</button>
           </motion.div>
         </motion.div>
       </section>
@@ -103,15 +137,18 @@ export default function Home() {
       <section className="section-shell pt-12 md:pt-16">
         <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Атмосфера клуба</h2>
         <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 md:gap-6">
-          {clubImages.map((src, i) => (
-            <motion.a key={src} href={src} target="_blank" rel="noreferrer" whileHover={{ y: -5 }} className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal md:h-[360px] md:min-w-[46%]">
-              <div className="absolute inset-0 bg-gradient-to-t from-carbon/90 via-carbon/20 to-transparent" />
+          {clubImages.map((photo, i) => (
+            <motion.button key={photo.src} type="button" onClick={() => setLightbox({ src: photo.src, alt: photo.alt })} whileHover={{ y: -5 }} className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]">
+              <div className="absolute inset-0">
+                <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 768px) 83vw, 46vw" className="object-cover opacity-90 transition duration-700 group-hover:scale-[1.04]" unoptimized />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-carbon/90 via-carbon/30 to-transparent" />
               <div className="absolute inset-0 transition duration-500 group-hover:bg-lime/10" />
               <div className="absolute bottom-4 left-4 right-4">
                 <p className="text-sm text-soft/85">Фото клуба #{i + 1}</p>
-                <p className="text-xs text-soft/60">Открыть в полном размере</p>
+                <p className="text-xs text-lime/80">{photo.badge}</p>
               </div>
-            </motion.a>
+            </motion.button>
           ))}
         </div>
       </section>
@@ -121,11 +158,11 @@ export default function Home() {
         <p className="mt-2 max-w-2xl text-soft/75">Сильная сетка направлений без перегруженных описаний — только понятная и современная навигация по программам.</p>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {programCategories.map((category) => (
-            <motion.article key={category.title} whileHover={{ y: -6 }} className="glass-card rounded-2xl p-5 shadow-card transition duration-300">
+            <motion.article key={category.title} whileHover={{ y: -4 }} transition={{ duration: 0.25 }} className="glass-card rounded-2xl p-5 shadow-card transition duration-300">
               <h3 className="mb-4 text-lg font-semibold text-lime">{category.title}</h3>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
-                  <span key={item} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-soft/90">
+                  <span key={item} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-soft/90 transition hover:border-lime/40 hover:bg-lime/10">
                     {item}
                   </span>
                 ))}
@@ -137,7 +174,7 @@ export default function Home() {
 
       <section id="schedule" className="section-shell pt-16">
         <h2 className="text-2xl font-semibold text-white md:text-3xl">Расписание</h2>
-        <p className="mt-2 max-w-2xl text-soft/75">Выберите день недели, чтобы увидеть актуальные занятия. Полное фото расписания открывается отдельно в удобном формате.</p>
+        <p className="mt-2 max-w-2xl text-soft/75">Выберите день недели, чтобы увидеть занятия. Карточка справа открывает полное фото расписания сразу в lightbox, без промежуточных шагов.</p>
         <div className="mt-6 grid gap-5 lg:grid-cols-[1.35fr_1fr]">
           <div className="glass-card rounded-2xl p-5">
             <div className="mb-5 flex flex-wrap gap-2">
@@ -149,17 +186,18 @@ export default function Home() {
             </div>
             <ul className="space-y-2">
               {selectedDay.classes.map((line) => (
-                <li key={line} className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-sm text-soft/90">
+                <li key={line} className="rounded-xl border border-white/10 bg-white/[0.02] px-3 py-2 text-sm text-soft/90 transition hover:border-lime/25 hover:bg-white/[0.05]">
                   {line}
                 </li>
               ))}
             </ul>
           </div>
 
-          <motion.button onClick={() => setScheduleModal(true)} whileHover={{ y: -5 }} className="glass-card rounded-2xl p-6 text-left shadow-card transition">
-            <p className="text-xs uppercase tracking-[0.22em] text-lime">Фото расписания</p>
-            <h3 className="mt-3 text-2xl font-semibold text-white">Открыть расписание</h3>
-            <p className="mt-2 text-sm text-soft/75">Нажмите, чтобы открыть полное фото расписания без обрезки в отдельном окне.</p>
+          <motion.button type="button" onClick={() => setLightbox({ src: schedulePhoto, alt: 'Фото расписания Энерджи фитнес-клуб' })} whileHover={{ y: -5 }} className="glass-card schedule-preview relative overflow-hidden rounded-2xl p-6 text-left shadow-card transition">
+            <div className="absolute inset-0" />
+            <p className="relative text-xs uppercase tracking-[0.22em] text-lime">Фото расписания</p>
+            <h3 className="relative mt-3 text-2xl font-semibold text-white">Открыть расписание</h3>
+            <p className="relative mt-2 text-sm text-soft/75">Открывается в один клик, целиком и без обрезки.</p>
           </motion.button>
         </div>
       </section>
@@ -205,7 +243,7 @@ export default function Home() {
                   <li key={item}>• {item}</li>
                 ))}
               </ul>
-              <a href="tel:+79000000000" className="mt-5 inline-flex text-sm text-lime underline underline-offset-4">Позвонить для записи</a>
+              <button type="button" onClick={() => setCallModal(true)} className="mt-5 inline-flex text-sm text-lime underline underline-offset-4">Позвонить для записи</button>
             </motion.article>
           ))}
         </div>
@@ -238,11 +276,18 @@ export default function Home() {
           <div className="mt-5 grid gap-5 md:grid-cols-2">
             <div className="space-y-3 text-sm text-soft/90">
               <p><span className="text-lime">Адрес:</span> Сарапул, Первомайская 34</p>
-              <p><span className="text-lime">Телефон:</span> <a className="underline" href="tel:+79000000000">+7 (900) 000-00-00</a></p>
+              <div className="space-y-2">
+                {phones.map((phone) => (
+                  <a key={phone.href} className="flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-2 transition hover:border-lime/40 hover:bg-lime/10" href={phone.href}>
+                    <span className="text-soft/70">{phone.label}</span>
+                    <span className="font-semibold text-white">{phone.display}</span>
+                  </a>
+                ))}
+              </div>
               <p><span className="text-lime">Часы работы:</span> Пн–Чт 07:00–21:00, Пт 07:00–20:45, Сб–Вс 09:00–17:45</p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <a className="brand-button" href="https://yandex.ru/maps/?text=%D0%A1%D0%B0%D1%80%D0%B0%D0%BF%D1%83%D0%BB%2C%20%D0%9F%D0%B5%D1%80%D0%B2%D0%BE%D0%BC%D0%B0%D0%B9%D1%81%D0%BA%D0%B0%D1%8F%2034" target="_blank" rel="noreferrer">Построить маршрут</a>
-                <a className="ghost-button" href="tel:+79000000000">Позвонить</a>
+                <button type="button" onClick={() => setCallModal(true)} className="ghost-button">Позвонить</button>
               </div>
             </div>
             <iframe
@@ -255,18 +300,40 @@ export default function Home() {
         </div>
       </section>
 
-      <a href="tel:+79000000000" className="fixed bottom-5 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-lime text-carbon shadow-lime md:hidden" aria-label="Позвонить в клуб">
+      <button type="button" onClick={() => setCallModal(true)} className="fixed bottom-5 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-lime text-carbon shadow-lime md:hidden" aria-label="Позвонить в клуб">
         ☎
-      </a>
+      </button>
 
       <AnimatePresence>
-        {scheduleModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4" onClick={() => setScheduleModal(false)}>
-            <motion.div initial={{ scale: 0.97, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.97, opacity: 0 }} className="relative max-h-[92vh] w-full max-w-5xl rounded-2xl border border-white/10 bg-charcoal p-3" onClick={(e) => e.stopPropagation()}>
-              <button onClick={() => setScheduleModal(false)} className="absolute right-4 top-4 rounded-full border border-white/20 px-3 py-1 text-xs text-white">Закрыть</button>
-              <a href={schedulePhoto} target="_blank" rel="noreferrer" className="mt-8 block h-[80vh] w-full rounded-xl border border-white/15 bg-carbon/50 p-4 text-center text-sm text-soft/80">
-                Открыть полное фото расписания в отдельной вкладке
-              </a>
+        {callModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-end justify-center bg-black/65 p-4 md:items-center" onClick={() => setCallModal(false)}>
+            <motion.div initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 16, opacity: 0 }} transition={{ duration: 0.2 }} className="glass-card w-full max-w-md rounded-2xl p-5" onClick={(e) => e.stopPropagation()}>
+              <div className="mb-4 flex items-start justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
+                  <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
+                </div>
+                <button onClick={() => setCallModal(false)} className="rounded-full border border-white/20 px-3 py-1 text-xs text-white">Закрыть</button>
+              </div>
+              <div className="space-y-2">
+                {phones.map((phone) => (
+                  <a key={phone.href} href={phone.href} className="flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/40 hover:bg-lime/10">
+                    <span className="text-sm text-soft/70">{phone.label}</span>
+                    <span className="text-base font-semibold text-white">{phone.display}</span>
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4" onClick={() => setLightbox(null)}>
+            <motion.div initial={{ scale: 0.97, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.98, opacity: 0 }} className="relative flex max-h-[94vh] w-full max-w-6xl items-center justify-center rounded-2xl border border-white/10 bg-charcoal/70 p-2" onClick={(e) => e.stopPropagation()}>
+              <button onClick={() => setLightbox(null)} className="absolute right-3 top-3 z-10 rounded-full border border-white/25 bg-carbon/80 px-3 py-1 text-xs text-white">Закрыть</button>
+              <Image src={lightbox.src} alt={lightbox.alt} width={1800} height={1200} className="h-auto max-h-[88vh] w-auto max-w-full rounded-xl object-contain" unoptimized priority />
             </motion.div>
           </motion.div>
         )}
