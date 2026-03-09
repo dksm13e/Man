@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 type DaySchedule = { day: string; classes: string[] };
 
@@ -52,6 +52,15 @@ export default function Home() {
   const [pinchStart, setPinchStart] = useState<number | null>(null);
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setCallModal(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   const lightboxImages = lightboxMode === 'schedule' ? scheduleImages : clubImages;
   const currentPhoto = lightboxMode ? lightboxImages[lightboxIndex ?? 0] : null;
 
@@ -244,13 +253,13 @@ export default function Home() {
       <AnimatePresence>
         {callModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setCallModal(false)}>
-            <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} transition={{ duration: 0.26 }} className="glass-card w-full max-w-md rounded-2xl p-5" onClick={(e) => e.stopPropagation()}>
+            <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }} className="glass-card w-full max-w-sm rounded-2xl p-5" onClick={(e) => e.stopPropagation()}>
               <div className="mb-4 flex items-start justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
                   <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
                 </div>
-                <button onClick={() => setCallModal(false)} className="rounded-full border border-white/20 px-3 py-1 text-xs text-white">
+                <button type="button" onClick={() => setCallModal(false)} className="rounded-full border border-white/20 px-3 py-1 text-xs text-white">
                   Закрыть
                 </button>
               </div>
