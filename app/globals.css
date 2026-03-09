@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+body {
+  @apply bg-carbon text-soft antialiased;
+}
+
+.section-title {
+  @apply text-3xl md:text-5xl font-semibold tracking-tight;
+}
+
+.card {
+  @apply rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm;
+}
