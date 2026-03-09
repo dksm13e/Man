@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; background: #24241f; color: #f3f3ef;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  scroll-behavior: smooth;
+}
+
+.section-shell { @apply mx-auto w-full max-w-7xl px-4 md:px-6; }
+.glass-card { @apply border border-white/10 bg-white/[0.03] backdrop-blur; }
+
+.hero-backdrop {
+  background:
+    radial-gradient(80% 80% at 12% 10%, rgba(216, 230, 0, 0.16), transparent 55%),
+    radial-gradient(72% 86% at 88% 12%, rgba(112, 122, 35, 0.2), transparent 57%),
+    radial-gradient(55% 65% at 52% 75%, rgba(255,255,255,0.06), transparent 70%),
+    linear-gradient(160deg, #21211d 0%, #2a2a25 45%, #1f1f1a 100%);
+}
+
+.schedule-preview {
+  background:
+    linear-gradient(130deg, rgba(216, 230, 0, 0.09), transparent 40%),
+    radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.08), transparent 42%),
+    linear-gradient(180deg, #33332e 0%, #262621 100%);
+}
+
+.brand-button {
+  @apply inline-flex items-center gap-2 rounded-full border border-lime/70 px-6 py-3 text-sm font-medium text-carbon transition-all duration-300;
+  background: linear-gradient(135deg, #d8e600, #c8d600);
+  box-shadow: 0 12px 35px rgba(200, 214, 0, 0.25);
+}
+.brand-button:hover { transform: translateY(-2px); box-shadow: 0 16px 44px rgba(200, 214, 0, 0.35); }
+
+.ghost-button { @apply inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 py-3 text-sm font-medium text-soft transition-all duration-300; }
+.ghost-button:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
