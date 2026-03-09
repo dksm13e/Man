@@ -101,8 +101,8 @@ export default function Home() {
           transition={{ duration: 10, repeat: Infinity, repeatType: 'mirror' }}
           className="hero-slash hero-slash-b"
         />
-        <div className="section-shell">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="glass-card relative rounded-3xl px-6 py-12 md:px-12 md:py-16">
+        <div className="section-shell relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="relative max-w-5xl px-1 py-12 md:px-2 md:py-16">
             <p className="mb-2 text-xs uppercase tracking-[0.4em] text-lime/90">Сарапул • Первомайская 34</p>
             <h1 className="text-[2.55rem] font-black uppercase leading-[0.84] tracking-[0.2em] text-white md:text-[6.4rem] md:tracking-[0.28em]">ЭНЕРДЖИ</h1>
             <p className="mt-2 text-lg tracking-[0.23em] text-soft/85 md:text-2xl">фитнес-клуб</p>
@@ -111,10 +111,10 @@ export default function Home() {
               Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
-              <button className="brand-button premium-transition" onClick={() => document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+              <button type="button" className="brand-button premium-transition" onClick={() => document.getElementById('schedule')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
                 Смотреть расписание
               </button>
-              <button onClick={() => setCallModal(true)} className="ghost-button premium-transition">
+              <button type="button" onClick={() => setCallModal(true)} className="ghost-button premium-transition">
                 Позвонить
               </button>
             </div>
@@ -123,7 +123,7 @@ export default function Home() {
       </section>
 
       <section className="section-shell section-accent pt-12 md:pt-16">
-        <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Атмосфера клуба</h2>
+        <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 md:gap-6">
           {clubImages.map((src, i) => (
             <motion.button key={src} type="button" onClick={() => openGallery(i)} whileHover={{ y: -4 }} transition={{ duration: 0.25 }} className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]">
