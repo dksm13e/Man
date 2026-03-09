@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type DaySchedule = { day: string; classes: string[] };
 
@@ -50,12 +51,17 @@ export default function Home() {
   const [zoom, setZoom] = useState(1);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [pinchStart, setPinchStart] = useState<number | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
 
   useEffect(() => {
+    setMounted(true);
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setCallModal(false);
+      if (e.key === 'Escape') {
+        setCallModal(false);
+        closeLightbox();
+      }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -246,40 +252,46 @@ export default function Home() {
         </div>
       </section>
 
-      <button type="button" onClick={() => setCallModal(true)} className="fixed bottom-5 right-4 z-40 inline-flex h-12 w-12 items-center justify-center rounded-full bg-lime text-carbon shadow-lime md:hidden" aria-label="Позвонить в клуб">
+      <button type="button" onClick={() => setCallModal(true)} className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-4 z-[75] inline-flex h-12 w-12 items-center justify-center rounded-full bg-lime text-carbon shadow-lime pointer-events-auto md:hidden" aria-label="Позвонить в клуб">
         ☎
       </button>
 
-      <AnimatePresence>
-        {callModal && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={() => setCallModal(false)}>
-            <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }} className="glass-card w-full max-w-sm rounded-2xl p-5" onClick={(e) => e.stopPropagation()}>
-              <div className="mb-4 flex items-start justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
-                  <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
-                </div>
-                <button type="button" onClick={() => setCallModal(false)} className="rounded-full border border-white/20 px-3 py-1 text-xs text-white">
-                  Закрыть
-                </button>
-              </div>
-              <div className="space-y-2">
-                {phones.map((phone) => (
-                  <a key={phone.href} href={phone.href} className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/40 hover:bg-lime/10">
-                    <span className="text-sm text-soft/70">{phone.label}</span>
-                    <span className="text-base font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
-                  </a>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {callModal && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[90] flex items-center justify-center bg-black/70 p-4" onClick={() => setCallModal(false)}>
+                <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.96 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }} className="glass-card w-full max-w-sm rounded-2xl p-5" onClick={(e) => e.stopPropagation()}>
+                  <div className="mb-4 flex items-start justify-between">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
+                      <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
+                    </div>
+                    <button type="button" onClick={() => setCallModal(false)} className="rounded-full border border-white/20 px-3 py-1 text-xs text-white">
+                      Закрыть
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    {phones.map((phone) => (
+                      <a key={phone.href} href={phone.href} className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/40 hover:bg-lime/10">
+                        <span className="text-sm text-soft/70">{phone.label}</span>
+                        <span className="text-base font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
+                      </a>
+                    ))}
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
 
-      <AnimatePresence>
-        {currentPhoto && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-[2px] p-3 md:p-6" onClick={closeLightbox}>
-            <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} transition={{ type: 'spring', stiffness: 190, damping: 24, mass: 0.9 }} className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-2xl border border-white/10 bg-charcoal/80 p-2" onClick={(e) => e.stopPropagation()}>
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {currentPhoto && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-0 z-[95] flex items-center justify-center bg-black/80 backdrop-blur-[2px] p-3 md:p-6" onClick={closeLightbox}>
+                <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} transition={{ type: 'spring', stiffness: 190, damping: 24, mass: 0.9 }} className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-2xl border border-white/10 bg-charcoal/80 p-2" onClick={(e) => e.stopPropagation()}>
               {lightboxMode === 'gallery' && (
                 <>
                   <button onClick={prev} className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/20 bg-carbon/70 px-3 py-2 text-white">
@@ -327,10 +339,12 @@ export default function Home() {
               >
                 <img src={currentPhoto} alt="Фото" className="max-h-[88vh] max-w-full object-contain transition-transform duration-200" style={{ transform: `scale(${zoom})` }} onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))} />
               </div>
-            </motion.div>
-          </motion.div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </main>
   );
 }
