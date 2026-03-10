@@ -22,6 +22,29 @@ const programCategories = [
   { title: 'Танцевальные программы', items: ['ЗУМБА'] }
 ];
 
+
+const tariffs = [
+  {
+    title: 'Недельный',
+    description:
+      'Подходит для первого знакомства с клубом, возвращения в тренировочный ритм или короткого интенсивного периода занятий. Удобный формат, чтобы оценить пространство клуба, атмосферу и расписание групповых программ.',
+    perks: ['удобный короткий формат', 'доступ к тренировочным зонам', 'возможность попробовать клуб в деле']
+  },
+  {
+    title: 'Месячный',
+    description:
+      'Оптимальный вариант для стабильных тренировок и уверенного прогресса. Подходит тем, кто хочет заниматься регулярно, пользоваться залом и включить тренировки в привычный ритм жизни.',
+    perks: ['комфортный формат на каждый день', 'регулярные тренировки и прогресс', 'удобное решение для постоянного посещения'],
+    featured: true
+  },
+  {
+    title: 'Годовой',
+    description:
+      'Максимально выгодный формат для тех, кто настроен на долгосрочный результат. Позволяет тренироваться системно, не выпадать из режима и чувствовать себя частью пространства клуба на постоянной основе.',
+    perks: ['лучший вариант на длительный срок', 'стабильность и системный результат', 'выгодный формат для постоянных тренировок']
+  }
+];
+
 const scheduleByDay: DaySchedule[] = [
   { day: 'Пн', classes: ['07:30 — Смешанный тренинг', '09:00 — Функциональный тренинг', '18:00 — АБТ', '19:00 — ЗУМБА'] },
   { day: 'Вт', classes: ['07:30 — Степ 1', '09:00 — СУПЕР ПРЕСС', '18:00 — КРУГОВАЯ', '19:00 — Фитбол'] },
@@ -197,6 +220,33 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section-shell section-accent pt-16">
+        <h2 className="text-2xl font-semibold text-white md:text-3xl">Тарифы</h2>
+        <p className="mt-2 max-w-3xl text-soft/75">Выберите удобный формат посещения и держите тренировочный ритм в том темпе, который подходит именно вам.</p>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {tariffs.map((tariff) => (
+            <motion.article
+              key={tariff.title}
+              whileHover={{ y: -4 }}
+              transition={{ duration: 0.24 }}
+              className={`rounded-2xl p-5 shadow-card premium-transition ${tariff.featured ? 'glass-card border-lime/40 bg-lime/10' : 'glass-card'}`}
+            >
+              <h3 className={`text-xl font-semibold ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-soft/85">{tariff.description}</p>
+              <ul className="mt-4 space-y-2 text-sm text-soft/85">
+                {tariff.perks.map((perk) => (
+                  <li key={perk} className="flex items-start gap-2">
+                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
+                    <span>{perk}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.article>
+          ))}
+        </div>
+      </section>
+
+
       <section id="schedule" className="section-shell section-accent pt-16">
         <h2 className="text-2xl font-semibold text-white md:text-3xl">Расписание тренировок</h2>
         <p className="mt-2 max-w-3xl text-soft/75">Выберите день и задайте темп недели. Полное фото расписания открывается мягко и сразу, без лишних шагов.</p>
@@ -282,9 +332,18 @@ export default function Home() {
         </div>
       </section>
 
-      <button type="button" onClick={() => setCallModal(true)} className="fixed bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-4 z-[75] inline-flex h-12 w-12 items-center justify-center rounded-full bg-lime text-carbon shadow-lime pointer-events-auto md:hidden" aria-label="Позвонить в клуб">
-        ☎
-      </button>
+      {mounted &&
+        createPortal(
+          <button
+            type="button"
+            onClick={() => setCallModal(true)}
+            className="fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] right-4 z-[120] inline-flex h-12 w-12 items-center justify-center rounded-full border border-lime/50 bg-lime text-carbon shadow-lime pointer-events-auto md:hidden"
+            aria-label="Позвонить в клуб"
+          >
+            ☎
+          </button>,
+          document.body
+        )}
 
       {mounted &&
         createPortal(
