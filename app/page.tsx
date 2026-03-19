@@ -22,6 +22,46 @@ const programCategories = [
   { title: 'Танцевальные программы', items: ['ЗУМБА'] }
 ];
 
+const programDetails = {
+  АБТ: 'Силовой класс для проработки всех групп мышц (работа с инвентарем), помогает развить мышечную силу, улучшает рельеф.',
+  '90/60/90': 'Силовой урок направленный на развитие выносливости мышц живота, ягодиц, груди.',
+  АБЛ: 'Силовой урок для тренировки нижней части тела и брюшного пресса.',
+  'БЕДРА “-”': 'Смешанный формат тренировки (1 часть – аэробная или танцевальная, 2 часть – силовая на ноги, бедра, ягодицы).',
+  'СУПЕР ПРЕСС': 'Силовой урок для тренировки мышц брюшного пресса (работа с инвентарем).',
+  'АНТИЦЕЛ. ТРЕНИНГ': 'Силовой урок для всех основных мышечных групп с акцентом на мышцы бедер, ягодиц и пресса. Способствует уменьшению жировой прослойки и коррекции проблемных зон.',
+  'МОЩНЫЙ КЛАСС': 'Силовая программа на все группы мышц (работа с инвентарем).',
+  'Функциональный тренинг': 'Силовая тренировка, построенная на движениях из жизни, позволяет задействовать максимальное количество мышечных групп.',
+  'СКУЛЬПТОР ТЕЛА': 'Целостная программа низко-ударной тренировки с использованием штанги, направлена на коррекцию фигуры и укрепление мышц. Рекомендована с 17 лет и при высоком уровне подготовленности.',
+  'СИЛОВАЯ С ПЕТЛЯМИ': 'Функциональная тренировка с использованием подвесных петель. Развивает гибкость, координацию, равновесие.',
+  ДЖАМПИНГ: 'Силовая + аэробная кардио-тренировка на специальных шестиугольных батутах.',
+  КРУГОВАЯ: 'Круговая тренировка, поочередное выполнение нескольких упражнений по кругу за определенный промежуток времени с минимальным отдыхом.',
+  'Смешанный тренинг': 'Включает различные танцевальные стили, базовую степ-аэробику и силовой класс.',
+  Фитбол: 'Урок с использованием специальных мячей. Направлен на развитие гибкости, координации и исправление осанки.',
+  'Степ 1': 'Урок для начинающих, состоящий из двух частей: степ-аэробика и силовая часть.',
+  ЗУМБА: 'Танцевальная фитнес-программа, которая подойдет каждому. Сочетает аэробные упражнения и танцевальные элементы.'
+} satisfies Record<string, string>;
+
+const clubHours = [
+  { label: 'Пн – Чт', value: 'с 07:00 до 21:00' },
+  { label: 'Пт', value: 'с 07:00 до 20:45' },
+  { label: 'Сб – Вс', value: 'с 09:00 до 17:45' }
+];
+
+function ModalCloseButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-carbon/75 text-soft backdrop-blur transition hover:border-lime/40 hover:bg-lime/10 hover:text-white"
+      aria-label="Закрыть"
+    >
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+        <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    </button>
+  );
+}
+
 
 const tariffs = [
   {
@@ -76,6 +116,7 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [clubImages, setClubImages] = useState<string[]>(defaultClubImages);
   const [scheduleImages, setScheduleImages] = useState<string[]>(defaultScheduleImages);
+  const [selectedProgram, setSelectedProgram] = useState(programCategories[0].items[0]);
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
 
@@ -122,6 +163,8 @@ export default function Home() {
 
   const lightboxImages = lightboxMode === 'schedule' ? scheduleImages : clubImages;
   const currentPhoto = lightboxMode ? lightboxImages[lightboxIndex ?? 0] : null;
+  const selectedProgramCategory =
+    programCategories.find((category) => category.items.includes(selectedProgram))?.title ?? programCategories[0].title;
 
   const openGallery = (index: number) => {
     setLightboxMode('gallery');
@@ -210,14 +253,42 @@ export default function Home() {
               <h3 className="mb-4 text-lg font-semibold text-lime">{category.title}</h3>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
-                  <span key={item} className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs text-soft/90 transition hover:border-lime/40 hover:bg-lime/10">
+                  <button
+                    key={item}
+                    type="button"
+                    onClick={() => setSelectedProgram(item)}
+                    className={`rounded-full border px-3 py-1 text-xs transition ${
+                      selectedProgram === item ? 'border-lime/60 bg-lime/15 text-white' : 'border-white/15 bg-white/5 text-soft/90 hover:border-lime/40 hover:bg-lime/10'
+                    }`}
+                  >
                     {item}
-                  </span>
+                  </button>
                 ))}
               </div>
             </motion.article>
           ))}
         </div>
+        <AnimatePresence mode="wait">
+          <motion.article
+            key={selectedProgram}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.24 }}
+            className="glass-card mt-6 rounded-3xl border border-lime/20 p-5 shadow-card md:p-6"
+          >
+            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.22em] text-lime">{selectedProgramCategory}</p>
+                <h3 className="mt-2 text-2xl font-semibold text-white">{selectedProgram}</h3>
+              </div>
+              <div className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-soft/75">
+                Нажмите на любую программу, чтобы посмотреть описание
+              </div>
+            </div>
+            <p className="mt-4 max-w-4xl text-sm leading-relaxed text-soft/85 md:text-base">{programDetails[selectedProgram]}</p>
+          </motion.article>
+        </AnimatePresence>
       </section>
 
       <section className="section-shell section-accent pt-16">
@@ -321,6 +392,20 @@ export default function Home() {
                   Позвонить
                 </button>
               </div>
+              <div className="rounded-2xl border border-lime/20 bg-white/[0.03] p-4">
+                <p className="text-xs uppercase tracking-[0.22em] text-lime">Время работы клуба</p>
+                <div className="mt-4 space-y-3">
+                  {clubHours.map((item) => (
+                    <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 last:border-0 last:pb-0">
+                      <span className="font-medium text-white">{item.label}</span>
+                      <span className="text-soft/80">{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-4 rounded-2xl border border-lime/20 bg-lime/10 px-3 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-lime">
+                  Клиенты покидают клуб за 15 минут до закрытия
+                </p>
+              </div>
             </div>
             <iframe
               title="Карта фитнес-клуба"
@@ -356,9 +441,7 @@ export default function Home() {
                       <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
                       <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
                     </div>
-                    <button type="button" onClick={() => setCallModal(false)} className="rounded-full border border-white/20 px-3 py-1 text-xs text-white">
-                      Закрыть
-                    </button>
+                    <ModalCloseButton onClick={() => setCallModal(false)} />
                   </div>
                   <div className="space-y-2">
                     {phones.map((phone) => (
@@ -391,9 +474,9 @@ export default function Home() {
                   </button>
                 </>
               )}
-              <button onClick={closeLightbox} className="absolute right-3 top-3 z-10 rounded-full border border-white/25 bg-carbon/80 px-3 py-1 text-xs text-white">
-                Закрыть
-              </button>
+              <div className="absolute right-3 top-3 z-10">
+                <ModalCloseButton onClick={closeLightbox} />
+              </div>
               <div
                 className="relative flex h-[90vh] w-full items-center justify-center overflow-hidden rounded-xl"
                 onTouchStart={(e) => {
