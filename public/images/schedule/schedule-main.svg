@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<rect width="1800" height="1200" fill="#2B2B26"/>
+<rect x="70" y="80" width="1660" height="1040" rx="28" fill="#F3F3EF"/>
+<text x="130" y="190" font-size="56" font-family="Arial" fill="#24241F">Энерджи фитнес-клуб — Расписание</text>
+<g font-family="Arial" font-size="34" fill="#24241F">
+<text x="130" y="280">Пн</text><text x="380" y="280">Вт</text><text x="630" y="280">Ср</text><text x="880" y="280">Чт</text><text x="1130" y="280">Пт</text><text x="1380" y="280">Сб</text></g>
+<g stroke="#3A3A34" stroke-width="2"><line x1="120" y1="320" x2="1680" y2="320"/>
+<line x1="120" y1="420" x2="1680" y2="420"/><line x1="120" y1="520" x2="1680" y2="520"/><line x1="120" y1="620" x2="1680" y2="620"/><line x1="120" y1="720" x2="1680" y2="720"/></g>
+<text x="130" y="380" font-size="30" font-family="Arial" fill="#24241F">07:30 Смешанный тренинг</text>
+<text x="130" y="480" font-size="30" font-family="Arial" fill="#24241F">18:00 АБТ</text>
+<text x="130" y="580" font-size="30" font-family="Arial" fill="#24241F">19:00 ЗУМБА</text>
+<text x="130" y="1020" font-size="28" font-family="Arial" fill="#6B6B64">Демо-макет. Замените файл на реальное фото: public/images/schedule/schedule-main.jpg</text>
+</svg>

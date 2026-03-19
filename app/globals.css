@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #24241f;
+  color: #f3f3ef;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  touch-action: pan-y;
+}
+
+body {
+  background: linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%);
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 md:px-6;
+}
+
+.glass-card {
+  @apply border border-white/10 bg-white/[0.03] backdrop-blur;
+}
+
+.site-bg {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: linear-gradient(160deg, #24241f 0%, #2b2b26 52%, #23231f 100%);
+  touch-action: pan-y;
+}
+
+.site-bg::before,
+.site-bg::after {
+  content: '';
+  position: fixed;
+  inset: -8vh -6vw;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateZ(0);
+}
+
+/* depth 2: крупные графитовые панели-надрезы */
+.site-bg::before {
+  opacity: 0.88;
+  background:
+    linear-gradient(136deg, transparent 0 22%, rgba(58,58,52,0.56) 22% 41%, transparent 41% 100%),
+    linear-gradient(160deg, transparent 0 56%, rgba(43,43,38,0.8) 56% 78%, transparent 78% 100%);
+  animation: siteFloatGraphite 28s ease-in-out infinite alternate;
+}
+
+/* depth 3: лаймовые рваные фирменные мазки */
+.site-bg::after {
+  opacity: 0.44;
+  background:
+    linear-gradient(129deg, transparent 0 14%, rgba(200,214,0,0.2) 14% 18%, transparent 18% 100%),
+    linear-gradient(151deg, transparent 0 68%, rgba(216,230,0,0.16) 68% 73%, transparent 73% 100%);
+  filter: saturate(1.04);
+  animation: siteFloatLime 34s ease-in-out infinite alternate;
+}
+
+
+
+.hero-backdrop {
+  background: transparent;
+}
+
+.hero-scene {
+  overflow: hidden;
+}
+
+.hero-slash {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0.5px);
+}
+
+.hero-slash-a {
+  width: 54vw;
+  height: 42vh;
+  top: 2rem;
+  left: -7vw;
+  background: linear-gradient(128deg, rgba(216, 230, 0, 0.19), rgba(200, 214, 0, 0.03) 56%, transparent 56%);
+  clip-path: polygon(0 18%, 78% 0, 100% 28%, 16% 54%);
+}
+
+.hero-slash-b {
+  width: 52vw;
+  height: 46vh;
+  right: -6vw;
+  bottom: -2rem;
+  background: linear-gradient(154deg, rgba(243, 243, 239, 0.09), rgba(216, 230, 0, 0.07) 44%, transparent 44%);
+  clip-path: polygon(28% 0, 100% 18%, 76% 86%, 0 54%);
+}
+
+.section-accent {
+  position: relative;
+  z-index: 1;
+}
+
+.section-accent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 22%, transparent 78%, rgba(255,255,255,0.015));
+  opacity: 0.38;
+}
+
+.schedule-preview {
+  background:
+    linear-gradient(130deg, rgba(216, 230, 0, 0.11), transparent 40%),
+    linear-gradient(156deg, transparent 0 48%, rgba(255,255,255,0.06) 48% 52%, transparent 52% 100%),
+    linear-gradient(180deg, #33332e 0%, #262621 100%);
+}
+
+.brand-button {
+  @apply inline-flex items-center gap-2 rounded-full border border-lime/70 px-6 py-3 text-sm font-medium text-carbon transition-all duration-300;
+  background: linear-gradient(135deg, #d8e600, #c8d600);
+  box-shadow: 0 12px 35px rgba(200, 214, 0, 0.25);
+}
+
+.brand-button:hover {
+  box-shadow: 0 16px 44px rgba(200, 214, 0, 0.35);
+}
+
+.ghost-button {
+  @apply inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.045] px-6 py-3 text-sm font-medium text-soft;
+  transition:
+    transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 0.32s ease,
+    border-color 0.32s ease,
+    color 0.32s ease;
+  will-change: transform, background-color, border-color, color;
+}
+
+.ghost-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(216, 230, 0, 0.28);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+}
+
+.premium-transition {
+  transition:
+    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 0.28s ease,
+    border-color 0.28s ease,
+    color 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.site-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes siteFloatGraphite {
+  0% {
+    transform: translate3d(-1.2vw, -0.5vh, 0) scale(1);
+    opacity: 0.84;
+  }
+  100% {
+    transform: translate3d(1vw, 0.8vh, 0) scale(1.015);
+    opacity: 0.92;
+  }
+}
+
+@keyframes siteFloatLime {
+  0% {
+    transform: translate3d(0, -0.8vh, 0) scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate3d(1.2vw, 0.6vh, 0) scale(1.02);
+    opacity: 0.48;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bg::before,
+  .site-bg::after {
+    animation: none;
+  }
+}
