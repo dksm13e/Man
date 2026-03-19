@@ -134,7 +134,6 @@ body {
 }
 
 .brand-button:hover {
-  transform: translateY(-2px);
   box-shadow: 0 16px 44px rgba(200, 214, 0, 0.35);
 }
 
@@ -152,7 +151,6 @@ body {
 .ghost-button:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(216, 230, 0, 0.28);
-  transform: translateY(-2px);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
 }
 
