@@ -101,6 +101,35 @@ function ModalCloseButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next'; onClick: () => void }) {
+  const isPrev = direction === 'prev';
+
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.94 }}
+      transition={{ duration: 0.22, ease: easeOut }}
+      className={`absolute top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-carbon/72 text-soft backdrop-blur ${
+        isPrev ? 'left-3 md:left-4' : 'right-3 md:right-4'
+      }`}
+      aria-label={isPrev ? 'Предыдущее фото' : 'Следующее фото'}
+    >
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+        <path
+          d={isPrev ? 'M14.5 5.5L8.5 12L14.5 18.5' : 'M9.5 5.5L15.5 12L9.5 18.5'}
+          fill="none"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.8"
+        />
+      </svg>
+    </motion.button>
+  );
+}
+
 
 const tariffs = [
   {
@@ -189,7 +218,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       const paused = isGalleryHovered || now < galleryResumeAtRef.current;
 
       if (!paused && halfWidth > 0) {
-        viewport.scrollLeft += 0.28;
+        viewport.scrollLeft += 0.4;
 
         if (viewport.scrollLeft >= halfWidth) {
           viewport.scrollLeft -= halfWidth;
@@ -327,7 +356,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           {galleryLoopImages.length > 0 ? (
             <motion.div
               ref={galleryViewportRef}
-              className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6"
+              className="-mx-4 flex snap-x snap-proximity gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6"
               variants={staggerReveal}
               initial="hidden"
               whileInView="visible"
@@ -614,10 +643,17 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   </div>
                   <div className="space-y-2">
                     {phones.map((phone) => (
-                      <a key={phone.href} href={phone.href} className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/40 hover:bg-lime/10">
+                      <motion.a
+                        key={phone.href}
+                        href={phone.href}
+                        whileHover={{ scale: 1.01 }}
+                        whileTap={{ scale: 0.99 }}
+                        transition={{ duration: 0.22, ease: easeOut }}
+                        className="group flex items-center justify-between rounded-xl border border-white/12 bg-white/[0.035] px-3 py-3 transition-all duration-300 hover:border-lime/25 hover:bg-white/[0.05]"
+                      >
                         <span className="text-sm text-soft/70">{phone.label}</span>
-                        <span className="text-base font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
-                      </a>
+                        <span className="text-base font-semibold text-white transition-colors duration-300">{phone.display}</span>
+                      </motion.a>
                     ))}
                   </div>
                 </motion.div>
@@ -635,12 +671,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 <motion.div initial={{ scale: 0.965, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.97, opacity: 0, y: 8 }} transition={modalPanelTransition} className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-2xl border border-white/10 bg-charcoal/80 p-2" onClick={(e) => e.stopPropagation()}>
               {lightboxMode === 'gallery' && (
                 <>
-                  <motion.button onClick={prev} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.94 }} className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/20 bg-carbon/70 px-3 py-2 text-white">
-                    ←
-                  </motion.button>
-                  <motion.button onClick={next} whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.94 }} className="absolute right-2 top-1/2 z-10 -translate-y-1/2 rounded-full border border-white/20 bg-carbon/70 px-3 py-2 text-white">
-                    →
-                  </motion.button>
+                  <LightboxArrowButton direction="prev" onClick={prev} />
+                  <LightboxArrowButton direction="next" onClick={next} />
                 </>
               )}
               <div className="absolute right-3 top-3 z-10">
@@ -678,7 +710,17 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   if (zoom < 1.03) setZoom(1);
                 }}
               >
-                <img src={currentPhoto} alt="Фото" className="max-h-[88vh] max-w-full object-contain transition-transform duration-200" style={{ transform: `scale(${zoom})` }} onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))} />
+                <motion.img
+                  key={currentPhoto}
+                  src={currentPhoto}
+                  alt="Фото"
+                  className="max-h-[88vh] max-w-full object-contain transition-transform duration-200"
+                  style={{ transform: `scale(${zoom})` }}
+                  initial={{ opacity: 0, scale: 0.985 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.28, ease: easeOut }}
+                  onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))}
+                />
               </div>
                 </motion.div>
               </motion.div>
