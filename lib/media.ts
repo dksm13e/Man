@@ -8,11 +8,19 @@ const mediaPaths: Record<string, string[]> = {
   schedule: ['images/schedule']
 };
 
+const placeholderPatterns: Record<'club-atmosphere' | 'schedule', RegExp[]> = {
+  'club-atmosphere': [/^club-\d+\.svg$/i],
+  schedule: [/^schedule-main\.svg$/i]
+};
+
 const collator = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
-const isPlaceholderSvg = (fileName: string) => /^club-\d+\.svg$/i.test(fileName);
 const toPublicPath = (baseDir: string, fileName: string) => `/${baseDir}/${encodeURIComponent(fileName)}`;
 
-async function collectImages(baseDir: string) {
+function isPlaceholderFile(type: 'club-atmosphere' | 'schedule', fileName: string) {
+  return placeholderPatterns[type].some((pattern) => pattern.test(fileName));
+}
+
+async function collectImages(type: 'club-atmosphere' | 'schedule', baseDir: string) {
   const absoluteDir = path.join(process.cwd(), 'public', baseDir);
 
   try {
@@ -25,7 +33,7 @@ async function collectImages(baseDir: string) {
     if (!fileNames.length) return [];
 
     const hasRasterImages = fileNames.some((fileName) => path.extname(fileName).toLowerCase() !== '.svg');
-    const filtered = hasRasterImages ? fileNames.filter((fileName) => !isPlaceholderSvg(fileName)) : fileNames;
+    const filtered = hasRasterImages ? fileNames.filter((fileName) => !isPlaceholderFile(type, fileName)) : fileNames;
 
     return filtered.map((fileName) => toPublicPath(baseDir, fileName));
   } catch {
@@ -38,7 +46,7 @@ export async function listMediaFiles(type: 'club-atmosphere' | 'schedule') {
   const files: string[] = [];
 
   for (const baseDir of bases) {
-    const dirFiles = await collectImages(baseDir);
+    const dirFiles = await collectImages(type, baseDir);
     if (dirFiles.length) {
       files.push(...dirFiles);
       break;

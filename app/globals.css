@@ -23,7 +23,9 @@ body {
 }
 
 body {
-  background: linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%);
+  background:
+    linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%),
+    linear-gradient(145deg, rgba(200, 214, 0, 0.03), transparent 36%);
 }
 
 .section-shell {
@@ -38,7 +40,9 @@ body {
   position: relative;
   isolation: isolate;
   min-height: 100vh;
-  background: linear-gradient(160deg, #24241f 0%, #2b2b26 52%, #23231f 100%);
+  background:
+    linear-gradient(160deg, #24241f 0%, #2b2b26 52%, #23231f 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0));
   touch-action: pan-y;
 }
 
@@ -52,26 +56,24 @@ body {
   transform: translateZ(0);
 }
 
-/* depth 2: крупные графитовые панели-надрезы */
 .site-bg::before {
   opacity: 0.88;
   background:
-    linear-gradient(136deg, transparent 0 22%, rgba(58,58,52,0.56) 22% 41%, transparent 41% 100%),
-    linear-gradient(160deg, transparent 0 56%, rgba(43,43,38,0.8) 56% 78%, transparent 78% 100%);
+    linear-gradient(136deg, transparent 0 22%, rgba(58, 58, 52, 0.56) 22% 41%, transparent 41% 100%),
+    linear-gradient(160deg, transparent 0 56%, rgba(43, 43, 38, 0.8) 56% 78%, transparent 78% 100%),
+    linear-gradient(118deg, transparent 0 74%, rgba(255, 255, 255, 0.03) 74% 77%, transparent 77% 100%);
   animation: siteFloatGraphite 28s ease-in-out infinite alternate;
 }
 
-/* depth 3: лаймовые рваные фирменные мазки */
 .site-bg::after {
-  opacity: 0.44;
+  opacity: 0.42;
   background:
-    linear-gradient(129deg, transparent 0 14%, rgba(200,214,0,0.2) 14% 18%, transparent 18% 100%),
-    linear-gradient(151deg, transparent 0 68%, rgba(216,230,0,0.16) 68% 73%, transparent 73% 100%);
+    linear-gradient(129deg, transparent 0 14%, rgba(200, 214, 0, 0.18) 14% 18%, transparent 18% 100%),
+    linear-gradient(151deg, transparent 0 68%, rgba(216, 230, 0, 0.13) 68% 73%, transparent 73% 100%),
+    linear-gradient(173deg, transparent 0 84%, rgba(216, 230, 0, 0.08) 84% 87%, transparent 87% 100%);
   filter: saturate(1.04);
   animation: siteFloatLime 34s ease-in-out infinite alternate;
 }
-
-
 
 .hero-backdrop {
   background: transparent;
@@ -116,14 +118,14 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 22%, transparent 78%, rgba(255,255,255,0.015));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), transparent 22%, transparent 78%, rgba(255, 255, 255, 0.015));
   opacity: 0.38;
 }
 
 .schedule-preview {
   background:
     linear-gradient(130deg, rgba(216, 230, 0, 0.11), transparent 40%),
-    linear-gradient(156deg, transparent 0 48%, rgba(255,255,255,0.06) 48% 52%, transparent 52% 100%),
+    linear-gradient(156deg, transparent 0 48%, rgba(255, 255, 255, 0.06) 48% 52%, transparent 52% 100%),
     linear-gradient(180deg, #33332e 0%, #262621 100%);
 }
 
@@ -164,6 +166,17 @@ body {
     opacity 0.28s ease;
 }
 
+.gallery-rail {
+  position: relative;
+}
+
+.gallery-fade {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.82) 6%, black 12%, black 88%, rgba(0, 0, 0, 0.82) 94%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.82) 6%, black 12%, black 88%, rgba(0, 0, 0, 0.82) 94%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
 .site-bg > * {
   position: relative;
   z-index: 1;
@@ -192,15 +205,27 @@ body {
 @keyframes siteFloatLime {
   0% {
     transform: translate3d(0, -0.8vh, 0) scale(1);
-    opacity: 0.4;
+    opacity: 0.38;
   }
   100% {
     transform: translate3d(1.2vw, 0.6vh, 0) scale(1.02);
-    opacity: 0.48;
+    opacity: 0.46;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery-fade {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.72) 4%, black 10%, black 90%, rgba(0, 0, 0, 0.72) 96%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.72) 4%, black 10%, black 90%, rgba(0, 0, 0, 0.72) 96%, transparent 100%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+
   .site-bg::before,
   .site-bg::after {
     animation: none;
