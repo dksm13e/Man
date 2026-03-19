@@ -142,22 +142,23 @@ function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next
     <motion.button
       type="button"
       onClick={onClick}
-      whileHover={{ scale: 1.04 }}
-      whileTap={{ scale: 0.94 }}
+      whileTap={{ scale: 0.97 }}
       transition={{ duration: 0.22, ease: easeOut }}
-      className={`absolute top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-carbon/72 text-soft backdrop-blur ${
+      className={`group absolute top-1/2 z-10 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full outline-none ${
         isPrev ? 'left-3 md:left-4' : 'right-3 md:right-4'
       }`}
       aria-label={isPrev ? 'Предыдущее фото' : 'Следующее фото'}
     >
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+      <span className="absolute inset-0 rounded-full border border-white/12 bg-[linear-gradient(180deg,rgba(33,33,31,0.88),rgba(24,24,22,0.82))] shadow-[0_14px_30px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 group-hover:border-lime/28 group-hover:bg-[linear-gradient(180deg,rgba(38,38,35,0.92),rgba(26,26,24,0.84))] group-hover:shadow-[0_18px_34px_rgba(0,0,0,0.34)] group-focus-visible:border-lime/36" />
+      <span className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(191,255,0,0.12),transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="relative z-10 h-[14px] w-[14px] text-soft/92 transition-transform duration-300 group-hover:scale-[1.03] group-hover:text-white">
         <path
-          d={isPrev ? 'M14.5 5.5L8.5 12L14.5 18.5' : 'M9.5 5.5L15.5 12L9.5 18.5'}
+          d={isPrev ? 'M14.25 5.75L8.75 12L14.25 18.25' : 'M9.75 5.75L15.25 12L9.75 18.25'}
           fill="none"
           stroke="currentColor"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeWidth="1.8"
+          strokeWidth="1.55"
         />
       </svg>
     </motion.button>
@@ -854,6 +855,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                       if (zoom < 1.03) setZoom(1);
                     }}
                   >
+                    {lightboxMode === 'schedule' && (
+                      <>
+                        <div className="pointer-events-none absolute inset-y-3 left-2 z-[1] w-5 rounded-[1rem] bg-gradient-to-r from-white/[0.09] via-white/[0.03] to-transparent md:inset-y-4 md:left-3 md:w-8" />
+                        <div className="pointer-events-none absolute inset-y-3 right-2 z-[1] w-5 rounded-[1rem] bg-gradient-to-l from-white/[0.09] via-white/[0.03] to-transparent md:inset-y-4 md:right-3 md:w-8" />
+                        <div className="pointer-events-none absolute inset-0 rounded-[1.2rem] ring-1 ring-inset ring-white/8" />
+                      </>
+                    )}
                     <motion.img
                       key={currentPhoto}
                       src={currentPhoto}
