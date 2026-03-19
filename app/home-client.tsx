@@ -470,10 +470,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="gallery-rail relative">
           {galleryLoopImages.length > 0 ? (
-            <>
+            <div className="gallery-edge-shell">
               <motion.div
                 ref={galleryViewportRef}
-                className="gallery-fade -mx-4 flex gap-4 overflow-x-auto px-4 pb-4 scrollbar-hidden md:gap-6"
+                className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-4 scrollbar-hidden md:gap-6"
                 variants={staggerReveal}
                 initial="hidden"
                 whileInView="visible"
@@ -542,9 +542,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   </motion.button>
                 ))}
               </motion.div>
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-10 bg-gradient-to-r from-carbon via-carbon/82 to-transparent md:w-16" />
-              <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-10 bg-gradient-to-l from-carbon via-carbon/82 to-transparent md:w-16" />
-            </>
+            </div>
           ) : (
             <div className="glass-card rounded-3xl border border-white/10 px-5 py-12 text-center text-sm text-soft/70">
               Добавьте фотографии клуба в <span className="text-lime">public/images/club-atmosphere/</span>, и они автоматически появятся в галерее.
