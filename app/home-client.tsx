@@ -465,13 +465,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                       whileHover={{ scale: 1.03 }}
                       transition={{ duration: 0.5, ease: easeOut }}
                     />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.16),transparent_44%)] opacity-70" />
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-t from-carbon/58 via-carbon/12 to-white/[0.04]"
-                      whileHover={{ opacity: 0.62 }}
-                      transition={{ duration: 0.28 }}
-                    />
-                    <div className="absolute inset-0 rounded-[1.55rem] ring-1 ring-inset ring-white/10" />
+                    <div className="absolute inset-0 rounded-[1.55rem] ring-1 ring-inset ring-white/8" />
                   </div>
                 </motion.button>
               ))}
@@ -481,8 +475,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               Добавьте фотографии клуба в <span className="text-lime">public/images/club-atmosphere/</span>, и они автоматически появятся в галерее.
             </div>
           )}
-          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-10 bg-gradient-to-r from-carbon via-carbon/75 to-transparent md:block" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-10 bg-gradient-to-l from-carbon via-carbon/75 to-transparent md:block" />
         </div>
       </motion.section>
 
