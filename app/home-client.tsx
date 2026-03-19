@@ -183,12 +183,18 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const [pinchStart, setPinchStart] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
   const [isGalleryHovered, setIsGalleryHovered] = useState(false);
+  const [isGalleryInteracting, setIsGalleryInteracting] = useState(false);
   const [programPanelOpen, setProgramPanelOpen] = useState(false);
   const [clubImages] = useState<string[]>(initialClubImages);
   const [scheduleImages] = useState<string[]>(initialScheduleImages);
   const [selectedProgram, setSelectedProgram] = useState(programCategories[0].items[0]);
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
+  const galleryLastFrameTimeRef = useRef<number | null>(null);
+
+  const pauseGalleryAutoplay = (delay = 1800) => {
+    galleryResumeAtRef.current = performance.now() + delay;
+  };
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
   const galleryLoopImages = useMemo(() => (clubImages.length > 1 ? [...clubImages, ...clubImages] : clubImages), [clubImages]);
@@ -211,17 +217,21 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     if (!viewport || clubImages.length <= 1) return;
 
     let animationFrame = 0;
+    const pixelsPerSecond = 34;
+    galleryLastFrameTimeRef.current = null;
 
-    const tick = () => {
-      const now = performance.now();
-      const halfWidth = viewport.scrollWidth / 2;
-      const paused = isGalleryHovered || now < galleryResumeAtRef.current;
+    const tick = (timestamp: number) => {
+      const segmentWidth = viewport.scrollWidth / 2;
+      const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
+      const delta = Math.min(timestamp - lastFrameTime, 32);
+      galleryLastFrameTimeRef.current = timestamp;
+      const paused = isGalleryHovered || isGalleryInteracting || timestamp < galleryResumeAtRef.current;
 
-      if (!paused && halfWidth > 0) {
-        viewport.scrollLeft += 0.4;
+      if (!paused && segmentWidth > 0) {
+        viewport.scrollLeft += (pixelsPerSecond * delta) / 1000;
 
-        if (viewport.scrollLeft >= halfWidth) {
-          viewport.scrollLeft -= halfWidth;
+        if (viewport.scrollLeft >= segmentWidth) {
+          viewport.scrollLeft -= segmentWidth;
         }
       }
 
@@ -230,8 +240,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     animationFrame = window.requestAnimationFrame(tick);
 
-    return () => window.cancelAnimationFrame(animationFrame);
-  }, [clubImages.length, isGalleryHovered]);
+    return () => {
+      galleryLastFrameTimeRef.current = null;
+      window.cancelAnimationFrame(animationFrame);
+    };
+  }, [clubImages.length, isGalleryHovered, isGalleryInteracting]);
 
   const lightboxImages = lightboxMode === 'schedule' ? scheduleImages : clubImages;
   const currentPhoto = lightboxMode ? lightboxImages[lightboxIndex ?? 0] : null;
@@ -356,7 +369,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           {galleryLoopImages.length > 0 ? (
             <motion.div
               ref={galleryViewportRef}
-              className="-mx-4 flex snap-x snap-proximity gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6"
+              className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6"
               variants={staggerReveal}
               initial="hidden"
               whileInView="visible"
@@ -364,16 +377,38 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               onMouseEnter={() => setIsGalleryHovered(true)}
               onMouseLeave={() => {
                 setIsGalleryHovered(false);
-                galleryResumeAtRef.current = performance.now() + 900;
+                pauseGalleryAutoplay(900);
+              }}
+              onPointerDown={() => {
+                setIsGalleryInteracting(true);
+                pauseGalleryAutoplay(2600);
+              }}
+              onPointerUp={() => {
+                setIsGalleryInteracting(false);
+                pauseGalleryAutoplay(1800);
+              }}
+              onPointerCancel={() => {
+                setIsGalleryInteracting(false);
+                pauseGalleryAutoplay(1800);
+              }}
+              onPointerLeave={() => {
+                setIsGalleryInteracting(false);
               }}
               onTouchStart={() => {
-                galleryResumeAtRef.current = performance.now() + 2600;
+                setIsGalleryInteracting(true);
+                pauseGalleryAutoplay(2800);
               }}
               onTouchEnd={() => {
-                galleryResumeAtRef.current = performance.now() + 2200;
+                setIsGalleryInteracting(false);
+                pauseGalleryAutoplay(2200);
               }}
               onWheel={() => {
-                galleryResumeAtRef.current = performance.now() + 1600;
+                pauseGalleryAutoplay(1800);
+              }}
+              onScroll={() => {
+                if (isGalleryInteracting) {
+                  pauseGalleryAutoplay(1800);
+                }
               }}
             >
               {galleryLoopImages.map((src, i) => (
@@ -385,7 +420,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   whileHover={{ y: -5 }}
                   whileTap={{ scale: 0.995 }}
                   transition={{ duration: 0.25, ease: easeOut }}
-                  className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]"
+                  className="group relative h-[260px] min-w-[83%] overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]"
                 >
                   <motion.img
                     src={src}
