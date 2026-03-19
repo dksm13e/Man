@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type DaySchedule = { day: string; classes: string[] };
@@ -153,17 +153,23 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [pinchStart, setPinchStart] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
+  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
+  const [programPanelOpen, setProgramPanelOpen] = useState(false);
   const [clubImages] = useState<string[]>(initialClubImages);
   const [scheduleImages] = useState<string[]>(initialScheduleImages);
   const [selectedProgram, setSelectedProgram] = useState(programCategories[0].items[0]);
+  const galleryViewportRef = useRef<HTMLDivElement | null>(null);
+  const galleryResumeAtRef = useRef(0);
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
+  const galleryLoopImages = useMemo(() => (clubImages.length > 1 ? [...clubImages, ...clubImages] : clubImages), [clubImages]);
 
   useEffect(() => {
     setMounted(true);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setCallModal(false);
+        setProgramPanelOpen(false);
         closeLightbox();
       }
     };
@@ -171,12 +177,40 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  useEffect(() => {
+    const viewport = galleryViewportRef.current;
+    if (!viewport || clubImages.length <= 1) return;
+
+    let animationFrame = 0;
+
+    const tick = () => {
+      const now = performance.now();
+      const halfWidth = viewport.scrollWidth / 2;
+      const paused = isGalleryHovered || now < galleryResumeAtRef.current;
+
+      if (!paused && halfWidth > 0) {
+        viewport.scrollLeft += 0.28;
+
+        if (viewport.scrollLeft >= halfWidth) {
+          viewport.scrollLeft -= halfWidth;
+        }
+      }
+
+      animationFrame = window.requestAnimationFrame(tick);
+    };
+
+    animationFrame = window.requestAnimationFrame(tick);
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [clubImages.length, isGalleryHovered]);
+
   const lightboxImages = lightboxMode === 'schedule' ? scheduleImages : clubImages;
   const currentPhoto = lightboxMode ? lightboxImages[lightboxIndex ?? 0] : null;
   const selectedProgramCategory =
     programCategories.find((category) => category.items.includes(selectedProgram))?.title ?? programCategories[0].title;
 
   const openGallery = (index: number) => {
+    galleryResumeAtRef.current = performance.now() + 2200;
     setLightboxMode('gallery');
     setLightboxIndex(index);
     setZoom(1);
@@ -205,6 +239,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     if (lightboxMode !== 'gallery' || lightboxIndex === null) return;
     setLightboxIndex((lightboxIndex - 1 + clubImages.length) % clubImages.length);
     setZoom(1);
+  };
+
+  const openProgramPanel = (program: string) => {
+    setSelectedProgram(program);
+    setProgramPanelOpen(true);
   };
 
   return (
@@ -285,13 +324,34 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       <motion.section className="section-shell section-accent pt-12 md:pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="relative">
-          {clubImages.length > 0 ? (
-            <motion.div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6" variants={staggerReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-              {clubImages.map((src, i) => (
+          {galleryLoopImages.length > 0 ? (
+            <motion.div
+              ref={galleryViewportRef}
+              className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6"
+              variants={staggerReveal}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              onMouseEnter={() => setIsGalleryHovered(true)}
+              onMouseLeave={() => {
+                setIsGalleryHovered(false);
+                galleryResumeAtRef.current = performance.now() + 900;
+              }}
+              onTouchStart={() => {
+                galleryResumeAtRef.current = performance.now() + 2600;
+              }}
+              onTouchEnd={() => {
+                galleryResumeAtRef.current = performance.now() + 2200;
+              }}
+              onWheel={() => {
+                galleryResumeAtRef.current = performance.now() + 1600;
+              }}
+            >
+              {galleryLoopImages.map((src, i) => (
                 <motion.button
-                  key={src}
+                  key={`${src}-${i}`}
                   type="button"
-                  onClick={() => openGallery(i)}
+                  onClick={() => openGallery(i % clubImages.length)}
                   variants={itemReveal}
                   whileHover={{ y: -5 }}
                   whileTap={{ scale: 0.995 }}
@@ -302,7 +362,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     src={src}
                     alt="Атмосфера клуба"
                     className="absolute inset-0 h-full w-full object-cover"
-                    loading={i < 2 ? 'eager' : 'lazy'}
+                    loading={i < 3 ? 'eager' : 'lazy'}
                     whileHover={{ scale: 1.035 }}
                     transition={{ duration: 0.45, ease: easeOut }}
                   />
@@ -332,9 +392,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   <motion.button
                     key={item}
                     type="button"
-                    onClick={() => setSelectedProgram(item)}
+                    onClick={() => openProgramPanel(item)}
                     className={`rounded-full border px-3 py-1 text-xs transition ${
-                      selectedProgram === item ? 'border-lime/60 bg-lime/15 text-white' : 'border-white/15 bg-white/5 text-soft/90 hover:border-lime/40 hover:bg-lime/10'
+                      selectedProgram === item && programPanelOpen ? 'border-lime/60 bg-lime/15 text-white' : 'border-white/15 bg-white/5 text-soft/90 hover:border-lime/40 hover:bg-lime/10'
                     }`}
                     whileHover={{ y: -1 }}
                     whileTap={{ scale: 0.98 }}
@@ -347,27 +407,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.article>
           ))}
         </div>
-        <AnimatePresence mode="wait">
-          <motion.article
-            key={selectedProgram}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.24 }}
-            className="glass-card mt-6 rounded-3xl border border-lime/20 p-5 shadow-card md:p-6"
-          >
-            <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-              <div>
-                <p className="text-xs uppercase tracking-[0.22em] text-lime">{selectedProgramCategory}</p>
-                <h3 className="mt-2 text-2xl font-semibold text-white">{selectedProgram}</h3>
-              </div>
-              <div className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs text-soft/75">
-                Нажмите на любую программу, чтобы посмотреть описание
-              </div>
-            </div>
-            <p className="mt-4 max-w-4xl text-sm leading-relaxed text-soft/85 md:text-base">{programDetails[selectedProgram]}</p>
-          </motion.article>
-        </AnimatePresence>
+        <p className="mt-5 text-sm text-soft/60">Нажмите на название программы, чтобы открыть подробное описание в отдельной info-panel.</p>
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
@@ -527,6 +567,35 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           >
             ☎
           </motion.button>,
+          document.body
+        )}
+
+      {mounted &&
+        createPortal(
+          <AnimatePresence>
+            {programPanelOpen && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.24, ease: easeOut }} className="fixed inset-0 z-[88] flex items-end justify-center bg-black/45 p-4 md:items-center" onClick={() => setProgramPanelOpen(false)}>
+                <motion.aside
+                  initial={{ opacity: 0, y: 24, scale: 0.985 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.985 }}
+                  transition={{ duration: 0.28, ease: easeOut }}
+                  className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.96),rgba(30,30,27,0.96))] shadow-[0_24px_80px_rgba(0,0,0,0.38)]"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-lime via-lime/70 to-transparent" />
+                  <div className="flex items-start justify-between gap-4 p-5 md:p-7">
+                    <div className="max-w-xl">
+                      <p className="text-xs uppercase tracking-[0.24em] text-lime">{selectedProgramCategory}</p>
+                      <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">{selectedProgram}</h3>
+                      <p className="mt-4 text-sm leading-relaxed text-soft/85 md:text-base">{programDetails[selectedProgram]}</p>
+                    </div>
+                    <ModalCloseButton onClick={() => setProgramPanelOpen(false)} />
+                  </div>
+                </motion.aside>
+              </motion.div>
+            )}
+          </AnimatePresence>,
           document.body
         )}
 
