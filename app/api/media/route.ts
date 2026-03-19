@@ -5,13 +5,35 @@ import { NextResponse } from 'next/server';
 const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif', '.svg']);
 
 const mediaPaths: Record<string, string[]> = {
-  'club-atmosphere': ['imgs/club-atmosphere', 'images/club-atmosphere'],
-  schedule: ['imgs/schedule', 'images/schedule']
+  'club-atmosphere': ['images/club-atmosphere', 'imgs/club-atmosphere'],
+  schedule: ['images/schedule', 'imgs/schedule']
 };
 
 const collator = new Intl.Collator('ru', { numeric: true, sensitivity: 'base' });
 
 const toPublicPath = (baseDir: string, fileName: string) => `/${baseDir}/${encodeURIComponent(fileName)}`;
+const isPlaceholderSvg = (fileName: string) => /^club-\d+\.svg$/i.test(fileName);
+
+async function collectImages(baseDir: string) {
+  const absoluteDir = path.join(process.cwd(), 'public', baseDir);
+
+  try {
+    const entries = await fs.readdir(absoluteDir, { withFileTypes: true });
+    const fileNames = entries
+      .filter((entry) => entry.isFile())
+      .map((entry) => entry.name)
+      .filter((fileName) => IMAGE_EXTENSIONS.has(path.extname(fileName).toLowerCase()));
+
+    if (!fileNames.length) return [];
+
+    const hasRasterImages = fileNames.some((fileName) => path.extname(fileName).toLowerCase() !== '.svg');
+    const filtered = hasRasterImages ? fileNames.filter((fileName) => !isPlaceholderSvg(fileName)) : fileNames;
+
+    return filtered.map((fileName) => toPublicPath(baseDir, fileName));
+  } catch {
+    return [];
+  }
+}
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -25,18 +47,10 @@ export async function GET(request: Request) {
   const files: string[] = [];
 
   for (const baseDir of bases) {
-    const absoluteDir = path.join(process.cwd(), 'public', baseDir);
-
-    try {
-      const entries = await fs.readdir(absoluteDir, { withFileTypes: true });
-      for (const entry of entries) {
-        if (!entry.isFile()) continue;
-        const ext = path.extname(entry.name).toLowerCase();
-        if (!IMAGE_EXTENSIONS.has(ext)) continue;
-        files.push(toPublicPath(baseDir, entry.name));
-      }
-    } catch {
-      // ignore missing directory and continue with other sources
+    const dirFiles = await collectImages(baseDir);
+    if (dirFiles.length) {
+      files.push(...dirFiles);
+      break;
     }
   }
 

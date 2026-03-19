@@ -310,23 +310,34 @@ export default function Home() {
 
       <motion.section className="section-shell section-accent pt-12 md:pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
-        <motion.div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 md:gap-6" variants={staggerReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-          {clubImages.map((src, i) => (
-            <motion.button
-              key={src}
-              type="button"
-              onClick={() => openGallery(i)}
-              variants={itemReveal}
-              whileHover={{ y: -5 }}
-              whileTap={{ scale: 0.995 }}
-              transition={{ duration: 0.25, ease: easeOut }}
-              className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]"
-            >
-              <motion.img src={src} alt="Атмосфера клуба" className="absolute inset-0 h-full w-full object-cover" loading="lazy" whileHover={{ scale: 1.035 }} transition={{ duration: 0.45, ease: easeOut }} />
-              <motion.div className="absolute inset-0 bg-gradient-to-t from-carbon/20 via-transparent to-white/[0.03]" whileHover={{ opacity: 0.55 }} transition={{ duration: 0.28 }} />
-            </motion.button>
-          ))}
-        </motion.div>
+        <div className="relative">
+          <motion.div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6" variants={staggerReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
+            {clubImages.map((src, i) => (
+              <motion.button
+                key={src}
+                type="button"
+                onClick={() => openGallery(i)}
+                variants={itemReveal}
+                whileHover={{ y: -5 }}
+                whileTap={{ scale: 0.995 }}
+                transition={{ duration: 0.25, ease: easeOut }}
+                className="group relative h-[260px] min-w-[83%] snap-center overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]"
+              >
+                <motion.img
+                  src={src}
+                  alt="Атмосфера клуба"
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  whileHover={{ scale: 1.035 }}
+                  transition={{ duration: 0.45, ease: easeOut }}
+                />
+                <motion.div className="absolute inset-0 bg-gradient-to-t from-carbon/20 via-transparent to-white/[0.03]" whileHover={{ opacity: 0.55 }} transition={{ duration: 0.28 }} />
+              </motion.button>
+            ))}
+          </motion.div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-10 bg-gradient-to-r from-carbon via-carbon/75 to-transparent md:block" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-10 bg-gradient-to-l from-carbon via-carbon/75 to-transparent md:block" />
+        </div>
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
