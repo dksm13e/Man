@@ -43,6 +43,18 @@ const programDetails: Record<string, string> = {
   ЗУМБА: 'Танцевальная фитнес-программа, которая подойдет каждому. Сочетает аэробные упражнения и танцевальные элементы.'
 };
 
+const programCategoryHighlights: Record<string, string> = {
+  'Силовые программы': 'Акцент на мышечную силу, выносливость и чистую технику движения в насыщенном темпе групповой тренировки.',
+  'Аэробные программы': 'Ровный кардио-ритм, работа с координацией и легкая динамика, которую комфортно встроить в регулярный режим.',
+  'Танцевальные программы': 'Энергичный формат с музыкальной подачей, драйвом движения и заметной эмоциональной отдачей от занятия.'
+};
+
+const programCategoryTags: Record<string, string[]> = {
+  'Силовые программы': ['Сила', 'Выносливость', 'Рельеф'],
+  'Аэробные программы': ['Кардио', 'Ритм', 'Координация'],
+  'Танцевальные программы': ['Драйв', 'Пластика', 'Энергия']
+};
+
 const clubHours = [
   { label: 'Пн – Чт', value: 'с 07:00 до 21:00' },
   { label: 'Пт', value: 'с 07:00 до 20:45' },
@@ -96,6 +108,25 @@ function ModalCloseButton({ onClick }: { onClick: () => void }) {
     >
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
         <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </svg>
+    </motion.button>
+  );
+}
+
+function ProgramPanelCloseButton({ onClick }: { onClick: () => void }) {
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      className="group relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/12 bg-white/[0.04] text-soft/85 backdrop-blur-xl transition-colors duration-300 hover:border-lime/35 hover:bg-lime/[0.12] hover:text-white"
+      aria-label="Закрыть карточку программы"
+      whileHover={{ scale: 1.035, rotate: 90 }}
+      whileTap={{ scale: 0.95 }}
+      transition={{ duration: 0.24, ease: easeOut }}
+    >
+      <span className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(191,255,0,0.18),transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="relative h-4 w-4">
+        <path d="M7 7L17 17M17 7L7 17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
     </motion.button>
   );
@@ -250,6 +281,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const currentPhoto = lightboxMode ? lightboxImages[lightboxIndex ?? 0] : null;
   const selectedProgramCategory =
     programCategories.find((category) => category.items.includes(selectedProgram))?.title ?? programCategories[0].title;
+  const selectedProgramTags = programCategoryTags[selectedProgramCategory] ?? ['Энергия', 'Фокус', 'Групповой формат'];
+  const selectedProgramHighlight =
+    programCategoryHighlights[selectedProgramCategory] ?? 'Групповая тренировка с уверенным ритмом, продуманной подачей и вниманием к качеству движения.';
 
   const openGallery = (index: number) => {
     galleryResumeAtRef.current = performance.now() + 2200;
@@ -417,20 +451,28 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   type="button"
                   onClick={() => openGallery(i % clubImages.length)}
                   variants={itemReveal}
-                  whileHover={{ y: -5 }}
+                  whileHover={{ y: -4 }}
                   whileTap={{ scale: 0.995 }}
                   transition={{ duration: 0.25, ease: easeOut }}
-                  className="group relative h-[260px] min-w-[83%] overflow-hidden rounded-2xl border border-white/10 bg-charcoal text-left md:h-[360px] md:min-w-[46%]"
+                  className="group relative flex-none h-[272px] min-w-[86%] overflow-hidden rounded-[1.9rem] border border-white/10 bg-white/[0.035] p-[7px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.2)] md:h-[372px] md:min-w-[48%]"
                 >
-                  <motion.img
-                    src={src}
-                    alt="Атмосфера клуба"
-                    className="absolute inset-0 h-full w-full object-cover"
-                    loading={i < 3 ? 'eager' : 'lazy'}
-                    whileHover={{ scale: 1.035 }}
-                    transition={{ duration: 0.45, ease: easeOut }}
-                  />
-                  <motion.div className="absolute inset-0 bg-gradient-to-t from-carbon/20 via-transparent to-white/[0.03]" whileHover={{ opacity: 0.55 }} transition={{ duration: 0.28 }} />
+                  <div className="relative h-full w-full overflow-hidden rounded-[1.55rem] bg-charcoal">
+                    <motion.img
+                      src={src}
+                      alt="Атмосфера клуба"
+                      className="absolute inset-0 h-full w-full object-cover object-center"
+                      loading={i < 3 ? 'eager' : 'lazy'}
+                      whileHover={{ scale: 1.03 }}
+                      transition={{ duration: 0.5, ease: easeOut }}
+                    />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_18%,rgba(255,255,255,0.16),transparent_44%)] opacity-70" />
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-t from-carbon/58 via-carbon/12 to-white/[0.04]"
+                      whileHover={{ opacity: 0.62 }}
+                      transition={{ duration: 0.28 }}
+                    />
+                    <div className="absolute inset-0 rounded-[1.55rem] ring-1 ring-inset ring-white/10" />
+                  </div>
                 </motion.button>
               ))}
             </motion.div>
@@ -638,23 +680,75 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         createPortal(
           <AnimatePresence>
             {programPanelOpen && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.24, ease: easeOut }} className="fixed inset-0 z-[88] flex items-end justify-center bg-black/45 p-4 md:items-center" onClick={() => setProgramPanelOpen(false)}>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.26, ease: easeOut }}
+                className="fixed inset-0 z-[88] flex items-end justify-center bg-black/50 p-4 backdrop-blur-[8px] md:items-center"
+                onClick={() => setProgramPanelOpen(false)}
+              >
                 <motion.aside
-                  initial={{ opacity: 0, y: 24, scale: 0.985 }}
+                  initial={{ opacity: 0, y: 22, scale: 0.982 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 20, scale: 0.985 }}
-                  transition={{ duration: 0.28, ease: easeOut }}
-                  className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.96),rgba(30,30,27,0.96))] shadow-[0_24px_80px_rgba(0,0,0,0.38)]"
+                  exit={{ opacity: 0, y: 16, scale: 0.986 }}
+                  transition={{ duration: 0.32, ease: easeOut }}
+                  className="relative w-full max-w-[44rem] overflow-hidden rounded-[2.15rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.97),rgba(24,24,22,0.98))] shadow-[0_28px_110px_rgba(0,0,0,0.46)]"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b from-lime via-lime/70 to-transparent" />
-                  <div className="flex items-start justify-between gap-4 p-5 md:p-7">
-                    <div className="max-w-xl">
-                      <p className="text-xs uppercase tracking-[0.24em] text-lime">{selectedProgramCategory}</p>
-                      <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">{selectedProgram}</h3>
-                      <p className="mt-4 text-sm leading-relaxed text-soft/85 md:text-base">{programDetails[selectedProgram]}</p>
+                  <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-lime/95 via-lime/60 to-transparent" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(191,255,0,0.13),transparent_34%),radial-gradient(circle_at_88%_16%,rgba(255,255,255,0.08),transparent_24%)]" />
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  <div className="relative p-5 md:p-7">
+                    <div className="flex items-start justify-between gap-4">
+                      <div className="space-y-3">
+                        <span className="inline-flex items-center rounded-full border border-lime/25 bg-lime/[0.08] px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.28em] text-lime/90">
+                          {selectedProgramCategory}
+                        </span>
+                        <p className="text-[0.68rem] uppercase tracking-[0.34em] text-soft/50">Программа клуба «Энерджи»</p>
+                      </div>
+                      <ProgramPanelCloseButton onClick={() => setProgramPanelOpen(false)} />
                     </div>
-                    <ModalCloseButton onClick={() => setProgramPanelOpen(false)} />
+
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.div
+                        key={selectedProgram}
+                        initial={{ opacity: 0, y: 14, scale: 0.992 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -10, scale: 0.992 }}
+                        transition={{ duration: 0.28, ease: easeOut }}
+                        className="mt-7 grid gap-6"
+                      >
+                        <div className="max-w-3xl">
+                          <h3 className="text-[2rem] font-semibold leading-[1.02] tracking-[-0.03em] text-white md:text-[2.85rem]">{selectedProgram}</h3>
+                          <div className="mt-4 h-px w-24 bg-gradient-to-r from-lime via-lime/30 to-transparent" />
+                          <p className="mt-5 max-w-2xl text-[0.97rem] leading-7 text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
+                        </div>
+
+                        <div className="grid gap-3 md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+                          <div className="rounded-[1.55rem] border border-white/10 bg-white/[0.045] px-4 py-4 backdrop-blur-sm">
+                            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-lime/80">Фокус тренировки</p>
+                            <p className="mt-3 text-sm leading-6 text-soft/76 md:text-[0.95rem]">{selectedProgramHighlight}</p>
+                          </div>
+                          <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4">
+                            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-soft/55">Ритм и акценты</p>
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {selectedProgramTags.map((tag) => (
+                                <span
+                                  key={tag}
+                                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] uppercase tracking-[0.18em] text-soft/78"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                            </div>
+                            <p className="mt-4 text-sm leading-6 text-soft/62">
+                              Карточка обновляется мягко при выборе другой программы, сохраняя единый визуальный ритм и читаемую иерархию.
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </motion.aside>
               </motion.div>
