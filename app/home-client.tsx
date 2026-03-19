@@ -90,6 +90,9 @@ const itemReveal = {
 } as const;
 const modalOverlayTransition = { duration: 0.26, ease: easeOut } as const;
 const modalPanelTransition = { duration: 0.28, ease: easeOut } as const;
+const lightboxOverlayTransition = { duration: 0.34, ease: easeOut } as const;
+const lightboxPanelTransition = { duration: 0.36, ease: easeOut } as const;
+const lightboxImageTransition = { duration: 0.4, ease: easeOut } as const;
 const ctaMotion = {
   whileHover: { y: -2, scale: 1.01 },
   whileTap: { scale: 0.985 }
@@ -404,6 +407,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <motion.div
               ref={galleryViewportRef}
               className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-3 scrollbar-hidden md:gap-6"
+              style={{
+                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.55) 3.5%, black 8%, black 92%, rgba(0, 0, 0, 0.55) 96.5%, transparent 100%)',
+                maskImage: 'linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.55) 3.5%, black 8%, black 92%, rgba(0, 0, 0, 0.55) 96.5%, transparent 100%)',
+                WebkitMaskRepeat: 'no-repeat',
+                maskRepeat: 'no-repeat'
+              }}
               variants={staggerReveal}
               initial="hidden"
               whileInView="visible"
@@ -788,61 +797,75 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         createPortal(
           <AnimatePresence>
             {currentPhoto && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={modalOverlayTransition} className="fixed inset-0 z-[95] flex items-center justify-center bg-black/80 backdrop-blur-[2px] p-3 md:p-6" onClick={closeLightbox}>
-                <motion.div initial={{ scale: 0.965, opacity: 0, y: 10 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.97, opacity: 0, y: 8 }} transition={modalPanelTransition} className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-2xl border border-white/10 bg-charcoal/80 p-2" onClick={(e) => e.stopPropagation()}>
-              {lightboxMode === 'gallery' && (
-                <>
-                  <LightboxArrowButton direction="prev" onClick={prev} />
-                  <LightboxArrowButton direction="next" onClick={next} />
-                </>
-              )}
-              <div className="absolute right-3 top-3 z-10">
-                <ModalCloseButton onClick={closeLightbox} />
-              </div>
-              <div
-                className="relative flex h-[90vh] w-full items-center justify-center overflow-hidden rounded-xl"
-                onTouchStart={(e) => {
-                  if (e.touches.length === 1) setTouchStartX(e.touches[0].clientX);
-                  if (e.touches.length === 2) {
-                    setPinchStart(Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY));
-                  }
-                }}
-                onTouchMove={(e) => {
-                  if (e.touches.length === 2 && pinchStart) {
-                    const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-                    setZoom((z) => Math.min(3, Math.max(1, z * (d / pinchStart))));
-                    setPinchStart(d);
-                    return;
-                  }
-                  if (e.touches.length === 1 && touchStartX !== null && zoom <= 1.05 && lightboxMode === 'gallery') {
-                    const delta = e.touches[0].clientX - touchStartX;
-                    if (delta > 70) {
-                      prev();
-                      setTouchStartX(e.touches[0].clientX);
-                    } else if (delta < -70) {
-                      next();
-                      setTouchStartX(e.touches[0].clientX);
-                    }
-                  }
-                }}
-                onTouchEnd={() => {
-                  setTouchStartX(null);
-                  setPinchStart(null);
-                  if (zoom < 1.03) setZoom(1);
-                }}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={lightboxOverlayTransition}
+                className="fixed inset-0 z-[95] flex items-center justify-center bg-black/72 backdrop-blur-[4px] p-3 md:p-6"
+                onClick={closeLightbox}
               >
-                <motion.img
-                  key={currentPhoto}
-                  src={currentPhoto}
-                  alt="Фото"
-                  className="max-h-[88vh] max-w-full object-contain transition-transform duration-200"
-                  style={{ transform: `scale(${zoom})` }}
-                  initial={{ opacity: 0, scale: 0.985 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.28, ease: easeOut }}
-                  onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))}
-                />
-              </div>
+                <motion.div
+                  initial={{ scale: 0.982, opacity: 0, y: 12 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.988, opacity: 0, y: 10 }}
+                  transition={lightboxPanelTransition}
+                  className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-2xl border border-white/10 bg-charcoal/72 p-2.5 shadow-[0_28px_100px_rgba(0,0,0,0.42)]"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {lightboxMode === 'gallery' && (
+                    <>
+                      <LightboxArrowButton direction="prev" onClick={prev} />
+                      <LightboxArrowButton direction="next" onClick={next} />
+                    </>
+                  )}
+                  <div className="absolute right-3 top-3 z-10">
+                    <ModalCloseButton onClick={closeLightbox} />
+                  </div>
+                  <div
+                    className="relative flex h-[90vh] w-full items-center justify-center overflow-hidden rounded-[1.2rem]"
+                    onTouchStart={(e) => {
+                      if (e.touches.length === 1) setTouchStartX(e.touches[0].clientX);
+                      if (e.touches.length === 2) {
+                        setPinchStart(Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY));
+                      }
+                    }}
+                    onTouchMove={(e) => {
+                      if (e.touches.length === 2 && pinchStart) {
+                        const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                        setZoom((z) => Math.min(3, Math.max(1, z * (d / pinchStart))));
+                        setPinchStart(d);
+                        return;
+                      }
+                      if (e.touches.length === 1 && touchStartX !== null && zoom <= 1.05 && lightboxMode === 'gallery') {
+                        const delta = e.touches[0].clientX - touchStartX;
+                        if (delta > 70) {
+                          prev();
+                          setTouchStartX(e.touches[0].clientX);
+                        } else if (delta < -70) {
+                          next();
+                          setTouchStartX(e.touches[0].clientX);
+                        }
+                      }
+                    }}
+                    onTouchEnd={() => {
+                      setTouchStartX(null);
+                      setPinchStart(null);
+                      if (zoom < 1.03) setZoom(1);
+                    }}
+                  >
+                    <motion.img
+                      key={currentPhoto}
+                      src={currentPhoto}
+                      alt="Фото"
+                      className="max-h-[88vh] max-w-full object-contain transition-transform duration-200"
+                      style={{ transform: `scale(${zoom})` }}
+                      initial={{ opacity: 0, scale: 0.992 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={lightboxImageTransition}
+                      onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))}
+                    />
+                  </div>
                 </motion.div>
               </motion.div>
             )}
