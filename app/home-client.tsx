@@ -502,8 +502,22 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="hero-headline mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+              className="hero-headline relative mt-5 max-w-[15.8ch] pb-1 text-[2rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:pb-1.5 md:text-[3.18rem] md:leading-[1] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
+              <motion.span
+                aria-hidden="true"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.62, delay: 0.46, ease: easeOut }}
+                className="pointer-events-none absolute -left-2 top-[58%] h-10 w-10 -translate-y-1/2 rounded-full bg-lime/[0.12] blur-[22px] md:-left-3 md:h-14 md:w-14 md:blur-[28px]"
+              />
+              <motion.span
+                aria-hidden="true"
+                initial={{ opacity: 0, scaleX: 0.88 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.64, delay: 0.5, ease: easeOut }}
+                className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-20 origin-left bg-gradient-to-r from-lime/82 via-lime/26 to-transparent md:w-28"
+              />
               <motion.span
                 initial={{ opacity: 0, y: 24, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
@@ -517,10 +531,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[39rem] md:text-[1.01rem] md:leading-[1.76]"
+              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[43rem] md:text-[1.01rem] md:leading-[1.72]"
             >
-              Современный фитнес-клуб с сильным тренировочным ритмом, удобным расписанием и атмосферой,
-              где хочется возвращаться к результату каждую неделю.
+              <span className="md:block">Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
+              <span className="md:block">удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.</span>
             </motion.p>
             <motion.div variants={itemReveal} className="mt-9 flex flex-wrap gap-4 md:mt-10">
               <motion.button
