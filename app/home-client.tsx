@@ -916,7 +916,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.28, ease: easeOut }}
-                className="fixed inset-0 z-[88] flex items-center justify-center bg-black/58 p-4 backdrop-blur-[8px]"
+                className="fixed inset-0 z-[88] flex items-start justify-center overflow-y-auto bg-black/58 p-4 backdrop-blur-[8px] md:items-center"
                 onClick={closeProgramPanel}
               >
                 <motion.aside
@@ -930,7 +930,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-lime/95 via-lime/60 to-transparent" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(191,255,0,0.12),transparent_34%),radial-gradient(circle_at_88%_16%,rgba(255,255,255,0.07),transparent_24%)]" />
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                  <div className="relative max-h-[min(86vh,900px)] overflow-y-auto p-5 md:p-7">
+                  <div className="relative p-5 md:p-7">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-3">
                         <span className="inline-flex items-center rounded-full border border-lime/25 bg-lime/[0.08] px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.28em] text-lime/90">
