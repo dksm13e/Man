@@ -502,13 +502,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-none md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap lg:text-[3.28rem]"
+              className="mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-none md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
               <motion.span
                 initial={{ opacity: 0, y: 22, filter: 'blur(8px)', clipPath: 'inset(0 0 100% 0)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
                 transition={{ duration: 0.62, delay: 0.42, ease: easeOut }}
-                className="block bg-[linear-gradient(180deg,#ffffff_0%,#f6f6f2_58%,rgba(244,244,239,0.74)_100%)] bg-clip-text text-transparent md:inline"
+                className="block bg-[linear-gradient(180deg,#ffffff_0%,#f8f8f4_54%,rgba(236,237,229,0.72)_100%)] bg-clip-text text-transparent md:inline"
               >
                 Энергия движения.
               </motion.span>
@@ -516,7 +516,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial={{ opacity: 0, y: 26, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
                 transition={{ duration: 0.68, delay: 0.5, ease: easeOut }}
-                className="mt-1.5 block pl-4 text-[0.92em] font-medium tracking-[-0.022em] text-white/76 md:ml-3 md:inline md:pl-0 md:text-[0.9em]"
+                className="mt-1.5 block pl-4 text-[0.92em] font-medium tracking-[-0.022em] text-white/74 before:mr-3 before:inline-block before:h-px before:w-7 before:translate-y-[-0.18em] before:bg-gradient-to-r before:from-lime/68 before:to-transparent before:content-[''] md:ml-4 md:inline md:pl-0 md:text-[0.9em] md:before:w-9"
               >
                 <span className="text-lime/88">Сила</span> результата
               </motion.span>
@@ -525,10 +525,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="mt-5 max-w-[29rem] text-pretty text-[0.96rem] font-light leading-[1.72] tracking-[0.01em] text-soft/76 md:mt-5 md:max-w-[32rem] md:text-[1.01rem] md:leading-[1.78]"
+              className="mt-5 max-w-[29.5rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[34rem] md:text-[1.01rem] md:leading-[1.76]"
             >
-              Современный фитнес-клуб с сильным тренировочным ритмом,{' '}
-              <span className="md:block">удобным расписанием и атмосферой, в которую хочется возвращаться.</span>
+              <span>Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
+              <span className="inline md:block md:pl-6">удобным расписанием и атмосферой, в которую хочется возвращаться.</span>
             </motion.p>
             <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-9">
               <motion.button
