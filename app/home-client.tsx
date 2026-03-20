@@ -447,8 +447,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         />
 
         <div className="section-shell relative z-10 overflow-visible">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] overflow-visible px-1 pt-12 pb-12 md:px-2 md:pt-16 md:pb-14">
-            <motion.p variants={itemReveal} className="premium-label mb-4 text-xs uppercase tracking-[0.4em] text-lime/88">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] overflow-visible px-1 pt-[3.35rem] pb-[3.35rem] md:px-2 md:pt-[4.35rem] md:pb-[4rem]">
+            <motion.p variants={itemReveal} className="premium-label mb-4 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
 
