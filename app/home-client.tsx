@@ -155,7 +155,7 @@ function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next
       whileHover={{ scale: 1.018 }}
       whileTap={{ scale: 0.972 }}
       transition={{ duration: 0.22, ease: easeOut }}
-      className={`group absolute top-1/2 z-10 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full outline-none ${
+      className={`group absolute top-[calc(50%-1.5rem)] z-10 inline-flex h-12 w-12 items-center justify-center rounded-full outline-none ${
         isPrev ? 'left-3 md:left-4' : 'right-3 md:right-4'
       }`}
       aria-label={isPrev ? 'Предыдущее фото' : 'Следующее фото'}
@@ -307,6 +307,53 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     viewport.scrollLeft = 0;
 
+    const isPaused = (timestamp: number) =>
+      isGalleryHoveredRef.current || isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
+
+    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+
+    if (isMobileViewport) {
+      let timeoutId = 0;
+
+      const getCardStep = () => {
+        const firstCard = viewport.querySelector('button');
+        if (!(firstCard instanceof HTMLElement)) return viewport.clientWidth * 0.86;
+
+        const styles = window.getComputedStyle(viewport);
+        const gap = Number.parseFloat(styles.columnGap || styles.gap || '0');
+
+        return firstCard.offsetWidth + gap;
+      };
+
+      const queueNextSlide = () => {
+        timeoutId = window.setTimeout(() => {
+          const now = performance.now();
+          const segmentWidth = viewport.scrollWidth / 2;
+
+          if (!isPaused(now) && segmentWidth > 0) {
+            const step = getCardStep();
+
+            if (viewport.scrollLeft >= segmentWidth - step * 0.6) {
+              viewport.scrollLeft = 0;
+            }
+
+            viewport.scrollTo({
+              left: viewport.scrollLeft + step,
+              behavior: 'smooth'
+            });
+          }
+
+          queueNextSlide();
+        }, 2600);
+      };
+
+      queueNextSlide();
+
+      return () => {
+        window.clearTimeout(timeoutId);
+      };
+    }
+
     let animationFrame = 0;
     const pixelsPerSecond = 31;
     galleryLastFrameTimeRef.current = null;
@@ -316,9 +363,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
       const delta = Math.min(timestamp - lastFrameTime, 32);
       galleryLastFrameTimeRef.current = timestamp;
-      const paused = isGalleryHoveredRef.current || isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
-      if (!paused && segmentWidth > 0) {
+      if (!isPaused(timestamp) && segmentWidth > 0) {
         viewport.scrollLeft += (pixelsPerSecond * delta) / 1000;
 
         if (viewport.scrollLeft >= segmentWidth) {
@@ -447,34 +493,25 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="mt-5 text-[0.72rem] font-medium uppercase tracking-[0.62em] text-soft/52 md:mt-6 md:text-[0.92rem] md:tracking-[0.7em]">
+            <motion.p variants={itemReveal} className="mt-4 text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-5 md:text-[0.95rem] md:tracking-[0.68em]">
               фитнес-клуб
             </motion.p>
-            <motion.div
+            <motion.h2
               variants={itemReveal}
-              className="mt-8 max-w-[42rem] rounded-[2rem] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.012)_58%)] px-5 py-6 shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-[18px] md:mt-10 md:px-8 md:py-8"
+              className="mt-7 max-w-[11.5ch] text-[2.15rem] font-semibold leading-[0.94] tracking-[-0.035em] text-white md:mt-8 md:text-[4.15rem] md:leading-[0.9]"
             >
-              <div className="mb-5 flex items-center gap-4 md:gap-5">
-                <span className="h-px w-14 bg-gradient-to-r from-lime/75 via-lime/18 to-transparent md:w-20" />
-                <span className="h-2 w-2 rounded-full bg-lime/80 shadow-[0_0_18px_rgba(200,214,0,0.4)]" />
-              </div>
-              <motion.h2
-                variants={itemReveal}
-                className="max-w-[11ch] text-[2.2rem] font-semibold leading-[0.92] tracking-[-0.035em] text-white text-balance md:text-[4.4rem] md:leading-[0.9]"
-              >
-                <span className="bg-[linear-gradient(180deg,#ffffff_0%,#f3f3ef_62%,rgba(243,243,239,0.72)_100%)] bg-clip-text text-transparent">
-                  Энергия движения.
-                </span>{' '}
-                <span className="text-white/92">Сила результата</span>
-              </motion.h2>
-              <motion.p
-                variants={itemReveal}
-                className="mt-5 max-w-[33rem] text-[0.98rem] font-light leading-[1.9] tracking-[0.01em] text-soft/82 md:mt-6 md:text-[1.16rem] md:leading-[2.05]"
-              >
-                Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
-              </motion.p>
-            </motion.div>
-            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-10">
+              <span className="bg-[linear-gradient(180deg,#ffffff_0%,#f4f4ef_68%,rgba(244,244,239,0.76)_100%)] bg-clip-text text-transparent">
+                Энергия движения.
+              </span>{' '}
+              <span className="text-white/92">Сила результата</span>
+            </motion.h2>
+            <motion.p
+              variants={itemReveal}
+              className="mt-5 max-w-[34rem] text-[0.98rem] font-light leading-[1.88] tracking-[0.012em] text-soft/82 md:mt-6 md:text-[1.08rem] md:leading-[1.95]"
+            >
+              Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
+            </motion.p>
+            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-9">
               <motion.button
                 type="button"
                 className="brand-button premium-transition"
