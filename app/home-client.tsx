@@ -419,8 +419,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   };
 
   return (
-    <main className="site-bg relative overflow-x-hidden bg-carbon text-soft">
-      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] pt-12 pb-11 md:min-h-[41rem] md:pt-16 md:pb-14">
+    <main className="site-bg relative overflow-x-hidden overflow-y-visible bg-carbon text-soft">
+      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] overflow-y-hidden pt-12 pb-11 md:min-h-[41rem] md:pt-16 md:pb-14">
         <motion.div
           initial={{ opacity: 0.38, x: -22, y: -6 }}
           animate={{ opacity: shouldReduceMotion ? 0.54 : 0.78, x: shouldReduceMotion ? 0 : 22, y: shouldReduceMotion ? 0 : 6 }}
@@ -446,8 +446,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           className="pointer-events-none absolute bottom-[14%] right-0 hidden h-px w-[26vw] max-w-[22rem] bg-gradient-to-l from-transparent via-white/18 to-transparent md:block"
         />
 
-        <div className="section-shell relative z-10">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] px-1 pt-12 pb-12 md:px-2 md:pt-16 md:pb-14">
+        <div className="section-shell relative z-10 overflow-visible">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] overflow-visible px-1 pt-12 pb-12 md:px-2 md:pt-16 md:pb-14">
             <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
