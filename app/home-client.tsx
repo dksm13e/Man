@@ -18,7 +18,7 @@ const phones = [
 const programCategories = [
   {
     title: 'Силовые программы',
-    items: ['АБТ', '90/60/90', 'АБЛ', 'БЕДРА “-”', 'СУПЕР ПРЕСС', 'АНТИЦЕЛ. ТРЕНИНГ', 'МОЩНЫЙ КЛАСС', 'Функциональный тренинг', 'СКУЛЬПТОР ТЕЛА', 'СИЛОВАЯ С ПЕТЛЯМИ', 'ДЖАМПИНГ', 'КРУГОВАЯ']
+    items: ['АБТ', '90/60/90', 'АБЛ', 'БЕДРА', 'СУПЕР ПРЕСС', 'АНТИЦЕЛ. ТРЕНИНГ', 'МОЩНЫЙ КЛАСС', 'Функциональный тренинг', 'СКУЛЬПТОР ТЕЛА', 'СИЛОВАЯ С ПЕТЛЯМИ', 'ДЖАМПИНГ', 'КРУГОВАЯ']
   },
   { title: 'Аэробные программы', items: ['Смешанный тренинг', 'Фитбол', 'Степ 1'] },
   { title: 'Танцевальные программы', items: ['ЗУМБА'] }
@@ -28,7 +28,7 @@ const programDetails: Record<string, string> = {
   АБТ: 'Силовой класс для проработки всех групп мышц (работа с инвентарем), помогает развить мышечную силу, улучшает рельеф.',
   '90/60/90': 'Силовой урок направленный на развитие выносливости мышц живота, ягодиц, груди.',
   АБЛ: 'Силовой урок для тренировки нижней части тела и брюшного пресса.',
-  'БЕДРА “-”': 'Смешанный формат тренировки (1 часть – аэробная или танцевальная, 2 часть – силовая на ноги, бедра, ягодицы).',
+  'БЕДРА': 'Смешанный формат тренировки (1 часть – аэробная или танцевальная, 2 часть – силовая на ноги, бедра, ягодицы).',
   'СУПЕР ПРЕСС': 'Силовой урок для тренировки мышц брюшного пресса (работа с инвентарем).',
   'АНТИЦЕЛ. ТРЕНИНГ': 'Силовой урок для всех основных мышечных групп с акцентом на мышцы бедер, ягодиц и пресса. Способствует уменьшению жировой прослойки и коррекции проблемных зон.',
   'МОЩНЫЙ КЛАСС': 'Силовая программа на все группы мышц (работа с инвентарем).',
@@ -657,7 +657,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               whileHover={{ y: -4 }}
               className="glass-card rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-card"
             >
-              <h3 className="premium-display mb-3 text-lg font-semibold tracking-[-0.02em] text-lime">{category.title}</h3>
+              <h3 className="premium-display mb-3 text-[1.05rem] font-semibold leading-[1.08] tracking-[-0.03em] text-lime">{category.title}</h3>
               <p className="premium-body mb-4 text-sm leading-[1.72] tracking-[0.01em] text-soft/68">{programCategoryHighlights[category.title]}</p>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
@@ -665,7 +665,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     key={item}
                     type="button"
                     onClick={() => openProgramPanel(item)}
-                    className={`rounded-full border px-3 py-1.5 text-xs transition ${
+                    className={`premium-chip rounded-full border px-3 py-1.5 text-[0.78rem] font-medium tracking-[0.015em] transition ${
                       selectedProgram === item && programPanelOpen
                         ? 'border-lime/60 bg-lime/15 text-white shadow-[0_10px_24px_rgba(200,214,0,0.16)]'
                         : 'border-white/15 bg-white/[0.04] text-soft/90 hover:border-lime/35 hover:bg-lime/[0.08]'
@@ -704,11 +704,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`premium-display text-xl font-semibold tracking-[-0.026em] ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
+                <h3 className={`premium-display text-xl font-semibold leading-[1.08] tracking-[-0.03em] ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
                 {tariff.featured && <span className="premium-chip rounded-full border border-lime/25 bg-lime/10 px-3 py-1 text-[0.66rem] uppercase tracking-[0.2em] text-lime">выбор клуба</span>}
               </div>
-              <p className="premium-body mt-3 text-sm leading-[1.74] tracking-[0.01em] text-soft/86">{tariff.description}</p>
-              <ul className="premium-body mt-4 space-y-2 text-sm tracking-[0.01em] text-soft/85">
+              <p className="premium-body mt-3 text-sm leading-[1.8] tracking-[0.012em] text-soft/86">{tariff.description}</p>
+              <ul className="premium-body mt-4 space-y-2 text-sm leading-[1.72] tracking-[0.012em] text-soft/85">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
                     <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
@@ -733,7 +733,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   key={day.day}
                   type="button"
                   onClick={() => setActiveDay(day.day)}
-                  className="relative rounded-full px-4 py-2 text-sm text-soft transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/35"
+                  className="premium-chip relative rounded-full px-4 py-2 text-sm tracking-[0.015em] text-soft transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/35"
                 >
                   {activeDay === day.day && (
                     <motion.span
@@ -742,7 +742,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                       transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                     />
                   )}
-                  <span className={`relative z-10 ${activeDay === day.day ? 'text-carbon' : 'text-soft'}`}>{day.day}</span>
+                  <span className={`premium-chip relative z-10 tracking-[0.015em] ${activeDay === day.day ? 'text-carbon' : 'text-soft'}`}>{day.day}</span>
                 </button>
               ))}
             </div>
@@ -761,7 +761,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.24, delay: index * 0.04, ease: easeOut }}
-                    className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 text-sm text-soft/90 transition hover:border-lime/25 hover:bg-white/[0.05]"
+                    className="premium-body rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 text-sm leading-[1.58] tracking-[0.012em] text-soft/90 transition hover:border-lime/25 hover:bg-white/[0.05]"
                   >
                     {line}
                   </motion.li>
@@ -943,7 +943,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         <span className="premium-chip inline-flex items-center rounded-full border border-lime/25 bg-lime/[0.08] px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.28em] text-lime/90">
                           {selectedProgramCategory}
                         </span>
-                        <p className="premium-label text-[0.68rem] uppercase tracking-[0.34em] text-soft/50">Программа клуба «Энерджи»</p>
+                        <p className="premium-label text-[0.68rem] uppercase tracking-[0.32em] text-soft/52">Программа клуба «Энерджи»</p>
                       </div>
                       <ProgramPanelCloseButton onClick={closeProgramPanel} />
                     </div>
@@ -958,23 +958,23 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         className="mt-7 grid gap-6"
                       >
                         <div className="max-w-3xl">
-                          <h3 className="premium-display text-[2rem] font-semibold leading-[1.04] tracking-[-0.032em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
+                          <h3 className="premium-display text-[2rem] font-semibold leading-[1.06] tracking-[-0.034em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
                           <div className="mt-4 h-px w-24 bg-gradient-to-r from-lime via-lime/30 to-transparent" />
-                          <p className="premium-body mt-5 max-w-2xl text-[0.97rem] leading-[1.82] tracking-[0.01em] text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
+                          <p className="premium-body mt-5 max-w-2xl text-[0.97rem] leading-[1.86] tracking-[0.012em] text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
                         </div>
 
                         <div className="grid gap-3 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
                           <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] px-4 py-4 backdrop-blur-sm">
-                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-lime/80">Фокус тренировки</p>
-                            <p className="premium-body mt-3 text-sm leading-[1.78] tracking-[0.01em] text-soft/78 md:text-[0.95rem]">{selectedProgramHighlight}</p>
+                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.24em] text-lime/82">Фокус тренировки</p>
+                            <p className="premium-body mt-3 text-sm leading-[1.82] tracking-[0.012em] text-soft/80 md:text-[0.95rem]">{selectedProgramHighlight}</p>
                           </div>
                           <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4">
-                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-soft/55">Ритм и акценты</p>
+                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.24em] text-soft/56">Ритм и акценты</p>
                             <div className="mt-3 flex flex-wrap gap-2">
                               {selectedProgramTags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="premium-chip rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] uppercase tracking-[0.18em] text-soft/78"
+                                  className="premium-chip rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] uppercase tracking-[0.14em] text-soft/80"
                                 >
                                   {tag}
                                 </span>
