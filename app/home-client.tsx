@@ -448,7 +448,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
         <div className="section-shell relative z-10 overflow-visible">
           <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] overflow-visible px-1 pt-12 pb-12 md:px-2 md:pt-16 md:pb-14">
-            <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
+            <motion.p variants={itemReveal} className="premium-label mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
 
@@ -477,7 +477,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 transition={{ duration: 0.85, delay: 0.22, ease: easeOut }}
                 className="pointer-events-none absolute left-[9%] top-[20%] h-px w-[16%] bg-gradient-to-r from-lime/52 via-lime/14 to-transparent"
               />
-              <h1 className="hero-wordmark relative inline-flex flex-wrap text-[2.72rem] font-black uppercase leading-[0.8] tracking-[0.075em] text-white md:text-[6.85rem] md:tracking-[0.108em]">
+              <h1 className="hero-wordmark premium-display relative inline-flex flex-wrap pb-1 text-[2.72rem] font-black uppercase leading-[0.82] tracking-[0.075em] text-white md:pb-1.5 md:text-[6.85rem] md:leading-[0.84] md:tracking-[0.108em]">
                 {heroTitleLetters.map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
@@ -493,7 +493,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="hero-kicker mt-4 text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-5 md:text-[0.95rem] md:tracking-[0.68em]">
+            <motion.p variants={itemReveal} className="hero-kicker premium-label mt-4 text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-5 md:text-[0.95rem] md:tracking-[0.68em]">
               фитнес-клуб
             </motion.p>
             <motion.div variants={itemReveal} className="mt-7 flex items-center gap-3.5 md:mt-8 md:gap-4">
@@ -502,7 +502,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="hero-headline relative mt-5 max-w-[15.8ch] pb-1.5 text-[2rem] font-semibold leading-[0.99] tracking-[-0.042em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:pb-2 md:text-[3.18rem] md:leading-[1.01] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+              className="hero-headline premium-display relative mt-5 max-w-[15.8ch] pb-2 text-[2rem] font-semibold leading-[1] tracking-[-0.042em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:pb-2.5 md:text-[3.18rem] md:leading-[1.02] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
               <motion.span
                 aria-hidden="true"
@@ -524,7 +524,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.72] tracking-[0.01em] text-soft/78 md:mt-5 md:max-w-[43rem] md:text-[1.01rem] md:leading-[1.78]"
+              className="hero-supporting premium-body mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.74] tracking-[0.01em] text-soft/78 md:mt-5 md:max-w-[43rem] md:text-[1.01rem] md:leading-[1.8]"
             >
               <span className="md:block">Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
               <span className="md:block">удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.</span>
@@ -554,7 +554,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </section>
 
       <motion.section className="section-shell section-accent pt-12 md:pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
+        <h2 className="premium-display mb-5 text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="gallery-rail relative">
           {galleryLoopImages.length > 0 ? (
             <div className="gallery-edge-shell">
@@ -642,7 +642,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <motion.div variants={staggerReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }}>
-          <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
+          <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
             Групповые программы
           </motion.h2>
         </motion.div>
@@ -657,8 +657,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               whileHover={{ y: -4 }}
               className="glass-card rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-card"
             >
-              <h3 className="mb-3 text-lg font-semibold text-lime">{category.title}</h3>
-              <p className="mb-4 text-sm leading-relaxed text-soft/65">{programCategoryHighlights[category.title]}</p>
+              <h3 className="premium-display mb-3 text-lg font-semibold tracking-[-0.02em] text-lime">{category.title}</h3>
+              <p className="premium-body mb-4 text-sm leading-[1.72] tracking-[0.01em] text-soft/68">{programCategoryHighlights[category.title]}</p>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
                   <motion.button
@@ -684,7 +684,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
+        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
           Тарифы
         </motion.h2>
         <div className="mt-8 grid gap-4 md:mt-9 md:grid-cols-3">
@@ -704,11 +704,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`text-xl font-semibold ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
-                {tariff.featured && <span className="rounded-full border border-lime/25 bg-lime/10 px-3 py-1 text-[0.66rem] uppercase tracking-[0.2em] text-lime">выбор клуба</span>}
+                <h3 className={`premium-display text-xl font-semibold tracking-[-0.026em] ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="premium-chip rounded-full border border-lime/25 bg-lime/10 px-3 py-1 text-[0.66rem] uppercase tracking-[0.2em] text-lime">выбор клуба</span>}
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-soft/85">{tariff.description}</p>
-              <ul className="mt-4 space-y-2 text-sm text-soft/85">
+              <p className="premium-body mt-3 text-sm leading-[1.74] tracking-[0.01em] text-soft/86">{tariff.description}</p>
+              <ul className="premium-body mt-4 space-y-2 text-sm tracking-[0.01em] text-soft/85">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
                     <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
@@ -722,7 +722,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </motion.section>
 
       <motion.section id="schedule" className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
+        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
           Расписание тренировок
         </motion.h2>
         <div className="mt-8 grid gap-5 md:mt-9 lg:grid-cols-[1.35fr_1fr]">
@@ -782,15 +782,15 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             transition={{ duration: 0.26, ease: easeOut }}
             className="glass-card schedule-preview premium-transition rounded-[1.9rem] border border-white/10 p-6 text-left shadow-card outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0"
           >
-            <p className="text-xs uppercase tracking-[0.22em] text-lime">Официальная сетка</p>
-            <h3 className="mt-3 text-2xl font-semibold text-white">Открыть полное расписание</h3>
-            <p className="mt-2 text-sm text-soft/80">Четкий просмотр фото в фирменном lightbox, с плавным открытием и удобным закрытием.</p>
+            <p className="premium-label text-xs uppercase tracking-[0.22em] text-lime">Официальная сетка</p>
+            <h3 className="premium-display mt-3 text-2xl font-semibold tracking-[-0.028em] text-white">Открыть полное расписание</h3>
+            <p className="premium-body mt-2 text-sm leading-[1.72] tracking-[0.01em] text-soft/80">Четкий просмотр фото в фирменном lightbox, с плавным открытием и удобным закрытием.</p>
           </motion.button>
         </div>
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
+        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
           Частые вопросы
         </motion.h2>
         <div className="mt-5 space-y-3">
@@ -804,7 +804,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               className="glass-card rounded-2xl border border-white/10 bg-white/[0.03]"
             >
               <button className="flex w-full items-center justify-between px-4 py-4 text-left" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
-                <span className="text-sm font-medium text-white md:text-base">{entry.q}</span>
+                <span className="premium-body text-sm font-medium tracking-[0.005em] text-white md:text-base">{entry.q}</span>
                 <motion.span animate={{ rotate: activeFaq === index ? 180 : 0 }} transition={{ duration: 0.24, ease: easeOut }} className="text-lime">
                   {activeFaq === index ? '−' : '+'}
                 </motion.span>
@@ -816,7 +816,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.26, ease: easeOut }}
-                    className="overflow-hidden px-4 pb-4 text-sm leading-6 text-soft/80"
+                    className="premium-body overflow-hidden px-4 pb-4 text-sm leading-6 tracking-[0.01em] text-soft/80"
                   >
                     {entry.a}
                   </motion.div>
@@ -829,9 +829,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
       <motion.section className="section-shell section-accent py-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-6 md:p-8">
-          <h2 className="text-2xl font-semibold text-white md:text-3xl">Контакты</h2>
+          <h2 className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Контакты</h2>
           <div className="mt-5 grid gap-5 md:grid-cols-2">
-            <div className="space-y-3 text-sm text-soft/90">
+            <div className="premium-body space-y-3 text-sm leading-[1.72] tracking-[0.01em] text-soft/90">
               <p>
                 <span className="text-lime">Адрес:</span> Сарапул, Первомайская 34
               </p>
@@ -844,8 +844,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/32 hover:bg-white/[0.05]"
                     href={phone.href}
                   >
-                    <span className="text-soft/70">{phone.label}</span>
-                    <span className="font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
+                    <span className="premium-label text-soft/70">{phone.label}</span>
+                    <span className="premium-display font-semibold tracking-[-0.01em] text-white transition group-hover:translate-x-0.5">{phone.display}</span>
                   </motion.a>
                 ))}
               </div>
@@ -871,12 +871,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 </motion.button>
               </div>
               <div className="rounded-[1.6rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-                <p className="text-xs uppercase tracking-[0.22em] text-lime">Время работы клуба</p>
+                <p className="premium-label text-xs uppercase tracking-[0.22em] text-lime">Время работы клуба</p>
                 <div className="mt-4 space-y-3">
                   {clubHours.map((item) => (
                     <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 last:border-0 last:pb-0">
-                      <span className="font-medium text-white">{item.label}</span>
-                      <span className="text-soft/80">{item.value}</span>
+                      <span className="premium-display font-medium tracking-[-0.01em] text-white">{item.label}</span>
+                      <span className="premium-body text-soft/80">{item.value}</span>
                     </div>
                   ))}
                 </div>
@@ -940,10 +940,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   <div className="relative p-5 md:p-7">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-3">
-                        <span className="inline-flex items-center rounded-full border border-lime/25 bg-lime/[0.08] px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.28em] text-lime/90">
+                        <span className="premium-chip inline-flex items-center rounded-full border border-lime/25 bg-lime/[0.08] px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.28em] text-lime/90">
                           {selectedProgramCategory}
                         </span>
-                        <p className="text-[0.68rem] uppercase tracking-[0.34em] text-soft/50">Программа клуба «Энерджи»</p>
+                        <p className="premium-label text-[0.68rem] uppercase tracking-[0.34em] text-soft/50">Программа клуба «Энерджи»</p>
                       </div>
                       <ProgramPanelCloseButton onClick={closeProgramPanel} />
                     </div>
@@ -958,23 +958,23 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         className="mt-7 grid gap-6"
                       >
                         <div className="max-w-3xl">
-                          <h3 className="text-[2rem] font-semibold leading-[1.02] tracking-[-0.03em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
+                          <h3 className="premium-display text-[2rem] font-semibold leading-[1.04] tracking-[-0.032em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
                           <div className="mt-4 h-px w-24 bg-gradient-to-r from-lime via-lime/30 to-transparent" />
-                          <p className="mt-5 max-w-2xl text-[0.97rem] leading-7 text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
+                          <p className="premium-body mt-5 max-w-2xl text-[0.97rem] leading-[1.82] tracking-[0.01em] text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
                         </div>
 
                         <div className="grid gap-3 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
                           <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] px-4 py-4 backdrop-blur-sm">
-                            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-lime/80">Фокус тренировки</p>
-                            <p className="mt-3 text-sm leading-6 text-soft/76 md:text-[0.95rem]">{selectedProgramHighlight}</p>
+                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-lime/80">Фокус тренировки</p>
+                            <p className="premium-body mt-3 text-sm leading-[1.78] tracking-[0.01em] text-soft/78 md:text-[0.95rem]">{selectedProgramHighlight}</p>
                           </div>
                           <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4">
-                            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-soft/55">Ритм и акценты</p>
+                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-soft/55">Ритм и акценты</p>
                             <div className="mt-3 flex flex-wrap gap-2">
                               {selectedProgramTags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] uppercase tracking-[0.18em] text-soft/78"
+                                  className="premium-chip rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] uppercase tracking-[0.18em] text-soft/78"
                                 >
                                   {tag}
                                 </span>
@@ -1016,8 +1016,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   <div className="relative">
                     <div className="mb-4 flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
-                        <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
+                        <p className="premium-label text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
+                        <h3 className="premium-display mt-2 text-xl font-semibold tracking-[-0.026em] text-white">Выберите номер для звонка</h3>
                       </div>
                       <ModalCloseButton onClick={() => setCallModal(false)} />
                     </div>
@@ -1032,8 +1032,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                           className="group relative flex items-center justify-between overflow-hidden rounded-[1.1rem] border border-white/12 bg-white/[0.035] px-3.5 py-3.5 transition-[border-color,background-color,box-shadow,transform] duration-300 hover:border-lime/24 hover:bg-white/[0.05] hover:shadow-[0_12px_24px_rgba(0,0,0,0.12)]"
                         >
                           <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(125deg,transparent,rgba(255,255,255,0.04),transparent)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                          <span className="relative text-sm text-soft/68">{phone.label}</span>
-                          <span className="relative text-base font-semibold text-white transition-colors duration-300 group-hover:text-soft">{phone.display}</span>
+                          <span className="premium-label relative text-sm text-soft/68">{phone.label}</span>
+                          <span className="premium-display relative text-base font-semibold tracking-[-0.015em] text-white transition-colors duration-300 group-hover:text-soft">{phone.display}</span>
                         </motion.a>
                       ))}
                     </div>
