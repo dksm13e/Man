@@ -62,6 +62,7 @@ const clubHours = [
 ];
 
 const heroTitleLetters = Array.from('ЭНЕРДЖИ');
+const heroLetterSpacingAdjustments = ['-0.018em', '-0.004em', '0em', '-0.016em', '-0.004em', '-0.02em', '0em'] as const;
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const sectionReveal = {
   hidden: { opacity: 0, y: 30 },
@@ -410,22 +411,23 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial={{ opacity: 0, x: -38, scaleX: 0.94 }}
                 animate={{ opacity: 0.18, x: 0, scaleX: 1 }}
                 transition={{ duration: 1, ease: easeOut, delay: 0.16 }}
-                className="absolute inset-y-[16%] left-[2%] w-[48%] -skew-x-[26deg] bg-lime/8 blur-2xl"
+                className="absolute inset-y-[16%] left-[4%] w-[42%] -skew-x-[24deg] bg-lime/7 blur-2xl"
               />
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 0.12, x: 0 }}
                 transition={{ duration: 1.05, ease: easeOut, delay: 0.28 }}
-                className="absolute inset-y-[30%] right-[8%] w-[18%] -skew-x-[28deg] bg-white/8 blur-3xl"
+                className="absolute inset-y-[30%] right-[9%] w-[16%] -skew-x-[28deg] bg-white/6 blur-3xl"
               />
-              <h1 className="relative inline-flex flex-wrap text-[2.55rem] font-black uppercase leading-[0.82] tracking-[0.14em] text-white md:text-[6.4rem] md:tracking-[0.19em]">
+              <h1 className="relative inline-flex flex-wrap text-[2.55rem] font-black uppercase leading-[0.82] tracking-[0.13em] text-white md:text-[6.4rem] md:tracking-[0.17em]">
                 {heroTitleLetters.map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
                     initial={{ opacity: 0, y: 54, filter: 'blur(10px)', clipPath: 'inset(100% 0% 0% 0%)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0% 0% 0% 0%)' }}
                     transition={{ duration: 0.76, delay: 0.24 + index * 0.06, ease: easeOut }}
-                    className="inline-block bg-gradient-to-b from-white via-white to-soft/92 bg-clip-text text-transparent drop-shadow-[0_8px_18px_rgba(0,0,0,0.18)]"
+                    className="inline-block bg-gradient-to-b from-white via-white to-[#f1f1eb] bg-clip-text text-transparent drop-shadow-[0_6px_14px_rgba(0,0,0,0.14)]"
+                    style={{ marginRight: heroLetterSpacingAdjustments[index] }}
                   >
                     {letter}
                   </motion.span>
@@ -433,7 +435,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="mt-3 text-[0.95rem] font-medium tracking-[0.32em] text-soft/72 md:text-[1.35rem] md:tracking-[0.38em]">
+            <motion.p variants={itemReveal} className="mt-3 text-[0.92rem] font-medium tracking-[0.36em] text-soft/68 md:text-[1.22rem] md:tracking-[0.42em]">
               фитнес-клуб
             </motion.p>
             <motion.p variants={itemReveal} className="mt-7 text-2xl font-semibold text-white md:text-4xl">
