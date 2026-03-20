@@ -420,7 +420,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
   return (
     <main className="site-bg relative overflow-x-hidden bg-carbon text-soft">
-      <section className="hero-backdrop section-accent hero-scene relative min-h-[42rem] pt-12 pb-14 md:min-h-[46rem] md:pt-16 md:pb-20">
+      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] pt-12 pb-10 md:min-h-[41rem] md:pt-16 md:pb-12">
         <motion.div
           initial={{ opacity: 0.38, x: -22, y: -6 }}
           animate={{ opacity: shouldReduceMotion ? 0.54 : 0.78, x: shouldReduceMotion ? 0 : 22, y: shouldReduceMotion ? 0 : 6 }}
@@ -447,7 +447,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         />
 
         <div className="section-shell relative z-10">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[45rem] px-1 pt-12 pb-16 md:px-2 md:pt-16 md:pb-24">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] px-1 pt-12 pb-10 md:px-2 md:pt-16 md:pb-12">
             <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
@@ -502,7 +502,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="hero-headline mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-none md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+              className="hero-headline mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
               <motion.span
                 initial={{ opacity: 0, y: 24, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
@@ -517,12 +517,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="hero-supporting mt-5 max-w-[31rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[38rem] md:text-[1.01rem] md:leading-[1.76]"
+              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.68] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[39rem] md:text-[1.01rem] md:leading-[1.74]"
             >
               Современный фитнес-клуб с сильным тренировочным ритмом, удобным расписанием и атмосферой,
               где хочется возвращаться к результату каждую неделю.
             </motion.p>
-            <motion.div variants={itemReveal} className="mt-9 flex flex-wrap gap-4 md:mt-11">
+            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-9">
               <motion.button
                 type="button"
                 className="brand-button premium-transition"
