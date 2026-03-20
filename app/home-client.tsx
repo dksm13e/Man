@@ -655,20 +655,20 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.74, delay: categoryIndex * 0.06, ease: easeOut }}
               whileHover={{ y: -3 }}
-              className="glass-card rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-[1.35rem] shadow-card"
+              className="program-card glass-card rounded-[1.85rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.022))] p-[1.5rem] shadow-card md:p-[1.65rem]"
             >
-              <h3 className="premium-display mb-3 text-[1.05rem] font-semibold leading-[1.08] tracking-[-0.03em] text-lime">{category.title}</h3>
-              <p className="premium-body mb-[1.15rem] text-sm leading-[1.74] tracking-[0.01em] text-soft/68">{programCategoryHighlights[category.title]}</p>
+              <h3 className="program-card-title premium-display mb-3.5 text-[1.12rem] font-semibold text-white md:text-[1.18rem]">{category.title}</h3>
+              <p className="program-card-copy premium-body mb-[1.35rem] max-w-[24rem] text-[0.92rem] font-light text-soft/74">{programCategoryHighlights[category.title]}</p>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
                   <motion.button
                     key={item}
                     type="button"
                     onClick={() => openProgramPanel(item)}
-                    className={`premium-chip rounded-full border px-3.5 py-1.5 text-[0.78rem] font-medium tracking-[0.015em] transition ${
+                    className={`program-card-chip premium-chip rounded-full border px-3.5 py-[0.58rem] text-[0.72rem] font-medium transition ${
                       selectedProgram === item && programPanelOpen
-                        ? 'border-lime/60 bg-lime/15 text-white shadow-[0_10px_24px_rgba(200,214,0,0.16)]'
-                        : 'border-white/15 bg-white/[0.04] text-soft/90 hover:border-lime/35 hover:bg-lime/[0.08]'
+                        ? 'program-card-chip-active'
+                        : 'hover:border-lime/28 hover:bg-white/[0.06] hover:text-white'
                     }`}
                     whileHover={{ y: -0.5 }}
                     whileTap={{ scale: 0.985 }}
@@ -697,18 +697,18 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               transition={{ duration: 0.76, delay: index * 0.07, ease: easeOut }}
               whileHover={{ y: -4.5, scale: 1.008 }}
               whileTap={{ scale: 0.992 }}
-              className={`rounded-[1.9rem] p-[1.35rem] shadow-card premium-transition ${
+              className={`tariff-card rounded-[2rem] p-[1.5rem] shadow-card premium-transition md:p-[1.65rem] ${
                 tariff.featured
                   ? 'glass-card border-lime/35 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(255,255,255,0.04))]'
                   : 'glass-card bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))]'
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`premium-display text-xl font-semibold leading-[1.08] tracking-[-0.03em] ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
-                {tariff.featured && <span className="premium-chip rounded-full border border-lime/22 bg-lime/[0.08] px-3 py-1 text-[0.66rem] uppercase tracking-[0.18em] text-lime/95">выбор клуба</span>}
+                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-lime/95' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="premium-chip rounded-full border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-lime/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">выбор клуба</span>}
               </div>
-              <p className="premium-body mt-3 text-sm leading-[1.8] tracking-[0.012em] text-soft/86">{tariff.description}</p>
-              <ul className="premium-body mt-4 space-y-2 text-sm leading-[1.72] tracking-[0.012em] text-soft/85">
+              <p className="tariff-copy premium-body mt-3.5 max-w-[24rem] text-[0.95rem] font-light text-soft/84">{tariff.description}</p>
+              <ul className="tariff-list premium-body mt-5 space-y-2.5 text-[0.92rem] font-light leading-[1.72] text-soft/84">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
                     <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
@@ -931,19 +931,19 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 16, scale: 0.988 }}
                   transition={{ duration: 0.38, ease: easeOut }}
-                  className="relative w-full max-w-[48rem] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.985),rgba(24,24,22,0.99))] shadow-[0_28px_110px_rgba(0,0,0,0.46)]"
+                  className="program-panel-shell relative w-full max-w-[48rem] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.985),rgba(24,24,22,0.99))] shadow-[0_28px_110px_rgba(0,0,0,0.46)]"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-lime/95 via-lime/60 to-transparent" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(191,255,0,0.12),transparent_34%),radial-gradient(circle_at_88%_16%,rgba(255,255,255,0.07),transparent_24%)]" />
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                  <div className="relative p-[1.35rem] md:p-[1.85rem]">
+                  <div className="relative p-[1.5rem] md:p-[2.15rem]">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-3">
-                        <span className="premium-chip inline-flex items-center rounded-full border border-lime/22 bg-lime/[0.075] px-3.5 py-1 text-[0.68rem] font-medium uppercase tracking-[0.24em] text-lime/92">
+                        <span className="program-panel-label premium-chip inline-flex items-center rounded-full border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-1.5 text-[0.62rem] font-medium uppercase text-lime/92">
                           {selectedProgramCategory}
                         </span>
-                        <p className="premium-label text-[0.68rem] uppercase tracking-[0.32em] text-soft/52">Программа клуба «Энерджи»</p>
+                        <p className="program-panel-kicker premium-label text-[0.63rem] uppercase text-soft/52">Программа клуба «Энерджи»</p>
                       </div>
                       <ProgramPanelCloseButton onClick={closeProgramPanel} />
                     </div>
@@ -955,26 +955,26 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: -10, scale: 0.994, filter: 'blur(10px)' }}
                         transition={{ duration: 0.34, ease: easeOut }}
-                        className="mt-[1.9rem] grid gap-[1.45rem]"
+                        className="mt-[2.05rem] grid gap-[1.6rem]"
                       >
                         <div className="max-w-3xl">
-                          <h3 className="premium-display text-[2rem] font-semibold leading-[1.06] tracking-[-0.034em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
+                          <h3 className="program-panel-heading premium-display text-[2.08rem] font-semibold text-white md:text-[3.08rem]">{selectedProgram}</h3>
                           <div className="mt-4 h-px w-24 bg-gradient-to-r from-lime via-lime/30 to-transparent" />
-                          <p className="premium-body mt-5 max-w-2xl text-[0.97rem] leading-[1.86] tracking-[0.012em] text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
+                          <p className="program-panel-copy premium-body mt-5 max-w-[38rem] text-[0.99rem] font-light text-soft/84 md:text-[1.04rem]">{programDetails[selectedProgram]}</p>
                         </div>
 
                         <div className="grid gap-3 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
-                          <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] px-4 py-4 backdrop-blur-sm">
-                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.24em] text-lime/82">Фокус тренировки</p>
-                            <p className="premium-body mt-3 text-sm leading-[1.82] tracking-[0.012em] text-soft/80 md:text-[0.95rem]">{selectedProgramHighlight}</p>
+                          <div className="program-panel-block rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),rgba(255,255,255,0.025))] px-[1.125rem] py-[1.125rem] backdrop-blur-sm">
+                            <p className="program-panel-block-title premium-label text-[0.63rem] uppercase text-lime/82">Фокус тренировки</p>
+                            <p className="program-panel-copy premium-body mt-3 text-[0.93rem] font-light text-soft/80 md:text-[0.96rem]">{selectedProgramHighlight}</p>
                           </div>
-                          <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4">
-                            <p className="premium-label text-[0.68rem] uppercase tracking-[0.24em] text-soft/56">Ритм и акценты</p>
+                          <div className="program-panel-block rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-[1.125rem] py-[1.125rem]">
+                            <p className="program-panel-block-title premium-label text-[0.63rem] uppercase text-soft/58">Ритм и акценты</p>
                             <div className="mt-3 flex flex-wrap gap-2">
                               {selectedProgramTags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="premium-chip rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1 text-[0.72rem] uppercase tracking-[0.12em] text-soft/80"
+                                  className="program-panel-chip premium-chip rounded-full border px-3.5 py-1.5 text-[0.68rem] font-medium uppercase text-soft/82"
                                 >
                                   {tag}
                                 </span>
