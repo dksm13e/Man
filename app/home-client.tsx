@@ -726,23 +726,23 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           Расписание тренировок
         </motion.h2>
         <div className="mt-8 grid gap-5 md:mt-9 lg:grid-cols-[1.35fr_1fr]">
-          <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5">
-            <div className="mb-5 flex flex-wrap gap-2">
+          <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="schedule-shell glass-card rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-[1.4rem] md:p-[1.6rem]">
+            <div className="mb-5 flex flex-wrap gap-2.5">
               {scheduleByDay.map((day) => (
                 <button
                   key={day.day}
                   type="button"
                   onClick={() => setActiveDay(day.day)}
-                  className="premium-chip relative rounded-full px-4 py-2 text-sm tracking-[0.015em] text-soft transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/35"
+                  className="schedule-tab premium-chip relative rounded-full px-4 py-2.5 text-sm text-soft outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/35"
                 >
                   {activeDay === day.day && (
                     <motion.span
                       layoutId="active-day-pill"
-                      className="absolute inset-0 rounded-full bg-lime shadow-[0_8px_20px_rgba(200,214,0,0.28)]"
+                      className="absolute inset-0 rounded-full bg-[linear-gradient(180deg,rgba(216,230,0,1),rgba(198,214,0,0.94))] shadow-[0_10px_26px_rgba(200,214,0,0.24)]"
                       transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                     />
                   )}
-                  <span className={`premium-chip relative z-10 tracking-[0.015em] ${activeDay === day.day ? 'text-carbon' : 'text-soft'}`}>{day.day}</span>
+                  <span className={`schedule-tab-label premium-chip relative z-10 ${activeDay === day.day ? 'text-carbon' : 'text-soft/90'}`}>{day.day}</span>
                 </button>
               ))}
             </div>
@@ -761,9 +761,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.24, delay: index * 0.04, ease: easeOut }}
-                    className="premium-body rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 text-sm leading-[1.58] tracking-[0.012em] text-soft/90 transition hover:border-lime/25 hover:bg-white/[0.05]"
+                    className="schedule-slot premium-body rounded-[1.15rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.032),rgba(255,255,255,0.018))] px-4 py-3 text-sm text-soft/90 transition hover:border-lime/22 hover:bg-white/[0.048]"
                   >
-                    {line}
+                    <span className="schedule-slot-copy block pl-2">{line}</span>
                   </motion.li>
                 ))}
               </motion.ul>
@@ -782,9 +782,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             transition={{ duration: 0.26, ease: easeOut }}
             className="glass-card schedule-preview premium-transition rounded-[1.9rem] border border-white/10 p-[1.6rem] text-left shadow-card outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0"
           >
-            <p className="premium-label text-xs uppercase tracking-[0.22em] text-lime">Официальная сетка</p>
-            <h3 className="premium-display mt-3 text-2xl font-semibold tracking-[-0.028em] text-white">Открыть полное расписание</h3>
-            <p className="premium-body mt-2 text-sm leading-[1.72] tracking-[0.01em] text-soft/80">Четкий просмотр фото в фирменном lightbox, с плавным открытием и удобным закрытием.</p>
+            <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-lime/90">Официальная сетка</p>
+            <h3 className="schedule-promo-title premium-display mt-3 text-[1.82rem] font-semibold text-white">Открыть полное расписание</h3>
+            <p className="schedule-promo-copy premium-body mt-2.5 max-w-[20rem] text-[0.94rem] font-light">Четкий просмотр фото в фирменном lightbox, с плавным открытием и удобным закрытием.</p>
           </motion.button>
         </div>
       </motion.section>
@@ -801,11 +801,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: index * 0.03, ease: easeOut }}
-              className="glass-card rounded-2xl border border-white/10 bg-white/[0.03]"
+              className="faq-item glass-card rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.038),rgba(255,255,255,0.02))]"
             >
-              <button className="flex w-full items-center justify-between px-4 py-4 text-left" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
-                <span className="premium-body text-sm font-medium tracking-[0.005em] text-white md:text-base">{entry.q}</span>
-                <motion.span animate={{ rotate: activeFaq === index ? 180 : 0 }} transition={{ duration: 0.24, ease: easeOut }} className="text-lime">
+              <button className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-5.5 md:py-4.5" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
+                <span className="faq-question premium-display text-[0.98rem] font-medium md:text-[1.03rem]">{entry.q}</span>
+                <motion.span animate={{ rotate: activeFaq === index ? 180 : 0 }} transition={{ duration: 0.24, ease: easeOut }} className="faq-indicator inline-flex shrink-0 items-center justify-center text-[1.12rem] text-lime/92">
                   {activeFaq === index ? '−' : '+'}
                 </motion.span>
               </button>
@@ -816,7 +816,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.26, ease: easeOut }}
-                    className="premium-body overflow-hidden px-4 pb-4 text-sm leading-6 tracking-[0.01em] text-soft/80"
+                    className="faq-answer premium-body overflow-hidden px-5 pb-5 pr-12 text-[0.94rem] font-light md:px-5.5 md:pb-5"
                   >
                     {entry.a}
                   </motion.div>
@@ -828,24 +828,25 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </motion.section>
 
       <motion.section className="section-shell section-accent py-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-6 md:p-8">
+        <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="contact-shell glass-card rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-6 md:p-8">
           <h2 className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Контакты</h2>
           <div className="mt-5 grid gap-5 md:grid-cols-2">
-            <div className="premium-body space-y-3 text-sm leading-[1.72] tracking-[0.01em] text-soft/90">
-              <p>
-                <span className="text-lime">Адрес:</span> Сарапул, Первомайская 34
+            <div className="contact-copy premium-body space-y-3.5 text-sm">
+              <p className="text-[0.98rem]">
+                <span className="premium-label mr-2 text-[0.72rem] uppercase tracking-[0.24em] text-lime/92">Адрес</span>
+                <span className="premium-display tracking-[-0.015em] text-white">Сарапул, Первомайская 34</span>
               </p>
-              <div className="grid gap-2">
+              <div className="grid gap-2.5">
                 {phones.map((phone) => (
                   <motion.a
                     key={phone.href}
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.995 }}
-                    className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/32 hover:bg-white/[0.05]"
+                    className="contact-link-card group flex items-center justify-between rounded-[1.2rem] border border-white/15 bg-[linear-gradient(180deg,rgba(255,255,255,0.038),rgba(255,255,255,0.024))] px-4 py-3.5 transition hover:border-lime/28 hover:bg-white/[0.048]"
                     href={phone.href}
                   >
-                    <span className="premium-label text-soft/70">{phone.label}</span>
-                    <span className="premium-display font-semibold tracking-[-0.01em] text-white transition group-hover:translate-x-0.5">{phone.display}</span>
+                    <span className="contact-link-label premium-label text-[0.68rem] uppercase">{phone.label}</span>
+                    <span className="contact-link-value premium-display text-[1.03rem] font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
                   </motion.a>
                 ))}
               </div>
@@ -870,17 +871,17 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   Позвонить
                 </motion.button>
               </div>
-              <div className="rounded-[1.6rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-                <p className="premium-label text-xs uppercase tracking-[0.22em] text-lime">Время работы клуба</p>
+              <div className="contact-hours rounded-[1.6rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+                <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-lime/90">Время работы клуба</p>
                 <div className="mt-4 space-y-3">
                   {clubHours.map((item) => (
-                    <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 last:border-0 last:pb-0">
-                      <span className="premium-display font-medium tracking-[-0.01em] text-white">{item.label}</span>
-                      <span className="premium-body text-soft/80">{item.value}</span>
+                    <div key={item.label} className="contact-hours-row flex items-center justify-between gap-4 border-b border-white/10 pb-2.5 last:border-0 last:pb-0">
+                      <span className="premium-display text-[0.98rem] font-medium tracking-[-0.015em] text-white">{item.label}</span>
+                      <span className="premium-body text-[0.93rem] text-soft/78">{item.value}</span>
                     </div>
                   ))}
                 </div>
-                <p className="mt-4 rounded-2xl border border-lime/20 bg-lime/10 px-3 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-lime">
+                <p className="contact-hours-note mt-4 rounded-2xl border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-3 text-[0.68rem] font-semibold uppercase text-lime/92">
                   Клиенты покидают клуб за 15 минут до закрытия
                 </p>
               </div>
@@ -888,7 +889,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <iframe
               title="Карта фитнес-клуба"
               src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D0%B0%D1%80%D0%B0%D0%BF%D1%83%D0%BB%2C%20%D0%9F%D0%B5%D1%80%D0%B2%D0%BE%D0%BC%D0%B0%D0%B9%D1%81%D0%BA%D0%B0%D1%8F%2034&z=16"
-              className="h-64 w-full rounded-2xl border border-white/15 bg-charcoal/70"
+              className="contact-map-frame h-64 w-full rounded-2xl border border-white/15 bg-charcoal/70"
               loading="lazy"
             />
           </div>

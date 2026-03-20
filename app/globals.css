@@ -259,6 +259,189 @@ body {
   letter-spacing: 0.01em;
 }
 
+.schedule-shell {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.2);
+}
+
+.schedule-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(216, 230, 0, 0.24), rgba(255, 255, 255, 0.06), transparent 76%);
+  pointer-events: none;
+}
+
+.schedule-tab {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.018));
+  letter-spacing: 0.035em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    border-color 0.26s ease,
+    background-color 0.26s ease,
+    box-shadow 0.26s ease,
+    color 0.26s ease,
+    transform 0.26s ease;
+}
+
+.schedule-tab:hover {
+  border-color: rgba(216, 230, 0, 0.2);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.024));
+}
+
+.schedule-tab-label {
+  font-weight: 500;
+  letter-spacing: 0.045em;
+}
+
+.schedule-slot {
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.schedule-slot::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(216, 230, 0, 0.34), rgba(216, 230, 0, 0));
+  opacity: 0.75;
+}
+
+.schedule-slot-copy {
+  letter-spacing: 0.012em;
+  line-height: 1.62;
+}
+
+.schedule-promo-title {
+  letter-spacing: -0.034em;
+  line-height: 1.04;
+  text-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.schedule-promo-copy {
+  color: rgba(243, 243, 239, 0.79);
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.faq-item {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+}
+
+.faq-item::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(216, 230, 0, 0.18), rgba(216, 230, 0, 0));
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.faq-question {
+  letter-spacing: -0.012em;
+  line-height: 1.34;
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.faq-answer {
+  color: rgba(243, 243, 239, 0.78);
+  line-height: 1.78;
+  letter-spacing: 0.01em;
+}
+
+.faq-indicator {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.contact-shell {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.2);
+}
+
+.contact-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(216, 230, 0, 0.22), rgba(255, 255, 255, 0.06), transparent 80%);
+  pointer-events: none;
+}
+
+.contact-copy {
+  color: rgba(243, 243, 239, 0.86);
+  line-height: 1.78;
+  letter-spacing: 0.01em;
+}
+
+.contact-link-card {
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.028);
+}
+
+.contact-link-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(216, 230, 0, 0.26), rgba(216, 230, 0, 0));
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.contact-link-label {
+  color: rgba(243, 243, 239, 0.58);
+  letter-spacing: 0.04em;
+}
+
+.contact-link-value {
+  letter-spacing: -0.018em;
+  line-height: 1.08;
+  text-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+.contact-hours {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-hours::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(216, 230, 0, 0.08), transparent 36%);
+  pointer-events: none;
+}
+
+.contact-hours-row {
+  position: relative;
+}
+
+.contact-hours-note {
+  letter-spacing: 0.16em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.contact-map-frame {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+}
+
 .program-panel-shell {
   box-shadow: 0 32px 120px rgba(0, 0, 0, 0.48);
 }
