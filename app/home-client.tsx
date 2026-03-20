@@ -510,7 +510,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 transition={{ duration: 0.68, delay: 0.44, ease: easeOut }}
                 className="block bg-[linear-gradient(96deg,#ffffff_0%,#f7f7f3_32%,#eef0dd_68%,#f3f3ef_100%)] bg-clip-text text-transparent"
               >
-                Энергия движения. Сила результата.
+                Энергия движения. Сила результата
               </motion.span>
             </motion.h2>
             <motion.p
@@ -916,7 +916,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.28, ease: easeOut }}
-                className="fixed inset-0 z-[88] flex items-start justify-center overflow-y-auto bg-black/58 p-4 backdrop-blur-[8px] md:items-center"
+                className="fixed inset-0 z-[88] flex items-start justify-center bg-black/58 p-4 backdrop-blur-[8px] md:items-center"
                 onClick={closeProgramPanel}
               >
                 <motion.aside
