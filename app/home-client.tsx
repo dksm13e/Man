@@ -447,7 +447,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         />
 
         <div className="section-shell relative z-10">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-5xl px-1 pt-12 pb-16 md:px-2 md:pt-16 md:pb-24">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[45rem] px-1 pt-12 pb-16 md:px-2 md:pt-16 md:pb-24">
             <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
@@ -517,10 +517,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="hero-supporting mt-5 max-w-[29.5rem] text-pretty text-[0.96rem] font-light leading-[1.72] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[34rem] md:text-[1.01rem] md:leading-[1.78]"
+              className="hero-supporting mt-5 max-w-[31rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[38rem] md:text-[1.01rem] md:leading-[1.76]"
             >
-              <span>Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
-              <span className="inline md:block md:pl-6">удобным расписанием и атмосферой, в которую хочется возвращаться.</span>
+              Современный фитнес-клуб с сильным тренировочным ритмом, удобным расписанием и атмосферой,
+              где хочется возвращаться к результату каждую неделю.
             </motion.p>
             <motion.div variants={itemReveal} className="mt-9 flex flex-wrap gap-4 md:mt-11">
               <motion.button
