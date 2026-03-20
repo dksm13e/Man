@@ -83,7 +83,8 @@ body {
 }
 
 .hero-scene {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .hero-copy-shell {
