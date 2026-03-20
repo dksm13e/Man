@@ -505,20 +505,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               className="hero-headline mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-none md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
               <motion.span
-                initial={{ opacity: 0, y: 22, filter: 'blur(8px)', clipPath: 'inset(0 0 100% 0)' }}
+                initial={{ opacity: 0, y: 24, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
-                transition={{ duration: 0.62, delay: 0.42, ease: easeOut }}
-                className="block bg-[linear-gradient(180deg,#ffffff_0%,#f8f8f4_54%,rgba(236,237,229,0.72)_100%)] bg-clip-text text-transparent md:inline"
+                transition={{ duration: 0.68, delay: 0.44, ease: easeOut }}
+                className="block bg-[linear-gradient(96deg,#ffffff_0%,#f7f7f3_32%,#eef0dd_68%,#f3f3ef_100%)] bg-clip-text text-transparent"
               >
-                Энергия движения.
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0, y: 26, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
-                transition={{ duration: 0.68, delay: 0.5, ease: easeOut }}
-                className="mt-1.5 block pl-4 text-[0.92em] font-medium tracking-[-0.022em] text-white/74 before:mr-3 before:inline-block before:h-px before:w-7 before:translate-y-[-0.18em] before:bg-gradient-to-r before:from-lime/68 before:to-transparent before:content-[''] md:ml-4 md:inline md:pl-0 md:text-[0.9em] md:before:w-9"
-              >
-                <span className="text-lime/88">Сила</span> результата
+                Энергия движения. Сила результата.
               </motion.span>
             </motion.h2>
             <motion.p
