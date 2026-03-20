@@ -418,7 +418,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 transition={{ duration: 1.05, ease: easeOut, delay: 0.28 }}
                 className="absolute inset-y-[28%] right-[6%] w-[22%] -skew-x-[30deg] bg-white/10 blur-3xl"
               />
-              <h1 className="hero-wordmark relative inline-flex flex-wrap text-[2.55rem] font-black uppercase leading-[0.84] tracking-[0.16em] text-white md:text-[6.4rem] md:tracking-[0.22em]">
+              <h1 className="relative inline-flex flex-wrap text-[2.55rem] font-black uppercase leading-[0.84] tracking-[0.16em] text-white md:text-[6.4rem] md:tracking-[0.22em]">
                 {heroTitleLetters.map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
@@ -430,10 +430,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     {letter}
                   </motion.span>
                 ))}
-                <span aria-hidden="true" className="hero-word-cut hero-word-cut-a" />
-                <span aria-hidden="true" className="hero-word-cut hero-word-cut-b" />
-                <span aria-hidden="true" className="hero-word-cut hero-word-cut-c" />
-                <span aria-hidden="true" className="hero-word-cut hero-word-cut-d" />
               </h1>
             </div>
 

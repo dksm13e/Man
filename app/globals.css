@@ -108,50 +108,6 @@ body {
   clip-path: polygon(28% 0, 100% 18%, 76% 86%, 0 54%);
 }
 
-.hero-wordmark {
-  position: relative;
-  isolation: isolate;
-}
-
-.hero-word-cut {
-  position: absolute;
-  pointer-events: none;
-  z-index: 2;
-  border-radius: 999px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(36, 36, 31, 0.95) 24%, rgba(36, 36, 31, 0.98) 100%);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03);
-  opacity: 0.96;
-  transform: skewX(-32deg);
-}
-
-.hero-word-cut-a {
-  top: 13%;
-  left: 12%;
-  width: 14%;
-  height: 8%;
-}
-
-.hero-word-cut-b {
-  top: 54%;
-  left: 34%;
-  width: 11%;
-  height: 7%;
-}
-
-.hero-word-cut-c {
-  top: 19%;
-  left: 59%;
-  width: 13%;
-  height: 8%;
-}
-
-.hero-word-cut-d {
-  top: 60%;
-  right: 8%;
-  width: 10%;
-  height: 7%;
-}
-
 .section-accent {
   position: relative;
   z-index: 1;
@@ -284,26 +240,6 @@ body {
 }
 
 @media (max-width: 768px) {
-  .hero-word-cut-a {
-    left: 10%;
-    width: 16%;
-  }
-
-  .hero-word-cut-b {
-    left: 37%;
-    width: 12%;
-  }
-
-  .hero-word-cut-c {
-    left: 60%;
-    width: 15%;
-  }
-
-  .hero-word-cut-d {
-    right: 6%;
-    width: 11%;
-  }
-
   .gallery-edge-shell {
     -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.22) 3%, rgba(0, 0, 0, 0.64) 7%, black 11%, black 89%, rgba(0, 0, 0, 0.64) 93%, rgba(0, 0, 0, 0.22) 97%, transparent 100%);
     mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.22) 3%, rgba(0, 0, 0, 0.64) 7%, black 11%, black 89%, rgba(0, 0, 0, 0.64) 93%, rgba(0, 0, 0, 0.22) 97%, transparent 100%);
