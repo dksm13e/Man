@@ -447,7 +447,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         />
 
         <div className="section-shell relative z-10">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="relative max-w-5xl px-1 py-12 md:px-2 md:py-16">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-5xl px-1 py-12 md:px-2 md:py-16">
             <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
@@ -477,7 +477,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 transition={{ duration: 0.85, delay: 0.22, ease: easeOut }}
                 className="pointer-events-none absolute left-[9%] top-[20%] h-px w-[16%] bg-gradient-to-r from-lime/52 via-lime/14 to-transparent"
               />
-              <h1 className="relative inline-flex flex-wrap text-[2.72rem] font-black uppercase leading-[0.8] tracking-[0.075em] text-white md:text-[6.85rem] md:tracking-[0.108em]">
+              <h1 className="hero-wordmark relative inline-flex flex-wrap text-[2.72rem] font-black uppercase leading-[0.8] tracking-[0.075em] text-white md:text-[6.85rem] md:tracking-[0.108em]">
                 {heroTitleLetters.map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
@@ -493,7 +493,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="mt-4 text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-5 md:text-[0.95rem] md:tracking-[0.68em]">
+            <motion.p variants={itemReveal} className="hero-kicker mt-4 text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-5 md:text-[0.95rem] md:tracking-[0.68em]">
               фитнес-клуб
             </motion.p>
             <motion.div variants={itemReveal} className="mt-7 flex items-center gap-3.5 md:mt-8 md:gap-4">
@@ -502,7 +502,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-none md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+              className="hero-headline mt-5 max-w-[15.8ch] text-[2rem] font-semibold leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-none md:text-[3.18rem] md:leading-[0.96] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
               <motion.span
                 initial={{ opacity: 0, y: 22, filter: 'blur(8px)', clipPath: 'inset(0 0 100% 0)' }}
@@ -525,7 +525,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="mt-5 max-w-[29.5rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[34rem] md:text-[1.01rem] md:leading-[1.76]"
+              className="hero-supporting mt-5 max-w-[29.5rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[34rem] md:text-[1.01rem] md:leading-[1.76]"
             >
               <span>Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
               <span className="inline md:block md:pl-6">удобным расписанием и атмосферой, в которую хочется возвращаться.</span>

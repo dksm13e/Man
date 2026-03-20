@@ -76,11 +76,69 @@ body {
 }
 
 .hero-backdrop {
-  background: transparent;
+  background:
+    radial-gradient(circle at 18% 28%, rgba(200, 214, 0, 0.08), transparent 26%),
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.045), transparent 30%),
+    transparent;
 }
 
 .hero-scene {
   overflow: hidden;
+}
+
+.hero-copy-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero-copy-shell::before,
+.hero-copy-shell::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateZ(0);
+}
+
+.hero-copy-shell::before {
+  left: -6%;
+  top: 11%;
+  width: min(44rem, 72vw);
+  height: 24rem;
+  background: radial-gradient(circle at 24% 46%, rgba(200, 214, 0, 0.11), transparent 58%);
+  opacity: 0.44;
+  filter: blur(34px);
+}
+
+.hero-copy-shell::after {
+  right: 10%;
+  top: 7%;
+  width: min(18rem, 26vw);
+  height: 16rem;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 68%);
+  opacity: 0.22;
+  filter: blur(28px);
+}
+
+.hero-copy-shell > * {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-wordmark {
+  filter: drop-shadow(0 20px 38px rgba(0, 0, 0, 0.16));
+}
+
+.hero-kicker {
+  text-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+.hero-headline {
+  text-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+.hero-supporting {
+  text-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
 }
 
 .hero-slash {
