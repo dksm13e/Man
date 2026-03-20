@@ -62,7 +62,7 @@ const clubHours = [
 ];
 
 const heroTitleLetters = Array.from('ЭНЕРДЖИ');
-const heroLetterSpacingAdjustments = ['0.03em', '0.012em', '0.014em', '0.026em', '0.01em', '0.03em', '0em'] as const;
+const heroLetterSpacingAdjustments = ['0.024em', '0.01em', '0.012em', '0.022em', '0.008em', '0.024em', '0em'] as const;
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const sectionReveal = {
   hidden: { opacity: 0, y: 30 },
@@ -429,9 +429,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial={{ opacity: 0, x: -24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.85, delay: 0.22, ease: easeOut }}
-                className="pointer-events-none absolute left-[7%] top-[18%] h-[2px] w-[21%] bg-gradient-to-r from-lime/60 via-lime/18 to-transparent"
+                className="pointer-events-none absolute left-[9%] top-[20%] h-px w-[16%] bg-gradient-to-r from-lime/52 via-lime/14 to-transparent"
               />
-              <h1 className="relative inline-flex flex-wrap text-[2.72rem] font-black uppercase leading-[0.8] tracking-[0.08em] text-white md:text-[6.85rem] md:tracking-[0.12em]">
+              <h1 className="relative inline-flex flex-wrap text-[2.72rem] font-black uppercase leading-[0.8] tracking-[0.075em] text-white md:text-[6.85rem] md:tracking-[0.108em]">
                 {heroTitleLetters.map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
@@ -447,7 +447,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="mt-4 text-[0.8rem] font-medium tracking-[0.48em] text-soft/62 md:text-[1.02rem] md:tracking-[0.56em]">
+            <motion.p variants={itemReveal} className="mt-4 text-[0.76rem] font-medium tracking-[0.56em] text-soft/58 md:text-[0.96rem] md:tracking-[0.64em]">
               фитнес-клуб
             </motion.p>
             <motion.p variants={itemReveal} className="mt-7 text-2xl font-semibold text-white md:text-4xl">
