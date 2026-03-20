@@ -65,11 +65,11 @@ const heroTitleLetters = Array.from('ЭНЕРДЖИ');
 const heroLetterSpacingAdjustments = ['0.024em', '0.01em', '0.012em', '0.022em', '0.008em', '0.024em', '0em'] as const;
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const sectionReveal = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 26 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.82, ease: easeOut }
+    transition: { duration: 0.88, ease: easeOut }
   }
 } as const;
 const staggerReveal = {
@@ -82,30 +82,30 @@ const staggerReveal = {
   }
 } as const;
 const itemReveal = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.62, ease: easeOut }
+    transition: { duration: 0.68, ease: easeOut }
   }
 } as const;
 const softPanelReveal = {
-  hidden: { opacity: 0, y: 18, scale: 0.992 },
+  hidden: { opacity: 0, y: 16, scale: 0.994 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.58, ease: easeOut }
+    transition: { duration: 0.64, ease: easeOut }
   }
 } as const;
-const modalOverlayTransition = { duration: 0.28, ease: easeOut } as const;
-const modalPanelTransition = { duration: 0.32, ease: easeOut } as const;
-const lightboxOverlayTransition = { duration: 0.34, ease: easeOut } as const;
-const lightboxPanelTransition = { duration: 0.38, ease: easeOut } as const;
-const lightboxImageTransition = { duration: 0.42, ease: easeOut } as const;
+const modalOverlayTransition = { duration: 0.32, ease: easeOut } as const;
+const modalPanelTransition = { duration: 0.36, ease: easeOut } as const;
+const lightboxOverlayTransition = { duration: 0.38, ease: easeOut } as const;
+const lightboxPanelTransition = { duration: 0.42, ease: easeOut } as const;
+const lightboxImageTransition = { duration: 0.46, ease: easeOut } as const;
 const ctaMotion = {
-  whileHover: { y: -2, scale: 1.008 },
-  whileTap: { scale: 0.985 }
+  whileHover: { y: -1.5, scale: 1.006 },
+  whileTap: { scale: 0.988 }
 } as const;
 
 function ModalCloseButton({ onClick }: { onClick: () => void }) {
@@ -455,15 +455,15 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <div className="relative overflow-visible">
               <motion.div
                 initial={{ opacity: 0, x: -38, scaleX: 0.94 }}
-                animate={{ opacity: 0.18, x: 0, scaleX: 1 }}
+                animate={{ opacity: 0.12, x: 0, scaleX: 1 }}
                 transition={{ duration: 1, ease: easeOut, delay: 0.16 }}
-                className="absolute inset-y-[18%] left-[8%] w-[36%] -skew-x-[22deg] bg-lime/10 blur-[28px]"
+                className="absolute inset-y-[18%] left-[8%] w-[36%] -skew-x-[22deg] bg-lime/[0.07] blur-[24px]"
               />
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 0.12, x: 0 }}
+                animate={{ opacity: 0.07, x: 0 }}
                 transition={{ duration: 1.05, ease: easeOut, delay: 0.28 }}
-                className="absolute inset-y-[30%] right-[11%] w-[14%] -skew-x-[26deg] bg-white/7 blur-[34px]"
+                className="absolute inset-y-[30%] right-[11%] w-[14%] -skew-x-[26deg] bg-white/[0.045] blur-[30px]"
               />
               <motion.div
                 initial={{ opacity: 0, y: 18, scale: 0.98 }}
@@ -502,21 +502,14 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="hero-headline relative mt-5 max-w-[15.8ch] pb-1 text-[2rem] font-semibold leading-[0.98] tracking-[-0.04em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:pb-1.5 md:text-[3.18rem] md:leading-[1] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+              className="hero-headline relative mt-5 max-w-[15.8ch] pb-1.5 text-[2rem] font-semibold leading-[0.99] tracking-[-0.042em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:max-w-[52rem] md:pb-2 md:text-[3.18rem] md:leading-[1.01] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
-              <motion.span
-                aria-hidden="true"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.62, delay: 0.46, ease: easeOut }}
-                className="pointer-events-none absolute -left-2 top-[58%] h-10 w-10 -translate-y-1/2 rounded-full bg-lime/[0.12] blur-[22px] md:-left-3 md:h-14 md:w-14 md:blur-[28px]"
-              />
               <motion.span
                 aria-hidden="true"
                 initial={{ opacity: 0, scaleX: 0.88 }}
                 animate={{ opacity: 1, scaleX: 1 }}
                 transition={{ duration: 0.64, delay: 0.5, ease: easeOut }}
-                className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-20 origin-left bg-gradient-to-r from-lime/82 via-lime/26 to-transparent md:w-28"
+                className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-18 origin-left bg-gradient-to-r from-lime/72 via-lime/18 to-transparent md:w-24"
               />
               <motion.span
                 initial={{ opacity: 0, y: 24, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
@@ -531,7 +524,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[43rem] md:text-[1.01rem] md:leading-[1.72]"
+              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.72] tracking-[0.01em] text-soft/78 md:mt-5 md:max-w-[43rem] md:text-[1.01rem] md:leading-[1.78]"
             >
               <span className="md:block">Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
               <span className="md:block">удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.</span>

@@ -110,8 +110,8 @@ body {
   width: min(44rem, 72vw);
   height: 24rem;
   background: radial-gradient(circle at 24% 46%, rgba(200, 214, 0, 0.11), transparent 58%);
-  opacity: 0.44;
-  filter: blur(34px);
+  opacity: 0.28;
+  filter: blur(30px);
 }
 
 .hero-copy-shell::after {
@@ -120,8 +120,8 @@ body {
   width: min(18rem, 26vw);
   height: 16rem;
   background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 68%);
-  opacity: 0.22;
-  filter: blur(28px);
+  opacity: 0.14;
+  filter: blur(24px);
 }
 
 .hero-copy-shell > * {
@@ -139,10 +139,14 @@ body {
 
 .hero-headline {
   text-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .hero-supporting {
   text-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .hero-slash {
