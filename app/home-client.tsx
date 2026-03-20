@@ -420,7 +420,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
   return (
     <main className="site-bg relative overflow-x-hidden bg-carbon text-soft">
-      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] pt-12 pb-10 md:min-h-[41rem] md:pt-16 md:pb-12">
+      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] pt-12 pb-11 md:min-h-[41rem] md:pt-16 md:pb-14">
         <motion.div
           initial={{ opacity: 0.38, x: -22, y: -6 }}
           animate={{ opacity: shouldReduceMotion ? 0.54 : 0.78, x: shouldReduceMotion ? 0 : 22, y: shouldReduceMotion ? 0 : 6 }}
@@ -447,12 +447,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         />
 
         <div className="section-shell relative z-10">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] px-1 pt-12 pb-10 md:px-2 md:pt-16 md:pb-12">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] px-1 pt-12 pb-12 md:px-2 md:pt-16 md:pb-14">
             <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
 
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-visible">
               <motion.div
                 initial={{ opacity: 0, x: -38, scaleX: 0.94 }}
                 animate={{ opacity: 0.18, x: 0, scaleX: 1 }}
@@ -517,12 +517,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.68] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[39rem] md:text-[1.01rem] md:leading-[1.74]"
+              className="hero-supporting mt-5 max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.7] tracking-[0.012em] text-soft/74 md:mt-5 md:max-w-[39rem] md:text-[1.01rem] md:leading-[1.76]"
             >
               Современный фитнес-клуб с сильным тренировочным ритмом, удобным расписанием и атмосферой,
               где хочется возвращаться к результату каждую неделю.
             </motion.p>
-            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-9">
+            <motion.div variants={itemReveal} className="mt-9 flex flex-wrap gap-4 md:mt-10">
               <motion.button
                 type="button"
                 className="brand-button premium-transition"
