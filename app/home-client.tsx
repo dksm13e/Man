@@ -227,8 +227,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [pinchStart, setPinchStart] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
-  const [isGalleryInteracting, setIsGalleryInteracting] = useState(false);
   const [programPanelOpen, setProgramPanelOpen] = useState(false);
   const [clubImages] = useState<string[]>(initialClubImages);
   const [scheduleImages] = useState<string[]>(initialScheduleImages);
@@ -236,6 +234,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
   const galleryLastFrameTimeRef = useRef<number | null>(null);
+  const isGalleryHoveredRef = useRef(false);
+  const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
     galleryResumeAtRef.current = performance.now() + delay;
@@ -315,7 +315,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
       const delta = Math.min(timestamp - lastFrameTime, 32);
       galleryLastFrameTimeRef.current = timestamp;
-      const paused = isGalleryHovered || isGalleryInteracting || timestamp < galleryResumeAtRef.current;
+      const paused = isGalleryHoveredRef.current || isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
       if (!paused && segmentWidth > 0) {
         viewport.scrollLeft += (pixelsPerSecond * delta) / 1000;
@@ -334,7 +334,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       galleryLastFrameTimeRef.current = null;
       window.cancelAnimationFrame(animationFrame);
     };
-  }, [clubImages.length, isGalleryHovered, isGalleryInteracting, shouldReduceMotion]);
+  }, [clubImages.length, shouldReduceMotion]);
 
   const openGallery = (index: number) => {
     galleryResumeAtRef.current = performance.now() + 2200;
@@ -478,39 +478,41 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-                onMouseEnter={() => setIsGalleryHovered(true)}
+                onMouseEnter={() => {
+                  isGalleryHoveredRef.current = true;
+                }}
                 onMouseLeave={() => {
-                  setIsGalleryHovered(false);
+                  isGalleryHoveredRef.current = false;
                   pauseGalleryAutoplay(900);
                 }}
                 onPointerDown={() => {
-                  setIsGalleryInteracting(true);
+                  isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(2600);
                 }}
                 onPointerUp={() => {
-                  setIsGalleryInteracting(false);
+                  isGalleryInteractingRef.current = false;
                   pauseGalleryAutoplay(1800);
                 }}
                 onPointerCancel={() => {
-                  setIsGalleryInteracting(false);
+                  isGalleryInteractingRef.current = false;
                   pauseGalleryAutoplay(1800);
                 }}
                 onPointerLeave={() => {
-                  setIsGalleryInteracting(false);
+                  isGalleryInteractingRef.current = false;
                 }}
                 onTouchStart={() => {
-                  setIsGalleryInteracting(true);
+                  isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(3000);
                 }}
                 onTouchEnd={() => {
-                  setIsGalleryInteracting(false);
+                  isGalleryInteractingRef.current = false;
                   pauseGalleryAutoplay(2200);
                 }}
                 onWheel={() => {
                   pauseGalleryAutoplay(1800);
                 }}
                 onScroll={() => {
-                  if (isGalleryInteracting) {
+                  if (isGalleryInteractingRef.current) {
                     pauseGalleryAutoplay(1800);
                   }
                 }}
@@ -701,7 +703,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             whileHover={{ y: -4, scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             transition={{ duration: 0.26, ease: easeOut }}
-            className="glass-card schedule-preview premium-transition rounded-[1.9rem] border border-white/10 p-6 text-left shadow-card"
+            className="glass-card schedule-preview premium-transition rounded-[1.9rem] border border-white/10 p-6 text-left shadow-card outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0"
           >
             <p className="text-xs uppercase tracking-[0.22em] text-lime">Официальная сетка</p>
             <h3 className="mt-3 text-2xl font-semibold text-white">Открыть полное расписание</h3>
@@ -901,9 +903,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                                 </span>
                               ))}
                             </div>
-                            <p className="mt-4 text-sm leading-6 text-soft/62">
-                              Карточка обновляется мягко при выборе другой программы, сохраняя единый визуальный ритм и читаемую иерархию.
-                            </p>
                           </div>
                         </div>
                       </motion.div>
@@ -1034,7 +1033,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                       <>
                         <div className="pointer-events-none absolute inset-y-3 left-2 z-[1] w-5 rounded-[1rem] bg-gradient-to-r from-white/[0.08] via-white/[0.025] to-transparent md:inset-y-4 md:left-3 md:w-8" />
                         <div className="pointer-events-none absolute inset-y-3 right-2 z-[1] w-5 rounded-[1rem] bg-gradient-to-l from-white/[0.08] via-white/[0.025] to-transparent md:inset-y-4 md:right-3 md:w-8" />
-                        <div className="pointer-events-none absolute inset-0 rounded-[1.4rem] ring-1 ring-inset ring-white/8" />
                       </>
                     )}
                     <motion.img

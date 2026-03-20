@@ -3,6 +3,19 @@ import path from 'path';
 
 export const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.gif', '.svg']);
 
+export const PERMANENT_CLUB_IMAGES = [
+  'https://i.ibb.co/1JhVc8BH/5-6.jpg',
+  'https://i.ibb.co/zhgG96z0/5-7.jpg',
+  'https://i.ibb.co/Xfc5BZwW/5-8.jpg',
+  'https://i.ibb.co/chCm7J9N/5-9.jpg',
+  'https://i.ibb.co/ZR1fYtM7/5-10.jpg',
+  'https://i.ibb.co/393ZHwhS/5-11.jpg',
+  'https://i.ibb.co/PzPhdvDH/5-12.jpg',
+  'https://i.ibb.co/wrWH7kCY/5-13.jpg',
+  'https://i.ibb.co/bgZSF6Tr/5-14.jpg',
+  'https://i.ibb.co/6c4bV9VF/5-15.jpg'
+] as const;
+
 const mediaPaths: Record<string, string[]> = {
   'club-atmosphere': ['images/club-atmosphere'],
   schedule: ['images/schedule']
