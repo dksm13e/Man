@@ -447,16 +447,34 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="mt-4 text-[0.76rem] font-medium tracking-[0.56em] text-soft/58 md:text-[0.96rem] md:tracking-[0.64em]">
+            <motion.p variants={itemReveal} className="mt-5 text-[0.72rem] font-medium uppercase tracking-[0.62em] text-soft/52 md:mt-6 md:text-[0.92rem] md:tracking-[0.7em]">
               фитнес-клуб
             </motion.p>
-            <motion.p variants={itemReveal} className="mt-7 text-2xl font-semibold text-white md:text-4xl">
-              Энергия движения. Сила результата
-            </motion.p>
-            <motion.p variants={itemReveal} className="mt-4 max-w-3xl text-sm leading-relaxed text-soft/85 md:text-base">
-              Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
-            </motion.p>
-            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4">
+            <motion.div
+              variants={itemReveal}
+              className="mt-8 max-w-[42rem] rounded-[2rem] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(255,255,255,0.055),rgba(255,255,255,0.012)_58%)] px-5 py-6 shadow-[0_24px_70px_rgba(0,0,0,0.18)] backdrop-blur-[18px] md:mt-10 md:px-8 md:py-8"
+            >
+              <div className="mb-5 flex items-center gap-4 md:gap-5">
+                <span className="h-px w-14 bg-gradient-to-r from-lime/75 via-lime/18 to-transparent md:w-20" />
+                <span className="h-2 w-2 rounded-full bg-lime/80 shadow-[0_0_18px_rgba(200,214,0,0.4)]" />
+              </div>
+              <motion.h2
+                variants={itemReveal}
+                className="max-w-[11ch] text-[2.2rem] font-semibold leading-[0.92] tracking-[-0.035em] text-white text-balance md:text-[4.4rem] md:leading-[0.9]"
+              >
+                <span className="bg-[linear-gradient(180deg,#ffffff_0%,#f3f3ef_62%,rgba(243,243,239,0.72)_100%)] bg-clip-text text-transparent">
+                  Энергия движения.
+                </span>{' '}
+                <span className="text-white/92">Сила результата</span>
+              </motion.h2>
+              <motion.p
+                variants={itemReveal}
+                className="mt-5 max-w-[33rem] text-[0.98rem] font-light leading-[1.9] tracking-[0.01em] text-soft/82 md:mt-6 md:text-[1.16rem] md:leading-[2.05]"
+              >
+                Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
+              </motion.p>
+            </motion.div>
+            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-10">
               <motion.button
                 type="button"
                 className="brand-button premium-transition"
@@ -572,11 +590,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
             Групповые программы
           </motion.h2>
-          <motion.p variants={itemReveal} className="mt-2 max-w-2xl text-soft/75">
-            Сильная сетка направлений без перегруженных описаний — только понятная и современная навигация по программам.
-          </motion.p>
         </motion.div>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:mt-9 md:grid-cols-3">
           {programCategories.map((category, categoryIndex) => (
             <motion.article
               key={category.title}
@@ -611,17 +626,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.article>
           ))}
         </div>
-        <p className="mt-5 text-sm text-soft/60">Нажмите на название программы, чтобы открыть подробное описание в отдельной info-panel.</p>
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
           Тарифы
         </motion.h2>
-        <motion.p variants={itemReveal} className="mt-2 max-w-3xl text-soft/75">
-          Выберите удобный формат посещения и держите тренировочный ритм в том темпе, который подходит именно вам.
-        </motion.p>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:mt-9 md:grid-cols-3">
           {tariffs.map((tariff, index) => (
             <motion.article
               key={tariff.title}
@@ -659,10 +670,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
           Расписание тренировок
         </motion.h2>
-        <motion.p variants={itemReveal} className="mt-2 max-w-3xl text-soft/75">
-          Выберите день и задайте темп недели. Полное фото расписания открывается мягко и сразу, без лишних шагов.
-        </motion.p>
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1.35fr_1fr]">
+        <div className="mt-8 grid gap-5 md:mt-9 lg:grid-cols-[1.35fr_1fr]">
           <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5">
             <div className="mb-5 flex flex-wrap gap-2">
               {scheduleByDay.map((day) => (
