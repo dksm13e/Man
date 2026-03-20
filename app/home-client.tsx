@@ -612,7 +612,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     variants={itemReveal}
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.995 }}
-                    transition={{ duration: 0.28, ease: easeOut }}
+                    transition={{ duration: 0.32, ease: easeOut }}
                     className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-[7px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.2)] md:h-[378px] md:min-w-[48%]"
                   >
                     <div className="absolute inset-[7px] rounded-[1.65rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.005))]" />
@@ -653,8 +653,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.68, delay: categoryIndex * 0.06, ease: easeOut }}
-              whileHover={{ y: -4 }}
+              transition={{ duration: 0.74, delay: categoryIndex * 0.06, ease: easeOut }}
+              whileHover={{ y: -3 }}
               className="glass-card rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-[1.35rem] shadow-card"
             >
               <h3 className="premium-display mb-3 text-[1.05rem] font-semibold leading-[1.08] tracking-[-0.03em] text-lime">{category.title}</h3>
@@ -670,9 +670,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         ? 'border-lime/60 bg-lime/15 text-white shadow-[0_10px_24px_rgba(200,214,0,0.16)]'
                         : 'border-white/15 bg-white/[0.04] text-soft/90 hover:border-lime/35 hover:bg-lime/[0.08]'
                     }`}
-                    whileHover={{ y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ duration: 0.22, ease: easeOut }}
+                    whileHover={{ y: -0.5 }}
+                    whileTap={{ scale: 0.985 }}
+                    transition={{ duration: 0.26, ease: easeOut }}
                   >
                     {item}
                   </motion.button>
@@ -694,9 +694,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.18 }}
-              transition={{ duration: 0.7, delay: index * 0.07, ease: easeOut }}
-              whileHover={{ y: -6, scale: 1.012 }}
-              whileTap={{ scale: 0.995 }}
+              transition={{ duration: 0.76, delay: index * 0.07, ease: easeOut }}
+              whileHover={{ y: -4.5, scale: 1.008 }}
+              whileTap={{ scale: 0.992 }}
               className={`rounded-[1.9rem] p-[1.35rem] shadow-card premium-transition ${
                 tariff.featured
                   ? 'glass-card border-lime/35 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(255,255,255,0.04))]'
@@ -922,7 +922,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.28, ease: easeOut }}
+                transition={{ duration: 0.32, ease: easeOut }}
                 className="fixed inset-0 z-[88] flex items-start justify-center bg-black/58 p-4 backdrop-blur-[8px] md:items-center"
                 onClick={closeProgramPanel}
               >
@@ -930,7 +930,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   initial={{ opacity: 0, y: 24, scale: 0.982 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 16, scale: 0.988 }}
-                  transition={{ duration: 0.34, ease: easeOut }}
+                  transition={{ duration: 0.38, ease: easeOut }}
                   className="relative w-full max-w-[48rem] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.985),rgba(24,24,22,0.99))] shadow-[0_28px_110px_rgba(0,0,0,0.46)]"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -954,7 +954,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         initial={{ opacity: 0, y: 16, scale: 0.994, filter: 'blur(10px)' }}
                         animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: -10, scale: 0.994, filter: 'blur(10px)' }}
-                        transition={{ duration: 0.3, ease: easeOut }}
+                        transition={{ duration: 0.34, ease: easeOut }}
                         className="mt-[1.9rem] grid gap-[1.45rem]"
                       >
                         <div className="max-w-3xl">
