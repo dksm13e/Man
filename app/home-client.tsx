@@ -420,7 +420,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
   return (
     <main className="site-bg relative bg-carbon text-soft">
-      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] overflow-y-hidden pt-12 pb-11 md:min-h-[41rem] md:pt-16 md:pb-14">
+      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] pt-12 pb-11 md:min-h-[41rem] md:pt-16 md:pb-14">
         <motion.div
           initial={{ opacity: 0.38, x: -22, y: -6 }}
           animate={{ opacity: shouldReduceMotion ? 0.54 : 0.78, x: shouldReduceMotion ? 0 : 22, y: shouldReduceMotion ? 0 : 6 }}
