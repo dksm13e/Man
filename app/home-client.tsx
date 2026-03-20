@@ -553,7 +553,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <div className="gallery-edge-shell">
               <motion.div
                 ref={galleryViewportRef}
-                className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-4 scrollbar-hidden md:gap-6"
+                className="-mx-4 flex gap-4 overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-6"
                 variants={staggerReveal}
                 initial="hidden"
                 whileInView="visible"
