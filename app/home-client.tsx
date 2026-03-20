@@ -496,19 +496,19 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <motion.p variants={itemReveal} className="mt-4 text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-5 md:text-[0.95rem] md:tracking-[0.68em]">
               фитнес-клуб
             </motion.p>
-            <motion.div variants={itemReveal} className="mt-7 flex items-center gap-4 md:mt-8 md:gap-5">
-              <span className="h-px w-14 bg-gradient-to-r from-lime/80 via-lime/22 to-transparent md:w-20" />
-              <span className="h-2 w-2 rounded-full bg-lime/80 shadow-[0_0_18px_rgba(200,214,0,0.38)]" />
+            <motion.div variants={itemReveal} className="mt-7 flex items-center gap-3.5 md:mt-8 md:gap-4">
+              <span className="h-px w-11 bg-gradient-to-r from-lime/78 via-lime/18 to-transparent md:w-14" />
+              <span className="h-1.5 w-1.5 rounded-full bg-lime/78 shadow-[0_0_14px_rgba(200,214,0,0.26)]" />
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="mt-5 max-w-[15.5ch] text-[2.04rem] font-semibold leading-[0.94] tracking-[-0.038em] text-white md:max-w-[16.8ch] md:text-[3.88rem] md:leading-[0.91] lg:max-w-[17.4ch]"
+              className="mt-5 max-w-[15.8ch] text-[2.02rem] font-semibold leading-[0.92] tracking-[-0.04em] text-white md:max-w-[16.9ch] md:text-[3.84rem] md:leading-[0.9] lg:max-w-[17.2ch]"
             >
               <motion.span
                 initial={{ opacity: 0, y: 22, filter: 'blur(8px)', clipPath: 'inset(0 0 100% 0)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
                 transition={{ duration: 0.62, delay: 0.42, ease: easeOut }}
-                className="block bg-[linear-gradient(180deg,#ffffff_0%,#f4f4ef_66%,rgba(244,244,239,0.8)_100%)] bg-clip-text text-transparent"
+                className="block bg-[linear-gradient(180deg,#ffffff_0%,#f4f4ef_62%,rgba(244,244,239,0.76)_100%)] bg-clip-text text-transparent"
               >
                 Энергия движения.
               </motion.span>
@@ -516,7 +516,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial={{ opacity: 0, y: 26, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
                 transition={{ duration: 0.68, delay: 0.5, ease: easeOut }}
-                className="mt-1.5 block pl-5 text-white/92 md:mt-2 md:pl-8"
+                className="mt-2 block pl-6 text-[0.9em] font-medium tracking-[-0.024em] text-white/80 md:mt-2.5 md:pl-10"
               >
                 <span className="text-lime/88">Сила</span> результата
               </motion.span>
@@ -525,7 +525,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
-              className="mt-5 max-w-[30rem] text-[0.98rem] font-light leading-[1.94] tracking-[0.01em] text-soft/78 md:mt-6 md:max-w-[33rem] md:text-[1.06rem] md:leading-[2]"
+              className="mt-5 max-w-[31rem] text-pretty text-[0.97rem] font-light leading-[1.96] tracking-[0.012em] text-soft/76 md:mt-6 md:max-w-[34rem] md:text-[1.05rem] md:leading-[2.02]"
             >
               Современный фитнес-клуб с сильным тренировочным ритмом, удобным расписанием и атмосферой, в которую хочется возвращаться.
             </motion.p>
