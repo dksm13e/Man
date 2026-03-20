@@ -466,12 +466,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 className="absolute inset-y-[30%] right-[11%] w-[14%] -skew-x-[26deg] bg-white/[0.045] blur-[30px]"
               />
               <motion.div
-                initial={{ opacity: 0, y: 18, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.9, delay: 0.14, ease: easeOut }}
-                className="pointer-events-none absolute inset-x-[-2%] top-[8%] h-[72%] rounded-[1.2rem] border border-white/[0.06] bg-[linear-gradient(135deg,rgba(255,255,255,0.03),rgba(255,255,255,0.0)_58%)] [clip-path:polygon(0_14%,92%_0,100%_88%,7%_100%)]"
-              />
-              <motion.div
                 initial={{ opacity: 0, x: -24 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.85, delay: 0.22, ease: easeOut }}
@@ -797,6 +791,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           {faq.map((entry, index) => (
             <motion.div
               key={entry.q}
+              layout
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -805,23 +800,44 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             >
               <button className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-5.5 md:py-4.5" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
                 <span className="faq-question premium-display text-[0.98rem] font-medium md:text-[1.03rem]">{entry.q}</span>
-                <motion.span animate={{ rotate: activeFaq === index ? 180 : 0 }} transition={{ duration: 0.24, ease: easeOut }} className="faq-indicator inline-flex shrink-0 items-center justify-center text-[1.12rem] text-lime/92">
-                  {activeFaq === index ? '−' : '+'}
+                <motion.span
+                  animate={{ rotate: activeFaq === index ? 180 : 0, scale: activeFaq === index ? 1.02 : 1 }}
+                  transition={{ duration: 0.3, ease: easeOut }}
+                  className="faq-indicator inline-flex shrink-0 items-center justify-center text-lime/92"
+                >
+                  <span className="relative block h-3.5 w-3.5">
+                    <span className="absolute left-1/2 top-1/2 h-px w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current" />
+                    <motion.span
+                      animate={{ opacity: activeFaq === index ? 0 : 1, scaleY: activeFaq === index ? 0.7 : 1 }}
+                      transition={{ duration: 0.22, ease: easeOut }}
+                      className="absolute left-1/2 top-1/2 h-3.5 w-px -translate-x-1/2 -translate-y-1/2 rounded-full bg-current"
+                    />
+                  </span>
                 </motion.span>
               </button>
-              <AnimatePresence initial={false}>
-                {activeFaq === index && (
+              <motion.div
+                initial={false}
+                animate={{
+                  gridTemplateRows: activeFaq === index ? '1fr' : '0fr',
+                  opacity: activeFaq === index ? 1 : 0.68
+                }}
+                transition={{ duration: 0.34, ease: easeOut }}
+                className="faq-answer-wrap grid"
+              >
+                <div className="overflow-hidden">
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.26, ease: easeOut }}
-                    className="faq-answer premium-body overflow-hidden px-5 pb-5 pr-12 text-[0.94rem] font-light md:px-5.5 md:pb-5"
+                    initial={false}
+                    animate={{
+                      y: activeFaq === index ? 0 : -8,
+                      opacity: activeFaq === index ? 1 : 0
+                    }}
+                    transition={{ duration: 0.28, ease: easeOut }}
+                    className="faq-answer premium-body px-5 pb-5 pr-12 text-[0.94rem] font-light md:px-5.5 md:pb-5"
                   >
                     {entry.a}
                   </motion.div>
-                )}
-              </AnimatePresence>
+                </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
@@ -832,9 +848,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           <h2 className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Контакты</h2>
           <div className="mt-5 grid gap-5 md:grid-cols-2">
             <div className="contact-copy premium-body space-y-3.5 text-sm">
-              <p className="text-[0.98rem]">
+              <p className="contact-address-row text-[0.98rem]">
                 <span className="premium-label mr-2 text-[0.72rem] uppercase tracking-[0.24em] text-lime/92">Адрес</span>
-                <span className="premium-display tracking-[-0.015em] text-white">Сарапул, Первомайская 34</span>
+                <span className="contact-address-copy premium-display tracking-[-0.015em] text-white">
+                  <span className="text-soft/84">Сарапул, </span>
+                  <span className="contact-address-highlight">Первомайская 34</span>
+                </span>
               </p>
               <div className="grid gap-2.5">
                 {phones.map((phone) => (

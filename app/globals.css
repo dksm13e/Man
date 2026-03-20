@@ -109,9 +109,9 @@ body {
   top: 11%;
   width: min(44rem, 72vw);
   height: 24rem;
-  background: radial-gradient(circle at 24% 46%, rgba(200, 214, 0, 0.11), transparent 58%);
-  opacity: 0.28;
-  filter: blur(30px);
+  background: radial-gradient(circle at 24% 46%, rgba(200, 214, 0, 0.075), transparent 58%);
+  opacity: 0.18;
+  filter: blur(34px);
 }
 
 .hero-copy-shell::after {
@@ -119,9 +119,9 @@ body {
   top: 7%;
   width: min(18rem, 26vw);
   height: 16rem;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), transparent 68%);
-  opacity: 0.14;
-  filter: blur(24px);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 68%);
+  opacity: 0.08;
+  filter: blur(28px);
 }
 
 .hero-copy-shell > * {
@@ -284,7 +284,7 @@ body {
     background-color 0.26s ease,
     box-shadow 0.26s ease,
     color 0.26s ease,
-    transform 0.26s ease;
+    transform 0.32s ease;
 }
 
 .schedule-tab:hover {
@@ -334,6 +334,11 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+  transition:
+    border-color 0.28s ease,
+    background-color 0.28s ease,
+    box-shadow 0.32s ease,
+    transform 0.32s ease;
 }
 
 .faq-item::before {
@@ -352,10 +357,14 @@ body {
   color: rgba(255, 255, 255, 0.96);
 }
 
+.faq-answer-wrap {
+  grid-template-rows: 0fr;
+}
+
 .faq-answer {
   color: rgba(243, 243, 239, 0.78);
-  line-height: 1.78;
-  letter-spacing: 0.01em;
+  line-height: 1.74;
+  letter-spacing: 0.008em;
 }
 
 .faq-indicator {
@@ -365,6 +374,25 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  transition:
+    border-color 0.28s ease,
+    background-color 0.28s ease,
+    box-shadow 0.28s ease,
+    color 0.28s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(216, 230, 0, 0.16);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.024));
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+
+.faq-item:hover .faq-indicator {
+  border-color: rgba(216, 230, 0, 0.22);
+  background: linear-gradient(180deg, rgba(200, 214, 0, 0.12), rgba(255, 255, 255, 0.022));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 22px rgba(200, 214, 0, 0.1);
 }
 
 .contact-shell {
@@ -386,6 +414,35 @@ body {
   color: rgba(243, 243, 239, 0.86);
   line-height: 1.78;
   letter-spacing: 0.01em;
+}
+
+.contact-address-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.5rem;
+}
+
+.contact-address-copy {
+  line-height: 1.22;
+}
+
+.contact-address-highlight {
+  position: relative;
+  color: rgba(255, 255, 255, 0.98);
+  letter-spacing: -0.02em;
+  text-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+}
+
+.contact-address-highlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.18rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(216, 230, 0, 0.72), rgba(216, 230, 0, 0.12));
+  opacity: 0.92;
 }
 
 .contact-link-card {
