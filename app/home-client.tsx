@@ -498,18 +498,18 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.p>
             <motion.h2
               variants={itemReveal}
-              className="mt-7 max-w-[14ch] text-[2.2rem] font-semibold leading-[0.95] tracking-[-0.032em] text-white text-balance md:mt-8 md:max-w-[16.5ch] md:text-[4.25rem] md:leading-[0.92] lg:max-w-[17.5ch]"
+              className="mt-7 max-w-[14.5ch] text-[2.08rem] font-semibold leading-[0.97] tracking-[-0.03em] text-white text-balance md:mt-8 md:max-w-[16.2ch] md:text-[3.95rem] md:leading-[0.94] lg:max-w-[17ch]"
             >
               <span className="bg-[linear-gradient(180deg,#ffffff_0%,#f4f4ef_68%,rgba(244,244,239,0.76)_100%)] bg-clip-text text-transparent">
-                Энергия движения.
+                Энергия движения
               </span>{' '}
               <span className="text-white/92">Сила результата</span>
             </motion.h2>
             <motion.p
               variants={itemReveal}
-              className="mt-5 max-w-[36rem] text-[0.99rem] font-light leading-[1.9] tracking-[0.01em] text-soft/82 md:mt-6 md:max-w-[42rem] md:text-[1.12rem] md:leading-[1.96]"
+              className="mt-5 max-w-[32rem] text-[0.98rem] font-light leading-[1.92] tracking-[0.008em] text-soft/80 md:mt-6 md:max-w-[35rem] md:text-[1.08rem] md:leading-[1.98]"
             >
-              Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
+              Современный фитнес-клуб с сильным тренировочным ритмом, удобным расписанием и атмосферой, в которую хочется возвращаться.
             </motion.p>
             <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4 md:mt-9">
               <motion.button
