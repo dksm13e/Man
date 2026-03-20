@@ -1047,7 +1047,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={lightboxOverlayTransition}
-                className="fixed inset-0 z-[95] flex items-center justify-center bg-black/72 p-3 backdrop-blur-[4px] md:p-6"
+                className="fixed inset-0 z-[95] flex items-center justify-center overflow-hidden bg-black/72 p-3 backdrop-blur-[4px] md:p-6"
                 onClick={closeLightbox}
               >
                 <motion.div
@@ -1055,7 +1055,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   animate={{ scale: 1, opacity: 1, y: 0 }}
                   exit={{ scale: 0.99, opacity: 0, y: 10 }}
                   transition={lightboxPanelTransition}
-                  className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-[1.95rem] border border-white/10 bg-charcoal/72 p-2.5 shadow-[0_28px_100px_rgba(0,0,0,0.42)]"
+                  className="relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-7xl items-center justify-center overflow-hidden rounded-[1.95rem] border border-white/10 bg-charcoal/72 p-2.5 shadow-[0_28px_100px_rgba(0,0,0,0.42)] md:max-h-[calc(100dvh-3rem)]"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {lightboxMode === 'gallery' && clubImages.length > 1 && (
@@ -1068,7 +1068,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     <ModalCloseButton onClick={closeLightbox} />
                   </div>
                   <div
-                    className="relative flex h-[90vh] w-full items-center justify-center overflow-hidden rounded-[1.4rem]"
+                    className="relative flex max-h-[calc(100dvh-5rem)] min-h-0 w-full items-center justify-center overflow-hidden rounded-[1.4rem] md:max-h-[calc(100dvh-8rem)]"
                     onTouchStart={(e) => {
                       if (e.touches.length === 1) setTouchStartX(e.touches[0].clientX);
                       if (e.touches.length === 2) {
