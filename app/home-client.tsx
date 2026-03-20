@@ -498,7 +498,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.p>
             <motion.h2
               variants={itemReveal}
-              className="mt-7 max-w-[11.5ch] text-[2.15rem] font-semibold leading-[0.94] tracking-[-0.035em] text-white md:mt-8 md:text-[4.15rem] md:leading-[0.9]"
+              className="mt-7 max-w-[14ch] text-[2.2rem] font-semibold leading-[0.95] tracking-[-0.032em] text-white text-balance md:mt-8 md:max-w-[16.5ch] md:text-[4.25rem] md:leading-[0.92] lg:max-w-[17.5ch]"
             >
               <span className="bg-[linear-gradient(180deg,#ffffff_0%,#f4f4ef_68%,rgba(244,244,239,0.76)_100%)] bg-clip-text text-transparent">
                 Энергия движения.
@@ -507,7 +507,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.h2>
             <motion.p
               variants={itemReveal}
-              className="mt-5 max-w-[34rem] text-[0.98rem] font-light leading-[1.88] tracking-[0.012em] text-soft/82 md:mt-6 md:text-[1.08rem] md:leading-[1.95]"
+              className="mt-5 max-w-[36rem] text-[0.99rem] font-light leading-[1.9] tracking-[0.01em] text-soft/82 md:mt-6 md:max-w-[42rem] md:text-[1.12rem] md:leading-[1.96]"
             >
               Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
             </motion.p>
