@@ -239,7 +239,19 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
+    galleryLastFrameTimeRef.current = null;
     galleryResumeAtRef.current = performance.now() + delay;
+  };
+
+  const syncGalleryVirtualPosition = (viewport: HTMLDivElement) => {
+    const segmentWidth = viewport.scrollWidth / 2;
+    if (!segmentWidth) {
+      galleryVirtualScrollRef.current = viewport.scrollLeft;
+      return;
+    }
+
+    const normalizedScrollLeft = ((viewport.scrollLeft % segmentWidth) + segmentWidth) % segmentWidth;
+    galleryVirtualScrollRef.current = normalizedScrollLeft;
   };
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
@@ -305,21 +317,20 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     const viewport = galleryViewportRef.current;
     if (!viewport || clubImages.length <= 1 || shouldReduceMotion) return;
 
-    viewport.scrollLeft = 0;
+    syncGalleryVirtualPosition(viewport);
 
     const isPaused = (timestamp: number) =>
       isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
     let animationFrame = 0;
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-    const pixelsPerSecond = isMobileViewport ? 26 : 31;
+    const pixelsPerSecond = isMobileViewport ? 29 : 31;
     galleryLastFrameTimeRef.current = null;
-    galleryVirtualScrollRef.current = 0;
 
     const tick = (timestamp: number) => {
       const segmentWidth = viewport.scrollWidth / 2;
       const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
-      const delta = Math.min(timestamp - lastFrameTime, isMobileViewport ? 24 : 32);
+      const delta = Math.min(timestamp - lastFrameTime, isMobileViewport ? 20 : 28);
       galleryLastFrameTimeRef.current = timestamp;
 
       if (!isPaused(timestamp) && segmentWidth > 0) {
@@ -339,7 +350,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     return () => {
       galleryLastFrameTimeRef.current = null;
-      galleryVirtualScrollRef.current = 0;
       window.cancelAnimationFrame(animationFrame);
     };
   }, [clubImages.length, shouldReduceMotion]);
@@ -524,29 +534,38 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(2600);
                 }}
-                onPointerUp={() => {
+                onPointerUp={(event) => {
                   isGalleryInteractingRef.current = false;
+                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(1800);
                 }}
-                onPointerCancel={() => {
+                onPointerCancel={(event) => {
                   isGalleryInteractingRef.current = false;
+                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(1800);
                 }}
-                onPointerLeave={() => {
+                onPointerLeave={(event) => {
+                  if (isGalleryInteractingRef.current) {
+                    syncGalleryVirtualPosition(event.currentTarget);
+                  }
                   isGalleryInteractingRef.current = false;
                 }}
                 onTouchStart={() => {
                   isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(3000);
                 }}
-                onTouchEnd={() => {
+                onTouchEnd={(event) => {
                   isGalleryInteractingRef.current = false;
+                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(2200);
                 }}
-                onWheel={() => {
+                onWheel={(event) => {
+                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(1800);
                 }}
-                onScroll={() => {
+                onScroll={(event) => {
+                  syncGalleryVirtualPosition(event.currentTarget);
+
                   if (isGalleryInteractingRef.current) {
                     pauseGalleryAutoplay(1800);
                   }
