@@ -324,7 +324,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     let animationFrame = 0;
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-    const pixelsPerSecond = isMobileViewport ? 29 : 31;
+    const pixelsPerSecond = isMobileViewport ? 36 : 31;
     galleryLastFrameTimeRef.current = null;
 
     const tick = (timestamp: number) => {
