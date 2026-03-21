@@ -309,58 +309,15 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     const isPaused = (timestamp: number) =>
       isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
-    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-
-    if (isMobileViewport) {
-      let timeoutId = 0;
-
-      const getCardStep = () => {
-        const firstCard = viewport.querySelector('button');
-        if (!(firstCard instanceof HTMLElement)) return viewport.clientWidth * 0.86;
-
-        const styles = window.getComputedStyle(viewport);
-        const gap = Number.parseFloat(styles.columnGap || styles.gap || '0');
-
-        return firstCard.offsetWidth + gap;
-      };
-
-      const queueNextSlide = () => {
-        timeoutId = window.setTimeout(() => {
-          const now = performance.now();
-          const segmentWidth = viewport.scrollWidth / 2;
-
-          if (!isPaused(now) && segmentWidth > 0) {
-            const step = getCardStep();
-
-            if (viewport.scrollLeft >= segmentWidth - step * 0.6) {
-              viewport.scrollLeft = 0;
-            }
-
-            viewport.scrollTo({
-              left: viewport.scrollLeft + step,
-              behavior: 'smooth'
-            });
-          }
-
-          queueNextSlide();
-        }, 2600);
-      };
-
-      queueNextSlide();
-
-      return () => {
-        window.clearTimeout(timeoutId);
-      };
-    }
-
     let animationFrame = 0;
-    const pixelsPerSecond = 31;
+    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
+    const pixelsPerSecond = isMobileViewport ? 22 : 31;
     galleryLastFrameTimeRef.current = null;
 
     const tick = (timestamp: number) => {
       const segmentWidth = viewport.scrollWidth / 2;
       const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
-      const delta = Math.min(timestamp - lastFrameTime, 32);
+      const delta = Math.min(timestamp - lastFrameTime, isMobileViewport ? 24 : 32);
       galleryLastFrameTimeRef.current = timestamp;
 
       if (!isPaused(timestamp) && segmentWidth > 0) {
@@ -553,7 +510,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <div className="gallery-edge-shell">
               <motion.div
                 ref={galleryViewportRef}
-                className="-mx-4 flex gap-2.5 overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-[0.95rem]"
+                className="-mx-4 flex gap-2 overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-[0.8rem]"
                 variants={staggerReveal}
                 initial="hidden"
                 whileInView="visible"
@@ -599,9 +556,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.995 }}
                     transition={{ duration: 0.32, ease: easeOut }}
-                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-[#2c2b27]/58 bg-[linear-gradient(180deg,rgba(30,30,27,0.9),rgba(24,24,22,0.86))] p-[4px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.18)] md:h-[378px] md:min-w-[48%]"
+                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-[#262520]/46 bg-[linear-gradient(180deg,rgba(28,28,25,0.94),rgba(22,22,20,0.9))] p-[3px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.18)] md:h-[378px] md:min-w-[48%]"
                   >
-                    <div className="absolute inset-[4px] rounded-[1.76rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.008),rgba(255,255,255,0.002))]" />
+                    <div className="absolute inset-[3px] rounded-[1.78rem] bg-[linear-gradient(180deg,rgba(44,43,39,0.42),rgba(24,24,22,0.18))]" />
                     <div className="relative h-full w-full overflow-hidden rounded-[1.65rem] bg-charcoal">
                       <motion.img
                         src={src}
@@ -611,9 +568,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         whileHover={{ scale: 1.035 }}
                         transition={{ duration: 0.6, ease: easeOut }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-white/5 opacity-90 transition-opacity duration-400 group-hover:opacity-100" />
-                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-white/[0.022]" />
-                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.032),transparent_24%)] opacity-32 transition-opacity duration-500 group-hover:opacity-42" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-black/0 opacity-90 transition-opacity duration-400 group-hover:opacity-100" />
+                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-[#4a4942]/34" />
+                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.024),transparent_22%)] opacity-24 transition-opacity duration-500 group-hover:opacity-34" />
                     </div>
                   </motion.button>
                 ))}
