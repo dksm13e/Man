@@ -235,8 +235,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
   const galleryLastFrameTimeRef = useRef<number | null>(null);
-  const galleryScrollCarryRef = useRef(0);
-    const isGalleryInteractingRef = useRef(false);
+  const galleryVirtualScrollRef = useRef(0);
+  const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
     galleryResumeAtRef.current = performance.now() + delay;
@@ -312,9 +312,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     let animationFrame = 0;
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-    const pixelsPerSecond = isMobileViewport ? 27 : 31;
+    const pixelsPerSecond = isMobileViewport ? 26 : 31;
     galleryLastFrameTimeRef.current = null;
-    galleryScrollCarryRef.current = 0;
+    galleryVirtualScrollRef.current = 0;
 
     const tick = (timestamp: number) => {
       const segmentWidth = viewport.scrollWidth / 2;
@@ -323,17 +323,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       galleryLastFrameTimeRef.current = timestamp;
 
       if (!isPaused(timestamp) && segmentWidth > 0) {
-        const rawStep = galleryScrollCarryRef.current + (pixelsPerSecond * delta) / 1000;
-        const appliedStep = rawStep >= 1 ? Math.floor(rawStep) : 0;
-        galleryScrollCarryRef.current = rawStep - appliedStep;
+        galleryVirtualScrollRef.current += (pixelsPerSecond * delta) / 1000;
 
-        if (appliedStep > 0) {
-          viewport.scrollLeft += appliedStep;
+        if (galleryVirtualScrollRef.current >= segmentWidth) {
+          galleryVirtualScrollRef.current -= segmentWidth;
         }
 
-        if (viewport.scrollLeft >= segmentWidth) {
-          viewport.scrollLeft -= segmentWidth;
-        }
+        viewport.scrollLeft = galleryVirtualScrollRef.current;
       }
 
       animationFrame = window.requestAnimationFrame(tick);
@@ -343,7 +339,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     return () => {
       galleryLastFrameTimeRef.current = null;
-      galleryScrollCarryRef.current = 0;
+      galleryVirtualScrollRef.current = 0;
       window.cancelAnimationFrame(animationFrame);
     };
   }, [clubImages.length, shouldReduceMotion]);
@@ -655,14 +651,14 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#edf2b8]' : 'text-white'}`}>{tariff.title}</h3>
-                {tariff.featured && <span className="premium-chip rounded-full border border-[#8e9630]/28 bg-[linear-gradient(180deg,rgba(104,112,34,0.18),rgba(72,78,24,0.1))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#dce58d] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">выбор клуба</span>}
+                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#e9efbe]' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="premium-chip rounded-full border border-[#7f8829]/24 bg-[linear-gradient(180deg,rgba(86,93,29,0.16),rgba(60,66,20,0.09))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#d7e184] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">выбор клуба</span>}
               </div>
               <p className="tariff-copy premium-body mt-3.5 max-w-[24rem] text-[0.95rem] font-light text-soft/84">{tariff.description}</p>
               <ul className="tariff-list premium-body mt-5 space-y-2.5 text-[0.92rem] font-light leading-[1.72] text-soft/84">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
-                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(201,212,91,0.92),rgba(140,151,43,0.92))] shadow-[0_0_0_3px_rgba(96,104,31,0.12)]" />
+                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(184,194,79,0.92),rgba(117,126,36,0.92))] shadow-[0_0_0_3px_rgba(82,88,28,0.1)]" />
                     <span>{perk}</span>
                   </li>
                 ))}
@@ -886,7 +882,16 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             transition={{ duration: 0.24, ease: easeOut }}
           >
             <span className="pointer-events-none absolute inset-[1px] rounded-full border border-white/35 opacity-50" />
-            <span className="relative text-lg leading-none">☎</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="relative h-[1.32rem] w-[1.32rem]">
+              <path
+                d="M9 2.75h6A2.25 2.25 0 0 1 17.25 5v14A2.25 2.25 0 0 1 15 21.25H9A2.25 2.25 0 0 1 6.75 19V5A2.25 2.25 0 0 1 9 2.75Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.55"
+              />
+              <path d="M10 5.75h4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.4" />
+              <circle cx="12" cy="18" r="0.9" fill="currentColor" />
+            </svg>
           </motion.button>,
           document.body
         )}
