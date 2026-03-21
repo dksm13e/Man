@@ -556,9 +556,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.995 }}
                     transition={{ duration: 0.32, ease: easeOut }}
-                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-[#24231f]/84 bg-[linear-gradient(180deg,rgba(26,26,23,0.96),rgba(20,20,18,0.94))] p-[3px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.18)] md:h-[378px] md:min-w-[48%]"
+                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-[#25241f]/92 bg-[linear-gradient(180deg,rgba(28,28,25,0.98),rgba(19,19,17,0.96))] p-[2px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.18)] md:h-[378px] md:min-w-[48%]"
                   >
-                    <div className="absolute inset-[3px] rounded-[1.78rem] bg-[linear-gradient(180deg,rgba(36,35,31,0.52),rgba(20,20,18,0.22))]" />
+                    <div className="absolute inset-[2px] rounded-[1.82rem] bg-[linear-gradient(180deg,rgba(34,33,29,0.34),rgba(18,18,16,0.18))]" />
                     <div className="relative h-full w-full overflow-hidden rounded-[1.65rem] bg-charcoal">
                       <motion.img
                         src={src}
@@ -568,9 +568,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         whileHover={{ scale: 1.035 }}
                         transition={{ duration: 0.6, ease: easeOut }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/16 via-transparent to-black/0 opacity-88 transition-opacity duration-400 group-hover:opacity-96" />
-                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-[#34332e]/48" />
-                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.016),transparent_22%)] opacity-18 transition-opacity duration-500 group-hover:opacity-26" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/12 via-transparent to-black/0 opacity-82 transition-opacity duration-400 group-hover:opacity-90" />
+                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-[#2f2e29]/58" />
+                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.012),transparent_24%)] opacity-12 transition-opacity duration-500 group-hover:opacity-18" />
                     </div>
                   </motion.button>
                 ))}
