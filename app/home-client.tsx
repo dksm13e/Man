@@ -651,14 +651,14 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#f0f5d1]' : 'text-white'}`}>{tariff.title}</h3>
-                {tariff.featured && <span className="premium-chip rounded-full border border-[#becf57]/34 bg-[linear-gradient(180deg,rgba(132,145,45,0.22),rgba(84,92,28,0.12))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#eef6b8] shadow-[0_8px_22px_rgba(177,189,66,0.12),inset_0_1px_0_rgba(255,255,255,0.05)]">выбор клуба</span>}
+                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#f2f6d8]' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="premium-chip rounded-full border border-[#c6d763]/36 bg-[linear-gradient(180deg,rgba(145,158,50,0.24),rgba(92,101,31,0.12))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#f1f8c6] shadow-[0_8px_24px_rgba(182,194,72,0.13),inset_0_1px_0_rgba(255,255,255,0.055)]">выбор клуба</span>}
               </div>
               <p className="tariff-copy premium-body mt-3.5 max-w-[24rem] text-[0.95rem] font-light text-soft/84">{tariff.description}</p>
               <ul className="tariff-list premium-body mt-5 space-y-2.5 text-[0.92rem] font-light leading-[1.72] text-soft/84">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
-                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(209,220,104,0.96),rgba(145,156,48,0.94))] shadow-[0_0_0_3px_rgba(108,118,34,0.14),0_0_12px_rgba(184,197,74,0.16)]" />
+                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(214,224,114,0.96),rgba(152,163,52,0.94))] shadow-[0_0_0_3px_rgba(117,127,38,0.15),0_0_14px_rgba(189,202,80,0.18)]" />
                     <span>{perk}</span>
                   </li>
                 ))}

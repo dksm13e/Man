@@ -227,8 +227,8 @@ body {
   position: relative;
   overflow: hidden;
   backdrop-filter: none;
-  background-color: rgba(24, 24, 24, 0.975);
-  border: 1px solid rgba(255, 255, 255, 0.075);
+  background-color: rgba(36, 36, 33, 0.972);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 20px 46px rgba(0, 0, 0, 0.2);
 }
 
@@ -237,7 +237,7 @@ body {
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, rgba(183, 194, 72, 0.2), rgba(255, 255, 255, 0.03), transparent 72%);
+  background: linear-gradient(90deg, rgba(188, 199, 76, 0.22), rgba(255, 255, 255, 0.04), transparent 74%);
   pointer-events: none;
 }
 
@@ -245,28 +245,32 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(50, 50, 47, 0.24), rgba(24, 24, 22, 0.08));
+  background:
+    radial-gradient(circle at 18% 14%, rgba(200, 214, 0, 0.055), transparent 32%),
+    radial-gradient(circle at 84% 10%, rgba(255, 255, 255, 0.03), transparent 26%),
+    linear-gradient(180deg, rgba(59, 58, 52, 0.18), rgba(23, 23, 20, 0.06));
   pointer-events: none;
 }
 
 .tariff-card-standard {
   background:
-    linear-gradient(180deg, rgba(70, 70, 66, 0.14), rgba(28, 28, 26, 0.04)),
-    linear-gradient(180deg, rgba(27, 27, 27, 0.99), rgba(20, 20, 20, 0.975));
+    radial-gradient(circle at 22% 16%, rgba(255, 255, 255, 0.018), transparent 28%),
+    linear-gradient(180deg, rgba(70, 69, 63, 0.14), rgba(30, 30, 27, 0.04)),
+    linear-gradient(180deg, rgba(39, 39, 35, 0.99), rgba(27, 27, 24, 0.976));
 }
 
 .tariff-card-featured {
-  border-color: rgba(190, 203, 78, 0.38);
+  border-color: rgba(194, 207, 84, 0.42);
   background:
-    radial-gradient(circle at 14% 18%, rgba(192, 205, 84, 0.12), transparent 24%),
-    radial-gradient(circle at 80% 14%, rgba(189, 201, 74, 0.045), transparent 28%),
-    linear-gradient(180deg, rgba(78, 78, 72, 0.16), rgba(28, 28, 25, 0.06)),
-    linear-gradient(180deg, rgba(31, 31, 30, 0.992), rgba(23, 23, 22, 0.978));
+    radial-gradient(circle at 14% 18%, rgba(199, 212, 93, 0.13), transparent 24%),
+    radial-gradient(circle at 84% 14%, rgba(255, 255, 255, 0.036), transparent 26%),
+    linear-gradient(180deg, rgba(88, 87, 79, 0.16), rgba(31, 31, 28, 0.06)),
+    linear-gradient(180deg, rgba(42, 42, 38, 0.992), rgba(28, 28, 25, 0.978));
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(173, 184, 60, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    inset 0 0 28px rgba(169, 181, 54, 0.05);
+    0 0 0 1px rgba(180, 191, 66, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035),
+    inset 0 0 30px rgba(178, 190, 62, 0.055);
 }
 
 .tariff-title {
@@ -278,11 +282,11 @@ body {
 .tariff-copy {
   line-height: 1.84;
   letter-spacing: 0.01em;
-  color: rgba(214, 214, 210, 0.96);
+  color: rgba(214, 214, 210, 0.98);
 }
 
 .tariff-list {
-  color: rgba(209, 209, 205, 0.94);
+  color: rgba(209, 209, 205, 0.96);
 }
 
 .tariff-list li {
