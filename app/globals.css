@@ -706,8 +706,8 @@ body {
 .gallery-edge-shell {
   position: relative;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.03) 0.7%, rgba(0, 0, 0, 0.11) 1.8%, black 3.35%, black 96.65%, rgba(0, 0, 0, 0.11) 98.2%, rgba(0, 0, 0, 0.03) 99.3%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.03) 0.7%, rgba(0, 0, 0, 0.11) 1.8%, black 3.35%, black 96.65%, rgba(0, 0, 0, 0.11) 98.2%, rgba(0, 0, 0, 0.03) 99.3%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.08) 1.15%, black 2.3%, black 97.7%, rgba(0, 0, 0, 0.08) 98.85%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.08) 1.15%, black 2.3%, black 97.7%, rgba(0, 0, 0, 0.08) 98.85%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
@@ -750,8 +750,8 @@ body {
 
 @media (max-width: 768px) {
   .gallery-edge-shell {
-    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.03) 0.7%, rgba(0, 0, 0, 0.1) 1.7%, black 3.2%, black 96.8%, rgba(0, 0, 0, 0.1) 98.3%, rgba(0, 0, 0, 0.03) 99.3%, rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.03) 0.7%, rgba(0, 0, 0, 0.1) 1.7%, black 3.2%, black 96.8%, rgba(0, 0, 0, 0.1) 98.3%, rgba(0, 0, 0, 0.03) 99.3%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.075) 1.1%, black 2.2%, black 97.8%, rgba(0, 0, 0, 0.075) 98.9%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.075) 1.1%, black 2.2%, black 97.8%, rgba(0, 0, 0, 0.075) 98.9%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
   }
 }
 
