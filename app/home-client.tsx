@@ -651,14 +651,14 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#e9efbe]' : 'text-white'}`}>{tariff.title}</h3>
-                {tariff.featured && <span className="premium-chip rounded-full border border-[#7f8829]/24 bg-[linear-gradient(180deg,rgba(86,93,29,0.16),rgba(60,66,20,0.09))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#d7e184] shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">выбор клуба</span>}
+                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#edf3cb]' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="premium-chip rounded-full border border-[#97a43c]/22 bg-[linear-gradient(180deg,rgba(119,130,42,0.18),rgba(74,82,24,0.1))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#e0e89d] shadow-[inset_0_1px_0_rgba(255,255,255,0.045)]">выбор клуба</span>}
               </div>
               <p className="tariff-copy premium-body mt-3.5 max-w-[24rem] text-[0.95rem] font-light text-soft/84">{tariff.description}</p>
               <ul className="tariff-list premium-body mt-5 space-y-2.5 text-[0.92rem] font-light leading-[1.72] text-soft/84">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
-                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(184,194,79,0.92),rgba(117,126,36,0.92))] shadow-[0_0_0_3px_rgba(82,88,28,0.1)]" />
+                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(198,208,95,0.9),rgba(132,143,43,0.9))] shadow-[0_0_0_3px_rgba(92,101,30,0.1)]" />
                     <span>{perk}</span>
                   </li>
                 ))}
@@ -882,15 +882,18 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             transition={{ duration: 0.24, ease: easeOut }}
           >
             <span className="pointer-events-none absolute inset-[1px] rounded-full border border-white/35 opacity-50" />
-            <svg aria-hidden="true" viewBox="0 0 24 24" className="relative h-[1.32rem] w-[1.32rem]">
+            <svg aria-hidden="true" viewBox="0 0 24 24" className="relative h-[1.38rem] w-[1.38rem]">
               <path
-                d="M9 2.75h6A2.25 2.25 0 0 1 17.25 5v14A2.25 2.25 0 0 1 15 21.25H9A2.25 2.25 0 0 1 6.75 19V5A2.25 2.25 0 0 1 9 2.75Z"
+                d="M8.85 2.75h6.3A2.1 2.1 0 0 1 17.25 4.85v14.3a2.1 2.1 0 0 1-2.1 2.1h-6.3a2.1 2.1 0 0 1-2.1-2.1V4.85a2.1 2.1 0 0 1 2.1-2.1Z"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="1.55"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
               />
-              <path d="M10 5.75h4" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.4" />
-              <circle cx="12" cy="18" r="0.9" fill="currentColor" />
+              <path d="M10.05 5.55h3.9" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.15" />
+              <path d="M10.4 17.95h3.2" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="1.35" />
+              <circle cx="12" cy="18.05" r="0.22" fill="currentColor" />
             </svg>
           </motion.button>,
           document.body
