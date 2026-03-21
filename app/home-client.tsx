@@ -235,6 +235,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
   const galleryLastFrameTimeRef = useRef<number | null>(null);
+  const galleryScrollCarryRef = useRef(0);
     const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
@@ -311,8 +312,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     let animationFrame = 0;
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-    const pixelsPerSecond = isMobileViewport ? 29 : 31;
+    const pixelsPerSecond = isMobileViewport ? 27 : 31;
     galleryLastFrameTimeRef.current = null;
+    galleryScrollCarryRef.current = 0;
 
     const tick = (timestamp: number) => {
       const segmentWidth = viewport.scrollWidth / 2;
@@ -321,7 +323,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       galleryLastFrameTimeRef.current = timestamp;
 
       if (!isPaused(timestamp) && segmentWidth > 0) {
-        viewport.scrollLeft += (pixelsPerSecond * delta) / 1000;
+        const rawStep = galleryScrollCarryRef.current + (pixelsPerSecond * delta) / 1000;
+        const appliedStep = rawStep >= 1 ? Math.floor(rawStep) : 0;
+        galleryScrollCarryRef.current = rawStep - appliedStep;
+
+        if (appliedStep > 0) {
+          viewport.scrollLeft += appliedStep;
+        }
 
         if (viewport.scrollLeft >= segmentWidth) {
           viewport.scrollLeft -= segmentWidth;
@@ -335,6 +343,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
     return () => {
       galleryLastFrameTimeRef.current = null;
+      galleryScrollCarryRef.current = 0;
       window.cancelAnimationFrame(animationFrame);
     };
   }, [clubImages.length, shouldReduceMotion]);
@@ -646,14 +655,14 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               }`}
             >
               <div className="flex items-start justify-between gap-4">
-                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-lime/95' : 'text-white'}`}>{tariff.title}</h3>
-                {tariff.featured && <span className="premium-chip rounded-full border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-lime/90 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">выбор клуба</span>}
+                <h3 className={`tariff-title premium-display text-[1.32rem] font-semibold ${tariff.featured ? 'text-[#edf2b8]' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="premium-chip rounded-full border border-[#8e9630]/28 bg-[linear-gradient(180deg,rgba(104,112,34,0.18),rgba(72,78,24,0.1))] px-3.5 py-1 text-[0.62rem] font-medium uppercase tracking-[0.24em] text-[#dce58d] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">выбор клуба</span>}
               </div>
               <p className="tariff-copy premium-body mt-3.5 max-w-[24rem] text-[0.95rem] font-light text-soft/84">{tariff.description}</p>
               <ul className="tariff-list premium-body mt-5 space-y-2.5 text-[0.92rem] font-light leading-[1.72] text-soft/84">
                 {tariff.perks.map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
-                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
+                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-[linear-gradient(180deg,rgba(201,212,91,0.92),rgba(140,151,43,0.92))] shadow-[0_0_0_3px_rgba(96,104,31,0.12)]" />
                     <span>{perk}</span>
                   </li>
                 ))}
