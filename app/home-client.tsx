@@ -230,13 +230,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const [mounted, setMounted] = useState(false);
   const [programPanelOpen, setProgramPanelOpen] = useState(false);
   const [clubImages] = useState<string[]>(initialClubImages);
-  const [scheduleImages] = useState<string[]>(initialScheduleImages);
+  const [scheduleImages] = useState<string[]>(initialScheduleImages.slice(0, 1));
   const [selectedProgram, setSelectedProgram] = useState(programCategories[0].items[0]);
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
   const galleryLastFrameTimeRef = useRef<number | null>(null);
-  const isGalleryHoveredRef = useRef(false);
-  const isGalleryInteractingRef = useRef(false);
+    const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
     galleryResumeAtRef.current = performance.now() + delay;
@@ -308,7 +307,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     viewport.scrollLeft = 0;
 
     const isPaused = (timestamp: number) =>
-      isGalleryHoveredRef.current || isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
+      isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
     const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
 
@@ -496,7 +495,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.div>
             <motion.h2
               variants={itemReveal}
-              className="hero-headline premium-display relative mt-[1.35rem] max-w-[15.8ch] pb-4 text-[2rem] font-semibold leading-[1.04] tracking-[-0.042em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:mt-[1.45rem] md:max-w-[52rem] md:pb-5 md:text-[3.18rem] md:leading-[1.06] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+              className="hero-headline premium-display relative mt-[1.35rem] max-w-[15.8ch] pb-5 text-[2rem] font-semibold leading-[1.05] tracking-[-0.042em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:mt-[1.45rem] md:max-w-[52rem] md:pb-6 md:text-[3.18rem] md:leading-[1.08] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
             >
               <motion.span
                 aria-hidden="true"
@@ -554,18 +553,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <div className="gallery-edge-shell">
               <motion.div
                 ref={galleryViewportRef}
-                className="-mx-4 flex gap-3 overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-[1.125rem]"
+                className="-mx-4 flex gap-2.5 overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-[0.95rem]"
                 variants={staggerReveal}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
-                onMouseEnter={() => {
-                  isGalleryHoveredRef.current = true;
-                }}
-                onMouseLeave={() => {
-                  isGalleryHoveredRef.current = false;
-                  pauseGalleryAutoplay(900);
-                }}
                 onPointerDown={() => {
                   isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(2600);
@@ -607,9 +599,9 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.995 }}
                     transition={{ duration: 0.32, ease: easeOut }}
-                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-[#302f2a]/80 bg-[linear-gradient(180deg,rgba(31,31,28,0.92),rgba(25,25,23,0.88))] p-[5px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.2)] md:h-[378px] md:min-w-[48%]"
+                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-[#2c2b27]/58 bg-[linear-gradient(180deg,rgba(30,30,27,0.9),rgba(24,24,22,0.86))] p-[4px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.18)] md:h-[378px] md:min-w-[48%]"
                   >
-                    <div className="absolute inset-[5px] rounded-[1.72rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.012),rgba(255,255,255,0.003))]" />
+                    <div className="absolute inset-[4px] rounded-[1.76rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.008),rgba(255,255,255,0.002))]" />
                     <div className="relative h-full w-full overflow-hidden rounded-[1.65rem] bg-charcoal">
                       <motion.img
                         src={src}
@@ -620,8 +612,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         transition={{ duration: 0.6, ease: easeOut }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/18 via-transparent to-white/5 opacity-90 transition-opacity duration-400 group-hover:opacity-100" />
-                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-white/[0.032]" />
-                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.05),transparent_26%)] opacity-45 transition-opacity duration-500 group-hover:opacity-58" />
+                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-white/[0.022]" />
+                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.032),transparent_24%)] opacity-32 transition-opacity duration-500 group-hover:opacity-42" />
                     </div>
                   </motion.button>
                 ))}
@@ -799,17 +791,17 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               className="faq-item glass-card rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.038),rgba(255,255,255,0.02))]"
             >
               <button className="flex w-full items-center justify-between gap-4 px-5 py-4.5 text-left md:px-5.5 md:py-5" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
-                <span className="faq-question premium-display text-[0.98rem] font-medium md:text-[1.03rem]">{entry.q}</span>
+                <span className="faq-question premium-display text-[1rem] font-medium tracking-[-0.018em] md:text-[1.04rem]">{entry.q}</span>
                 <motion.span
-                  animate={{ scale: activeFaq === index ? 1.015 : 1 }}
+                  animate={{ scale: activeFaq === index ? 1.02 : 1 }}
                   transition={{ duration: 0.3, ease: easeOut }}
-                  className="faq-indicator inline-flex shrink-0 items-center justify-center text-lime/92"
+                  className="faq-indicator inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
                 >
-                  <svg aria-hidden="true" viewBox="0 0 18 18" className="faq-indicator-mark h-[0.95rem] w-[0.95rem]">
-                    <path d="M4 9H14" />
+                  <svg aria-hidden="true" viewBox="0 0 20 20" className="faq-indicator-mark h-[1rem] w-[1rem]">
+                    <path d="M5.25 10H14.75" />
                     <motion.path
-                      d="M9 4V14"
-                      animate={{ opacity: activeFaq === index ? 0 : 1, scaleY: activeFaq === index ? 0.72 : 1 }}
+                      d="M10 5.25V14.75"
+                      animate={{ opacity: activeFaq === index ? 0 : 1, scaleY: activeFaq === index ? 0.7 : 1 }}
                       transition={{ duration: 0.22, ease: easeOut }}
                       style={{ originX: '50%', originY: '50%' }}
                     />
