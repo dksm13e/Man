@@ -231,8 +231,8 @@ body {
   position: relative;
   overflow: hidden;
   backdrop-filter: none;
-  background-color: rgba(28, 28, 27, 0.965);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(44, 44, 40, 0.965);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 20px 46px rgba(0, 0, 0, 0.2);
 }
 
@@ -241,7 +241,7 @@ body {
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, rgba(216, 230, 0, 0.12), rgba(255, 255, 255, 0.06), transparent 76%);
+  background: linear-gradient(90deg, rgba(216, 230, 0, 0.18), rgba(255, 255, 255, 0.08), transparent 78%);
   pointer-events: none;
 }
 
@@ -250,31 +250,31 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 18% 14%, rgba(216, 230, 0, 0.045), transparent 30%),
-    radial-gradient(circle at 84% 10%, rgba(255, 255, 255, 0.045), transparent 28%),
-    linear-gradient(180deg, rgba(88, 87, 79, 0.2), rgba(36, 36, 32, 0.08));
+    radial-gradient(circle at 18% 14%, rgba(216, 230, 0, 0.06), transparent 30%),
+    radial-gradient(circle at 84% 10%, rgba(255, 255, 255, 0.055), transparent 30%),
+    linear-gradient(180deg, rgba(95, 95, 88, 0.18), rgba(52, 52, 47, 0.06));
   pointer-events: none;
 }
 
 .tariff-card-standard {
   background:
-    radial-gradient(circle at 22% 16%, rgba(255, 255, 255, 0.03), transparent 27%),
-    linear-gradient(180deg, rgba(90, 88, 80, 0.18), rgba(42, 42, 38, 0.06)),
-    linear-gradient(180deg, rgba(62, 62, 57, 0.98), rgba(46, 46, 42, 0.97));
+    radial-gradient(circle at 22% 16%, rgba(255, 255, 255, 0.04), transparent 30%),
+    linear-gradient(180deg, rgba(98, 98, 92, 0.16), rgba(56, 56, 51, 0.08)),
+    linear-gradient(180deg, rgba(70, 70, 65, 0.98), rgba(52, 52, 48, 0.97));
 }
 
 .tariff-card-featured {
-  border-color: rgba(200, 214, 0, 0.34);
+  border-color: rgba(205, 220, 66, 0.44);
   background:
-    radial-gradient(circle at 14% 18%, rgba(200, 214, 0, 0.16), transparent 24%),
-    radial-gradient(circle at 84% 14%, rgba(255, 255, 255, 0.04), transparent 26%),
-    linear-gradient(180deg, rgba(98, 96, 75, 0.24), rgba(46, 45, 35, 0.08)),
-    linear-gradient(180deg, rgba(82, 82, 62, 0.96), rgba(56, 56, 44, 0.96));
+    radial-gradient(circle at 14% 18%, rgba(212, 226, 77, 0.17), transparent 25%),
+    radial-gradient(circle at 84% 14%, rgba(255, 255, 255, 0.05), transparent 28%),
+    linear-gradient(180deg, rgba(108, 108, 90, 0.2), rgba(61, 61, 51, 0.08)),
+    linear-gradient(180deg, rgba(78, 78, 65, 0.97), rgba(58, 58, 49, 0.97));
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(180, 191, 66, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.045),
-    inset 0 0 34px rgba(178, 190, 62, 0.08);
+    0 0 0 1px rgba(188, 201, 67, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055),
+    inset 0 0 34px rgba(190, 205, 75, 0.1);
 }
 
 .tariff-title {
@@ -286,11 +286,11 @@ body {
 .tariff-copy {
   line-height: 1.78;
   letter-spacing: 0.01em;
-  color: rgba(226, 226, 220, 0.94);
+  color: rgba(229, 229, 224, 0.95);
 }
 
 .tariff-list {
-  color: rgba(222, 222, 216, 0.92);
+  color: rgba(226, 226, 221, 0.93);
 }
 
 .tariff-list li {
