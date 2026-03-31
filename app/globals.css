@@ -231,7 +231,7 @@ body {
   position: relative;
   overflow: hidden;
   backdrop-filter: none;
-  background-color: rgba(44, 44, 40, 0.965);
+  background-color: rgba(42, 42, 38, 0.965);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 20px 46px rgba(0, 0, 0, 0.2);
 }
@@ -250,7 +250,7 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 18% 14%, rgba(216, 230, 0, 0.06), transparent 30%),
+    radial-gradient(circle at 18% 14%, rgba(216, 230, 0, 0.052), transparent 30%),
     radial-gradient(circle at 84% 10%, rgba(255, 255, 255, 0.055), transparent 30%),
     linear-gradient(180deg, rgba(95, 95, 88, 0.18), rgba(52, 52, 47, 0.06));
   pointer-events: none;
@@ -259,22 +259,22 @@ body {
 .tariff-card-standard {
   background:
     radial-gradient(circle at 22% 16%, rgba(255, 255, 255, 0.04), transparent 30%),
-    linear-gradient(180deg, rgba(98, 98, 92, 0.16), rgba(56, 56, 51, 0.08)),
-    linear-gradient(180deg, rgba(70, 70, 65, 0.98), rgba(52, 52, 48, 0.97));
+    linear-gradient(180deg, rgba(92, 92, 86, 0.16), rgba(52, 52, 48, 0.08)),
+    linear-gradient(180deg, rgba(66, 66, 61, 0.98), rgba(50, 50, 46, 0.97));
 }
 
 .tariff-card-featured {
-  border-color: rgba(205, 220, 66, 0.44);
+  border-color: rgba(194, 207, 84, 0.36);
   background:
-    radial-gradient(circle at 14% 18%, rgba(212, 226, 77, 0.17), transparent 25%),
+    radial-gradient(circle at 14% 18%, rgba(206, 218, 84, 0.12), transparent 26%),
     radial-gradient(circle at 84% 14%, rgba(255, 255, 255, 0.05), transparent 28%),
-    linear-gradient(180deg, rgba(108, 108, 90, 0.2), rgba(61, 61, 51, 0.08)),
-    linear-gradient(180deg, rgba(78, 78, 65, 0.97), rgba(58, 58, 49, 0.97));
+    linear-gradient(180deg, rgba(95, 95, 88, 0.18), rgba(54, 54, 49, 0.08)),
+    linear-gradient(180deg, rgba(67, 67, 62, 0.98), rgba(50, 50, 46, 0.97));
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(188, 201, 67, 0.22),
+    0 0 0 1px rgba(188, 201, 67, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.055),
-    inset 0 0 34px rgba(190, 205, 75, 0.1);
+    inset 0 0 32px rgba(190, 205, 75, 0.06);
 }
 
 .tariff-title {
@@ -286,11 +286,11 @@ body {
 .tariff-copy {
   line-height: 1.78;
   letter-spacing: 0.01em;
-  color: rgba(229, 229, 224, 0.95);
+  color: rgba(227, 227, 222, 0.94);
 }
 
 .tariff-list {
-  color: rgba(226, 226, 221, 0.93);
+  color: rgba(223, 223, 218, 0.93);
 }
 
 .tariff-list li {

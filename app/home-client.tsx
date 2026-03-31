@@ -784,8 +784,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             className="tariff-card tariff-card-featured rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
           >
             <p className="premium-label text-[0.66rem] uppercase tracking-[0.26em] text-lime/88">СИСТЕМА ОПЛАТЫ ПЕРСОНАЛЬНЫХ ТРЕНИРОВОК ФИТНЕС КЛУБА «ENERGY» С 12.01.2026</p>
-            <h3 className="tariff-title premium-display mt-3 text-[1.3rem] font-semibold text-[#d8e600] md:text-[1.42rem]">Абонементы</h3>
-            <p className="premium-display mt-1 text-[1.02rem] font-medium text-[#f6f3e8]">Персональные тренировки</p>
+            <h3 className="tariff-title premium-display mt-3 text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Абонементы</h3>
+            <p className="premium-display mt-1 text-[1.02rem] font-medium text-[#f5f2e9]">Персональные тренировки</p>
             <div className="mt-4 overflow-x-auto">
               <table className="pricing-table min-w-[760px]">
                 <thead>
