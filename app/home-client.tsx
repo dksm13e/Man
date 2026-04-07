@@ -11,14 +11,14 @@ type HomeClientProps = {
 };
 
 const phones = [
-  { label: 'Основной номер', display: '8-904-31-444-31', href: 'tel:+79043144431' },
-  { label: 'Быстрая связь', display: '8-912-456-62-56', href: 'tel:+79124566256' }
+  { label: 'Телефон клуба', display: '8-904-31-444-31', href: 'tel:+79043144431' },
+  { label: 'Телефон клуба', display: '8-912-456-62-56', href: 'tel:+79124566256' }
 ];
 
 const programCategories = [
   {
     title: 'Силовые программы',
-    items: ['АБТ', '90/60/90', 'АБЛ', 'БЕДРА “-”', 'СУПЕР ПРЕСС', 'АНТИЦЕЛ. ТРЕНИНГ', 'МОЩНЫЙ КЛАСС', 'Функциональный тренинг', 'СКУЛЬПТОР ТЕЛА', 'СИЛОВАЯ С ПЕТЛЯМИ', 'ДЖАМПИНГ', 'КРУГОВАЯ']
+    items: ['АБТ', '90/60/90', 'АБЛ', 'БЕДРА', 'СУПЕР ПРЕСС', 'АНТИЦЕЛ. ТРЕНИНГ', 'МОЩНЫЙ КЛАСС', 'Функциональный тренинг', 'СКУЛЬПТОР ТЕЛА', 'СИЛОВАЯ С ПЕТЛЯМИ', 'ДЖАМПИНГ', 'КРУГОВАЯ']
   },
   { title: 'Аэробные программы', items: ['Смешанный тренинг', 'Фитбол', 'Степ 1'] },
   { title: 'Танцевальные программы', items: ['ЗУМБА'] }
@@ -28,7 +28,7 @@ const programDetails: Record<string, string> = {
   АБТ: 'Силовой класс для проработки всех групп мышц (работа с инвентарем), помогает развить мышечную силу, улучшает рельеф.',
   '90/60/90': 'Силовой урок направленный на развитие выносливости мышц живота, ягодиц, груди.',
   АБЛ: 'Силовой урок для тренировки нижней части тела и брюшного пресса.',
-  'БЕДРА “-”': 'Смешанный формат тренировки (1 часть – аэробная или танцевальная, 2 часть – силовая на ноги, бедра, ягодицы).',
+  'БЕДРА': 'Смешанный формат тренировки (1 часть – аэробная или танцевальная, 2 часть – силовая на ноги, бедра, ягодицы).',
   'СУПЕР ПРЕСС': 'Силовой урок для тренировки мышц брюшного пресса (работа с инвентарем).',
   'АНТИЦЕЛ. ТРЕНИНГ': 'Силовой урок для всех основных мышечных групп с акцентом на мышцы бедер, ягодиц и пресса. Способствует уменьшению жировой прослойки и коррекции проблемных зон.',
   'МОЩНЫЙ КЛАСС': 'Силовая программа на все группы мышц (работа с инвентарем).',
@@ -62,6 +62,7 @@ const clubHours = [
 ];
 
 const heroTitleLetters = Array.from('ЭНЕРДЖИ');
+const heroLetterSpacingAdjustments = ['0.024em', '0.01em', '0.012em', '0.022em', '0.008em', '0.024em', '0em'] as const;
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const sectionReveal = {
   hidden: { opacity: 0, y: 30 },
@@ -154,7 +155,7 @@ function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next
       whileHover={{ scale: 1.018 }}
       whileTap={{ scale: 0.972 }}
       transition={{ duration: 0.22, ease: easeOut }}
-      className={`group absolute top-1/2 z-10 inline-flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full outline-none ${
+      className={`group absolute top-[calc(50%-1.5rem)] z-10 inline-flex h-12 w-12 items-center justify-center rounded-full outline-none ${
         isPrev ? 'left-3 md:left-4' : 'right-3 md:right-4'
       }`}
       aria-label={isPrev ? 'Предыдущее фото' : 'Следующее фото'}
@@ -177,24 +178,31 @@ function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next
 
 const tariffs = [
   {
-    title: 'Недельный',
-    description:
-      'Подходит для первого знакомства с клубом, возвращения в тренировочный ритм или короткого интенсивного периода занятий. Удобный формат, чтобы оценить пространство клуба, атмосферу и расписание групповых программ.',
-    perks: ['удобный короткий формат', 'доступ к тренировочным зонам', 'возможность попробовать клуб в деле']
+    name: 'Выходной Fit',
+    detail: 'Тренажерный зал\n(Пятница, суббота, воскресенье)',
+    value: '1700-00'
   },
   {
-    title: 'Месячный',
-    description:
-      'Оптимальный вариант для стабильных тренировок и уверенного прогресса. Подходит тем, кто хочет заниматься регулярно, пользоваться залом и включить тренировки в привычный ритм жизни.',
-    perks: ['комфортный формат на каждый день', 'регулярные тренировки и прогресс', 'удобное решение для постоянного посещения'],
-    featured: true
+    name: 'Безлимитный абонемент',
+    detail: 'на месяц в тренажерный\nзал и групповые\nтренировки',
+    value: '4200-00'
   },
   {
-    title: 'Годовой',
-    description:
-      'Максимально выгодный формат для тех, кто настроен на долгосрочный результат. Позволяет тренироваться системно, не выпадать из режима и чувствовать себя частью пространства клуба на постоянной основе.',
-    perks: ['лучший вариант на длительный срок', 'стабильность и системный результат', 'выгодный формат для постоянных тренировок']
+    name: 'Разовое посещение',
+    detail:
+      '430* рублей (с 07:30 – 22:00)\n330* рублей (7:00-22:00) Школьники, Студенты\n380* рублей (7:30-22:00) Инвалиды\n380* рублей (7:30-22:00) Пенсионеры',
+    value: ''
   }
+];
+
+const personalTrainingRows = [
+  { name: 'Разовое занятие', master: '1000 / 1050-00', trainer: '950-00' },
+  { name: 'Блок из 5 занятий', master: '4750-00 / 5000-00', trainer: '4500-00' },
+  { name: 'Блок из 10 занятий', master: '9300-00 / 9700-00', trainer: '8700-00' },
+  { name: 'Сплит 2 человека', master: '750-00 с каждого', trainer: '750-00 с каждого' },
+  { name: 'Блок из 10 занятий сплит', master: '7000-00 с каждого', trainer: '7000-00 с каждого' },
+  { name: 'Min группа', master: '600 с каждого', trainer: '600 с каждого' },
+  { name: 'Блок из 10 занятий', master: '5500-00 с каждого', trainer: '5500-00 с каждого' }
 ];
 
 const scheduleByDay: DaySchedule[] = [
@@ -229,7 +237,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const [mounted, setMounted] = useState(false);
   const [programPanelOpen, setProgramPanelOpen] = useState(false);
   const [clubImages] = useState<string[]>(initialClubImages);
-  const [scheduleImages] = useState<string[]>(initialScheduleImages);
+  const [scheduleImages] = useState<string[]>(initialScheduleImages.slice(0, 1));
   const [selectedProgram, setSelectedProgram] = useState(programCategories[0].items[0]);
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
@@ -238,7 +246,19 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
+    galleryLastFrameTimeRef.current = null;
     galleryResumeAtRef.current = performance.now() + delay;
+  };
+
+  const syncGalleryVirtualPosition = (viewport: HTMLDivElement) => {
+    const segmentWidth = viewport.scrollWidth / 2;
+    if (!segmentWidth) {
+      galleryVirtualScrollRef.current = viewport.scrollLeft;
+      return;
+    }
+
+    const normalizedScrollLeft = ((viewport.scrollLeft % segmentWidth) + segmentWidth) % segmentWidth;
+    galleryVirtualScrollRef.current = normalizedScrollLeft;
   };
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
@@ -313,16 +333,18 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     const tick = (timestamp: number) => {
       const segmentWidth = viewport.scrollWidth / 2;
       const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
-      const delta = Math.min(timestamp - lastFrameTime, 32);
+      const delta = Math.min(timestamp - lastFrameTime, isMobileViewport ? 20 : 28);
       galleryLastFrameTimeRef.current = timestamp;
       const paused = isGalleryHoveredRef.current || isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
-      if (!paused && segmentWidth > 0) {
-        viewport.scrollLeft += (pixelsPerSecond * delta) / 1000;
+      if (!isPaused(timestamp) && segmentWidth > 0) {
+        galleryVirtualScrollRef.current += (pixelsPerSecond * delta) / 1000;
 
-        if (viewport.scrollLeft >= segmentWidth) {
-          viewport.scrollLeft -= segmentWidth;
+        if (galleryVirtualScrollRef.current >= segmentWidth) {
+          galleryVirtualScrollRef.current -= segmentWidth;
         }
+
+        viewport.scrollLeft = galleryVirtualScrollRef.current;
       }
 
       animationFrame = window.requestAnimationFrame(tick);
@@ -418,7 +440,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 transition={{ duration: 1.05, ease: easeOut, delay: 0.28 }}
                 className="absolute inset-y-[28%] right-[6%] w-[22%] -skew-x-[30deg] bg-white/10 blur-3xl"
               />
-              <h1 className="relative flex flex-wrap text-[2.55rem] font-black uppercase leading-[0.84] tracking-[0.2em] text-white md:text-[6.4rem] md:tracking-[0.28em]">
+              <motion.div
+                initial={{ opacity: 0, x: -24 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.85, delay: 0.22, ease: easeOut }}
+                className="pointer-events-none absolute left-[9%] top-[20%] h-px w-[16%] bg-gradient-to-r from-lime/52 via-lime/14 to-transparent"
+              />
+              <h1 className="hero-wordmark premium-display relative inline-flex flex-wrap pb-1.5 text-[2.72rem] font-black uppercase leading-[0.83] tracking-[0.075em] text-white md:pb-2 md:text-[6.85rem] md:leading-[0.85] md:tracking-[0.108em]">
                 {heroTitleLetters.map((letter, index) => (
                   <motion.span
                     key={`${letter}-${index}`}
@@ -436,13 +464,40 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <motion.p variants={itemReveal} className="mt-3 text-lg tracking-[0.23em] text-soft/85 md:text-2xl">
               фитнес-клуб
             </motion.p>
-            <motion.p variants={itemReveal} className="mt-7 text-2xl font-semibold text-white md:text-4xl">
-              Энергия движения. Сила результата.
+            <motion.div variants={itemReveal} className="mt-7 flex items-center gap-3.5 md:mt-8 md:gap-4">
+              <span className="h-px w-11 bg-gradient-to-r from-lime/78 via-lime/18 to-transparent md:w-14" />
+              <span className="h-1.5 w-1.5 rounded-full bg-lime/78 shadow-[0_0_14px_rgba(200,214,0,0.26)]" />
+            </motion.div>
+            <motion.h2
+              variants={itemReveal}
+              className="hero-headline premium-display relative mt-[1.35rem] max-w-[15.8ch] pb-5 text-[2rem] font-semibold leading-[1.05] tracking-[-0.042em] text-white drop-shadow-[0_12px_24px_rgba(0,0,0,0.16)] md:mt-[1.45rem] md:max-w-[52rem] md:pb-6 md:text-[3.18rem] md:leading-[1.08] md:whitespace-nowrap md:[word-spacing:0.02em] lg:text-[3.28rem]"
+            >
+              <motion.span
+                aria-hidden="true"
+                initial={{ opacity: 0, scaleX: 0.88 }}
+                animate={{ opacity: 1, scaleX: 1 }}
+                transition={{ duration: 0.64, delay: 0.5, ease: easeOut }}
+                className="pointer-events-none absolute -bottom-0.5 left-0 h-px w-18 origin-left bg-gradient-to-r from-lime/66 via-lime/14 to-transparent md:w-24"
+              />
+              <motion.span
+                initial={{ opacity: 0, y: 24, filter: 'blur(9px)', clipPath: 'inset(0 0 100% 0)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0 0 0 0)' }}
+                transition={{ duration: 0.68, delay: 0.44, ease: easeOut }}
+                className="block bg-[linear-gradient(96deg,#ffffff_0%,#f7f7f3_32%,#eef0dd_68%,#f3f3ef_100%)] bg-clip-text text-transparent"
+              >
+                Энергия движения. Сила результата
+              </motion.span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ duration: 0.72, delay: 0.62, ease: easeOut }}
+              className="hero-supporting premium-body mt-[1.3rem] max-w-[30rem] text-pretty text-[0.96rem] font-light leading-[1.76] tracking-[0.01em] text-soft/78 md:mt-[1.35rem] md:max-w-[43rem] md:text-[1.01rem] md:leading-[1.82]"
+            >
+              <span className="md:block">Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
+              <span className="md:block">удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.</span>
             </motion.p>
-            <motion.p variants={itemReveal} className="mt-4 max-w-3xl text-sm leading-relaxed text-soft/85 md:text-base">
-              Современный фитнес-клуб с сильным ритмом тренировок, удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.
-            </motion.p>
-            <motion.div variants={itemReveal} className="mt-8 flex flex-wrap gap-4">
+            <motion.div variants={itemReveal} className="mt-10 flex flex-wrap gap-4 md:mt-11">
               <motion.button
                 type="button"
                 className="brand-button premium-transition"
@@ -597,7 +652,6 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             </motion.article>
           ))}
         </div>
-        <p className="mt-5 text-sm text-soft/60">Нажмите на название программы, чтобы открыть подробное описание в отдельной info-panel.</p>
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
@@ -665,7 +719,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                       transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                     />
                   )}
-                  <span className={`relative z-10 ${activeDay === day.day ? 'text-carbon' : 'text-soft'}`}>{day.day}</span>
+                  <span className={`schedule-tab-label premium-chip relative z-10 ${activeDay === day.day ? 'text-carbon' : 'text-soft/90'}`}>{day.day}</span>
                 </button>
               ))}
             </div>
@@ -686,7 +740,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     transition={{ duration: 0.24, delay: index * 0.04, ease: easeOut }}
                     className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 text-sm text-soft/90 transition hover:border-lime/25 hover:bg-white/[0.05]"
                   >
-                    {line}
+                    <span className="schedule-slot-copy block pl-2">{line}</span>
                   </motion.li>
                 ))}
               </motion.ul>
@@ -754,11 +808,15 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
         <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-6 md:p-8">
           <h2 className="text-2xl font-semibold text-white md:text-3xl">Контакты</h2>
           <div className="mt-5 grid gap-5 md:grid-cols-2">
-            <div className="space-y-3 text-sm text-soft/90">
-              <p>
-                <span className="text-lime">Адрес:</span> Сарапул, Первомайская 34
+            <div className="contact-copy premium-body space-y-3.5 text-sm">
+              <p className="contact-address-row text-[0.98rem]">
+                <span className="premium-label mr-2 text-[0.72rem] uppercase tracking-[0.24em] text-lime/92">Адрес</span>
+                <span className="contact-address-copy premium-display tracking-[-0.015em] text-white">
+                  <span className="text-soft/84">Сарапул, </span>
+                  <span className="contact-address-highlight">Первомайская 34</span>
+                </span>
               </p>
-              <div className="grid gap-2">
+              <div className="grid gap-2.5">
                 {phones.map((phone) => (
                   <motion.a
                     key={phone.href}
@@ -797,13 +855,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 <p className="text-xs uppercase tracking-[0.22em] text-lime">Время работы клуба</p>
                 <div className="mt-4 space-y-3">
                   {clubHours.map((item) => (
-                    <div key={item.label} className="flex items-center justify-between gap-4 border-b border-white/10 pb-2 last:border-0 last:pb-0">
-                      <span className="font-medium text-white">{item.label}</span>
-                      <span className="text-soft/80">{item.value}</span>
+                    <div key={item.label} className="contact-hours-row flex items-center justify-between gap-4 border-b border-white/10 pb-2.5 last:border-0 last:pb-0">
+                      <span className="premium-display text-[0.98rem] font-medium tracking-[-0.015em] text-white">{item.label}</span>
+                      <span className="premium-body text-[0.93rem] text-soft/78">{item.value}</span>
                     </div>
                   ))}
                 </div>
-                <p className="mt-4 rounded-2xl border border-lime/20 bg-lime/10 px-3 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-lime">
+                <p className="contact-hours-note mt-4 rounded-2xl border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-3 text-[0.68rem] font-semibold uppercase text-lime/92">
                   Клиенты покидают клуб за 15 минут до закрытия
                 </p>
               </div>
@@ -863,10 +921,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   <div className="relative max-h-[min(86vh,900px)] overflow-y-auto p-5 md:p-7">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-3">
-                        <span className="inline-flex items-center rounded-full border border-lime/25 bg-lime/[0.08] px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.28em] text-lime/90">
+                        <span className="program-panel-label premium-chip inline-flex items-center rounded-full border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-1.5 text-[0.62rem] font-medium uppercase text-lime/92">
                           {selectedProgramCategory}
                         </span>
-                        <p className="text-[0.68rem] uppercase tracking-[0.34em] text-soft/50">Программа клуба «Энерджи»</p>
+                        <p className="program-panel-kicker premium-label text-[0.63rem] uppercase text-soft/52">Программа клуба «Энерджи»</p>
                       </div>
                       <ProgramPanelCloseButton onClick={closeProgramPanel} />
                     </div>
@@ -883,7 +941,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         <div className="max-w-3xl">
                           <h3 className="text-[2rem] font-semibold leading-[1.02] tracking-[-0.03em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
                           <div className="mt-4 h-px w-24 bg-gradient-to-r from-lime via-lime/30 to-transparent" />
-                          <p className="mt-5 max-w-2xl text-[0.97rem] leading-7 text-soft/82 md:text-[1.02rem]">{programDetails[selectedProgram]}</p>
+                          <p className="program-panel-copy premium-body mt-5 max-w-[38rem] text-[0.99rem] font-light text-soft/84 md:text-[1.04rem]">{programDetails[selectedProgram]}</p>
                         </div>
 
                         <div className="grid gap-3 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
@@ -891,13 +949,13 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                             <p className="text-[0.68rem] uppercase tracking-[0.28em] text-lime/80">Фокус тренировки</p>
                             <p className="mt-3 text-sm leading-6 text-soft/76 md:text-[0.95rem]">{selectedProgramHighlight}</p>
                           </div>
-                          <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-4 py-4">
-                            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-soft/55">Ритм и акценты</p>
+                          <div className="program-panel-block rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-[1.125rem] py-[1.125rem]">
+                            <p className="program-panel-block-title premium-label text-[0.63rem] uppercase text-soft/58">Ритм и акценты</p>
                             <div className="mt-3 flex flex-wrap gap-2">
                               {selectedProgramTags.map((tag) => (
                                 <span
                                   key={tag}
-                                  className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[0.72rem] uppercase tracking-[0.18em] text-soft/78"
+                                  className="program-panel-chip premium-chip rounded-full border px-3.5 py-1.5 text-[0.68rem] font-medium uppercase text-soft/82"
                                 >
                                   {tag}
                                 </span>
