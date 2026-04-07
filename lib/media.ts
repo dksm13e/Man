@@ -14,7 +14,6 @@ export const PERMANENT_CLUB_IMAGES = [
   'https://i.ibb.co/wrWH7kCY/5-13.jpg',
   'https://i.ibb.co/bgZSF6Tr/5-14.jpg',
   'https://i.ibb.co/6c4bV9VF/5-15.jpg',
-  'https://i.ibb.co/jPHrMwCJ/2679.jpg',
   'https://i.ibb.co/Jw2ss2NX/2703.jpg',
   'https://i.ibb.co/Df7h7Z8w/2712.jpg',
   'https://i.ibb.co/6J0CHTdy/2715.jpg',
@@ -50,7 +49,8 @@ export const PERMANENT_CLUB_IMAGES = [
   'https://i.ibb.co/gZKFchB9/4103.jpg',
   'https://i.ibb.co/FbYBckrM/4120.jpg',
   'https://i.ibb.co/RpScsJh5/4123.jpg',
-  ] as const;
+] as const;
+export const PERMANENT_SCHEDULE_IMAGES = ['https://i.ibb.co/Vp9Tyr7W/3.jpg'] as const;
 
 const mediaPaths: Record<string, string[]> = {
   'club-atmosphere': ['images/club-atmosphere'],
