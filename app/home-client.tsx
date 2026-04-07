@@ -65,11 +65,11 @@ const heroTitleLetters = Array.from('ЭНЕРДЖИ');
 const heroLetterSpacingAdjustments = ['0.024em', '0.01em', '0.012em', '0.022em', '0.008em', '0.024em', '0em'] as const;
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const sectionReveal = {
-  hidden: { opacity: 0, y: 26 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.88, ease: easeOut }
+    transition: { duration: 0.82, ease: easeOut }
   }
 } as const;
 const staggerReveal = {
@@ -82,30 +82,30 @@ const staggerReveal = {
   }
 } as const;
 const itemReveal = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.68, ease: easeOut }
+    transition: { duration: 0.62, ease: easeOut }
   }
 } as const;
 const softPanelReveal = {
-  hidden: { opacity: 0, y: 16, scale: 0.994 },
+  hidden: { opacity: 0, y: 18, scale: 0.992 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.64, ease: easeOut }
+    transition: { duration: 0.58, ease: easeOut }
   }
 } as const;
-const modalOverlayTransition = { duration: 0.32, ease: easeOut } as const;
-const modalPanelTransition = { duration: 0.36, ease: easeOut } as const;
-const lightboxOverlayTransition = { duration: 0.38, ease: easeOut } as const;
-const lightboxPanelTransition = { duration: 0.42, ease: easeOut } as const;
-const lightboxImageTransition = { duration: 0.46, ease: easeOut } as const;
+const modalOverlayTransition = { duration: 0.28, ease: easeOut } as const;
+const modalPanelTransition = { duration: 0.32, ease: easeOut } as const;
+const lightboxOverlayTransition = { duration: 0.34, ease: easeOut } as const;
+const lightboxPanelTransition = { duration: 0.38, ease: easeOut } as const;
+const lightboxImageTransition = { duration: 0.42, ease: easeOut } as const;
 const ctaMotion = {
-  whileHover: { y: -1.5, scale: 1.006 },
-  whileTap: { scale: 0.988 }
+  whileHover: { y: -2, scale: 1.008 },
+  whileTap: { scale: 0.985 }
 } as const;
 
 function ModalCloseButton({ onClick }: { onClick: () => void }) {
@@ -176,49 +176,7 @@ function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next
   );
 }
 
-const clubCardColumns = ['30 дней', '3 месяца', '6 месяцев', '12 месяцев'];
-
-const clubCardRows = [
-  {
-    name: 'Безлимитная карта',
-    note: 'Тренажерный зал',
-    time: 'С 7:00 до 21:00',
-    prices: ['Нал - 3150', 'Нал - 7450', 'Нал - 13100', 'Нал - 23100']
-  },
-  {
-    name: 'Безлимитная карта',
-    note: 'Тренажерный зал',
-    time: 'С 7:00 до 17:00',
-    prices: ['', '', '', '17900']
-  }
-];
-
-const subscriptionRows = [
-  {
-    name: 'Утренний',
-    detail: 'С 7:00 до 13:00',
-    value: ''
-  },
-  {
-    name: 'Акция с 14:00 до 16:00',
-    detail: '8 посещений (1 месяц)',
-    value: '1500-00'
-  },
-  {
-    name: 'Школьники, студенты',
-    detail: '8 посещений (1 месяц)\n10 посещений (1 месяц)',
-    value: '2210-00\n2650-00'
-  },
-  {
-    name: 'Универсальный',
-    detail: 'С 7:30 до 21:00\n8 посещений (1 месяц)\n10 посещений (1 месяц)',
-    value: '2750-00\n3350-00'
-  },
-  {
-    name: 'Пенсионеры, Корпоративный',
-    detail: '8 посещений (1 месяц)\n10 посещений (1 месяц)',
-    value: '2650-00\n3250-00'
-  },
+const tariffs = [
   {
     name: 'Выходной Fit',
     detail: 'Тренажерный зал\n(Пятница, суббота, воскресенье)',
@@ -284,7 +242,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const galleryViewportRef = useRef<HTMLDivElement | null>(null);
   const galleryResumeAtRef = useRef(0);
   const galleryLastFrameTimeRef = useRef<number | null>(null);
-  const galleryVirtualScrollRef = useRef(0);
+  const isGalleryHoveredRef = useRef(false);
   const isGalleryInteractingRef = useRef(false);
 
   const pauseGalleryAutoplay = (delay = 1800) => {
@@ -366,14 +324,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     const viewport = galleryViewportRef.current;
     if (!viewport || clubImages.length <= 1 || shouldReduceMotion) return;
 
-    syncGalleryVirtualPosition(viewport);
-
-    const isPaused = (timestamp: number) =>
-      isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
+    viewport.scrollLeft = 0;
 
     let animationFrame = 0;
-    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-    const pixelsPerSecond = isMobileViewport ? 36 : 31;
+    const pixelsPerSecond = 31;
     galleryLastFrameTimeRef.current = null;
 
     const tick = (timestamp: number) => {
@@ -381,6 +335,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
       const delta = Math.min(timestamp - lastFrameTime, isMobileViewport ? 20 : 28);
       galleryLastFrameTimeRef.current = timestamp;
+      const paused = isGalleryHoveredRef.current || isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
 
       if (!isPaused(timestamp) && segmentWidth > 0) {
         galleryVirtualScrollRef.current += (pixelsPerSecond * delta) / 1000;
@@ -439,8 +394,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   };
 
   return (
-    <main className="site-bg relative bg-carbon text-soft">
-      <section className="hero-backdrop section-accent hero-scene relative min-h-[39rem] pt-12 pb-11 md:min-h-[41rem] md:pt-16 md:pb-14">
+    <main className="site-bg relative overflow-x-hidden bg-carbon text-soft">
+      <section className="hero-backdrop section-accent hero-scene relative pt-12 md:pt-16">
         <motion.div
           initial={{ opacity: 0.38, x: -22, y: -6 }}
           animate={{ opacity: shouldReduceMotion ? 0.54 : 0.78, x: shouldReduceMotion ? 0 : 22, y: shouldReduceMotion ? 0 : 6 }}
@@ -466,24 +421,24 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           className="pointer-events-none absolute bottom-[14%] right-0 hidden h-px w-[26vw] max-w-[22rem] bg-gradient-to-l from-transparent via-white/18 to-transparent md:block"
         />
 
-        <div className="section-shell relative z-10 overflow-visible">
-          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="hero-copy-shell relative max-w-[54rem] overflow-visible px-1 pt-[3.35rem] pb-[3.35rem] md:px-2 md:pt-[4.35rem] md:pb-[4rem]">
-            <motion.p variants={itemReveal} className="premium-label mb-4 text-xs uppercase tracking-[0.4em] text-lime/90">
+        <div className="section-shell relative z-10">
+          <motion.div variants={staggerReveal} initial="hidden" animate="visible" className="relative max-w-5xl px-1 py-12 md:px-2 md:py-16">
+            <motion.p variants={itemReveal} className="mb-3 text-xs uppercase tracking-[0.4em] text-lime/90">
               Сарапул • Первомайская 34
             </motion.p>
 
-            <div className="relative overflow-visible">
+            <div className="relative overflow-hidden">
               <motion.div
-                initial={{ opacity: 0, x: -38, scaleX: 0.94 }}
-                animate={{ opacity: 0.12, x: 0, scaleX: 1 }}
+                initial={{ opacity: 0, x: -44, scaleX: 0.92 }}
+                animate={{ opacity: 0.24, x: 0, scaleX: 1 }}
                 transition={{ duration: 1, ease: easeOut, delay: 0.16 }}
-                className="absolute inset-y-[18%] left-[8%] w-[36%] -skew-x-[22deg] bg-lime/[0.07] blur-[24px]"
+                className="absolute inset-y-[12%] left-0 w-[62%] -skew-x-[28deg] bg-lime/10 blur-2xl"
               />
               <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 0.07, x: 0 }}
+                initial={{ opacity: 0, x: 34 }}
+                animate={{ opacity: 0.18, x: 0 }}
                 transition={{ duration: 1.05, ease: easeOut, delay: 0.28 }}
-                className="absolute inset-y-[30%] right-[11%] w-[14%] -skew-x-[26deg] bg-white/[0.045] blur-[30px]"
+                className="absolute inset-y-[28%] right-[6%] w-[22%] -skew-x-[30deg] bg-white/10 blur-3xl"
               />
               <motion.div
                 initial={{ opacity: 0, x: -24 }}
@@ -498,8 +453,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     initial={{ opacity: 0, y: 54, filter: 'blur(10px)', clipPath: 'inset(100% 0% 0% 0%)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)', clipPath: 'inset(0% 0% 0% 0%)' }}
                     transition={{ duration: 0.76, delay: 0.24 + index * 0.06, ease: easeOut }}
-                    className="inline-block bg-gradient-to-b from-white via-white to-[#f4f4ef] bg-clip-text text-transparent drop-shadow-[0_6px_12px_rgba(0,0,0,0.12)]"
-                    style={{ marginRight: heroLetterSpacingAdjustments[index] }}
+                    className="inline-block drop-shadow-[0_10px_28px_rgba(0,0,0,0.28)]"
                   >
                     {letter}
                   </motion.span>
@@ -507,7 +461,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </h1>
             </div>
 
-            <motion.p variants={itemReveal} className="hero-kicker premium-label mt-[1.15rem] text-[0.76rem] font-medium uppercase tracking-[0.58em] text-soft/56 md:mt-[1.35rem] md:text-[0.95rem] md:tracking-[0.68em]">
+            <motion.p variants={itemReveal} className="mt-3 text-lg tracking-[0.23em] text-soft/85 md:text-2xl">
               фитнес-клуб
             </motion.p>
             <motion.div variants={itemReveal} className="mt-7 flex items-center gap-3.5 md:mt-8 md:gap-4">
@@ -568,53 +522,51 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </section>
 
       <motion.section className="section-shell section-accent pt-12 md:pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <h2 className="premium-display mb-5 text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Залы и атмосфера</h2>
+        <h2 className="mb-5 text-2xl font-semibold text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="gallery-rail relative">
           {galleryLoopImages.length > 0 ? (
             <div className="gallery-edge-shell">
               <motion.div
                 ref={galleryViewportRef}
-                className="-mx-4 flex gap-[0.55rem] overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-[0.68rem]"
+                className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-4 scrollbar-hidden md:gap-6"
                 variants={staggerReveal}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.2 }}
+                onMouseEnter={() => {
+                  isGalleryHoveredRef.current = true;
+                }}
+                onMouseLeave={() => {
+                  isGalleryHoveredRef.current = false;
+                  pauseGalleryAutoplay(900);
+                }}
                 onPointerDown={() => {
                   isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(2600);
                 }}
-                onPointerUp={(event) => {
+                onPointerUp={() => {
                   isGalleryInteractingRef.current = false;
-                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(1800);
                 }}
-                onPointerCancel={(event) => {
+                onPointerCancel={() => {
                   isGalleryInteractingRef.current = false;
-                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(1800);
                 }}
-                onPointerLeave={(event) => {
-                  if (isGalleryInteractingRef.current) {
-                    syncGalleryVirtualPosition(event.currentTarget);
-                  }
+                onPointerLeave={() => {
                   isGalleryInteractingRef.current = false;
                 }}
                 onTouchStart={() => {
                   isGalleryInteractingRef.current = true;
                   pauseGalleryAutoplay(3000);
                 }}
-                onTouchEnd={(event) => {
+                onTouchEnd={() => {
                   isGalleryInteractingRef.current = false;
-                  syncGalleryVirtualPosition(event.currentTarget);
                   pauseGalleryAutoplay(2200);
                 }}
-                onWheel={(event) => {
-                  syncGalleryVirtualPosition(event.currentTarget);
+                onWheel={() => {
                   pauseGalleryAutoplay(1800);
                 }}
-                onScroll={(event) => {
-                  syncGalleryVirtualPosition(event.currentTarget);
-
+                onScroll={() => {
                   if (isGalleryInteractingRef.current) {
                     pauseGalleryAutoplay(1800);
                   }
@@ -628,10 +580,10 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     variants={itemReveal}
                     whileHover={{ y: -5 }}
                     whileTap={{ scale: 0.995 }}
-                    transition={{ duration: 0.32, ease: easeOut }}
-                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,rgba(45,44,39,0.72),rgba(23,22,19,0.96))] p-[1.5px] text-left shadow-[0_0_0_1px_rgba(29,28,24,0.78),0_18px_44px_rgba(0,0,0,0.18)] outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 md:h-[378px] md:min-w-[48%]"
+                    transition={{ duration: 0.28, ease: easeOut }}
+                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-[7px] text-left shadow-[0_18px_44px_rgba(0,0,0,0.2)] md:h-[378px] md:min-w-[48%]"
                   >
-                    <div className="absolute inset-px rounded-[1.86rem] bg-[linear-gradient(180deg,rgba(24,23,20,0.74),rgba(14,14,12,0.9))]" />
+                    <div className="absolute inset-[7px] rounded-[1.65rem] bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.005))]" />
                     <div className="relative h-full w-full overflow-hidden rounded-[1.65rem] bg-charcoal">
                       <motion.img
                         src={src}
@@ -641,9 +593,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         whileHover={{ scale: 1.035 }}
                         transition={{ duration: 0.6, ease: easeOut }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/0 opacity-78 transition-opacity duration-400 group-hover:opacity-86" />
-                      <div className="absolute inset-0 rounded-[1.65rem] shadow-[inset_0_0_0_1px_rgba(60,58,52,0.18)]" />
-                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.01),transparent_18%)] opacity-[0.07] transition-opacity duration-500 group-hover:opacity-[0.12]" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-white/6 opacity-90 transition-opacity duration-400 group-hover:opacity-100" />
+                      <div className="absolute inset-0 rounded-[1.65rem] ring-1 ring-inset ring-white/8" />
                     </div>
                   </motion.button>
                 ))}
@@ -659,37 +610,40 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <motion.div variants={staggerReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.18 }}>
-          <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
+          <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
             Групповые программы
           </motion.h2>
+          <motion.p variants={itemReveal} className="mt-2 max-w-2xl text-soft/75">
+            Сильная сетка направлений без перегруженных описаний — только понятная и современная навигация по программам.
+          </motion.p>
         </motion.div>
-        <div className="mt-8 grid gap-4 md:mt-9 md:grid-cols-3">
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
           {programCategories.map((category, categoryIndex) => (
             <motion.article
               key={category.title}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.74, delay: categoryIndex * 0.06, ease: easeOut }}
-              whileHover={{ y: -3 }}
-              className="program-card glass-card rounded-[1.85rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.022))] p-[1.5rem] shadow-card md:p-[1.65rem]"
+              transition={{ duration: 0.68, delay: categoryIndex * 0.06, ease: easeOut }}
+              whileHover={{ y: -4 }}
+              className="glass-card rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 shadow-card"
             >
-              <h3 className="program-card-title premium-display mb-3.5 text-[1.12rem] font-semibold text-white md:text-[1.18rem]">{category.title}</h3>
-              <p className="program-card-copy premium-body mb-[1.35rem] max-w-[24rem] text-[0.92rem] font-light text-soft/74">{programCategoryHighlights[category.title]}</p>
+              <h3 className="mb-3 text-lg font-semibold text-lime">{category.title}</h3>
+              <p className="mb-4 text-sm leading-relaxed text-soft/65">{programCategoryHighlights[category.title]}</p>
               <div className="flex flex-wrap gap-2">
                 {category.items.map((item) => (
                   <motion.button
                     key={item}
                     type="button"
                     onClick={() => openProgramPanel(item)}
-                    className={`program-card-chip premium-chip rounded-full border px-3.5 py-[0.58rem] text-[0.72rem] font-medium transition ${
+                    className={`rounded-full border px-3 py-1.5 text-xs transition ${
                       selectedProgram === item && programPanelOpen
-                        ? 'program-card-chip-active'
-                        : 'hover:border-lime/28 hover:bg-white/[0.06] hover:text-white'
+                        ? 'border-lime/60 bg-lime/15 text-white shadow-[0_10px_24px_rgba(200,214,0,0.16)]'
+                        : 'border-white/15 bg-white/[0.04] text-soft/90 hover:border-lime/35 hover:bg-lime/[0.08]'
                     }`}
-                    whileHover={{ y: -0.5 }}
-                    whileTap={{ scale: 0.985 }}
-                    transition={{ duration: 0.26, ease: easeOut }}
+                    whileHover={{ y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.22, ease: easeOut }}
                   >
                     {item}
                   </motion.button>
@@ -701,139 +655,67 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
+        <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
           Тарифы
         </motion.h2>
-        <p className="premium-body mt-3 max-w-3xl text-[0.96rem] text-soft/82">Клубные карты, абонементы и персональные тренировки</p>
-
-        <div className="mt-8 space-y-5 md:mt-9">
-          <motion.article
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.18 }}
-            transition={{ duration: 0.76, ease: easeOut }}
-            className="tariff-card tariff-card-standard rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
-          >
-            <p className="premium-label text-[0.66rem] uppercase tracking-[0.26em] text-lime/88">Система оплаты в ФК «Energy» с 12.01.2026</p>
-            <h3 className="tariff-title premium-display mt-3 text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Клубные карты</h3>
-            <p className="premium-chip mt-2 text-[0.75rem] text-soft/65">Вид клубной карты / Срок действия клубной карты</p>
-            <div className="mt-4 overflow-x-auto">
-              <table className="pricing-table min-w-[760px]">
-                <thead>
-                  <tr>
-                    <th>Вид клубной карты</th>
-                    {clubCardColumns.map((column) => (
-                      <th key={column}>{column}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {clubCardRows.map((row) => (
-                    <tr key={`${row.name}-${row.time}`}>
-                      <td>
-                        <p className="font-medium text-[#f0eee2]">{row.name}</p>
-                        <p className="mt-1 text-soft/70">{row.note}</p>
-                        <p className="mt-1 text-soft/62">{row.time}</p>
-                      </td>
-                      {row.prices.map((price, index) => (
-                        <td key={`${row.time}-${clubCardColumns[index]}`}>{price || '—'}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.18 }}
-            transition={{ duration: 0.76, delay: 0.05, ease: easeOut }}
-            className="tariff-card tariff-card-standard rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
-          >
-            <h3 className="tariff-title premium-display text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Абонементы</h3>
-            <p className="premium-chip mt-2 text-[0.75rem] text-soft/65">Вид абонемента / Количество занятий и срок действия абонемента (месяц)</p>
-            <div className="mt-4 overflow-x-auto">
-              <table className="pricing-table min-w-[760px]">
-                <thead>
-                  <tr>
-                    <th>Вид абонемента</th>
-                    <th>Количество занятий и срок действия</th>
-                    <th>Стоимость</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {subscriptionRows.map((row) => (
-                    <tr key={`${row.name}-${row.detail}`}>
-                      <td className="font-medium text-[#f0eee2]">{row.name}</td>
-                      <td>{row.detail}</td>
-                      <td>{row.value || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.article>
-
-          <motion.article
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.18 }}
-            transition={{ duration: 0.76, delay: 0.1, ease: easeOut }}
-            className="tariff-card tariff-card-featured rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
-          >
-            <p className="premium-label text-[0.66rem] uppercase tracking-[0.26em] text-lime/88">СИСТЕМА ОПЛАТЫ ПЕРСОНАЛЬНЫХ ТРЕНИРОВОК ФИТНЕС КЛУБА «ENERGY» С 12.01.2026</p>
-            <h3 className="tariff-title premium-display mt-3 text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Абонементы</h3>
-            <p className="premium-display mt-1 text-[1.02rem] font-medium text-[#f5f2e9]">Персональные тренировки</p>
-            <div className="mt-4 overflow-x-auto">
-              <table className="pricing-table min-w-[760px]">
-                <thead>
-                  <tr>
-                    <th>Вид абонемента персональной тренировки</th>
-                    <th>«Мастер-тренер»</th>
-                    <th>«Тренер»</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {personalTrainingRows.map((row, index) => (
-                    <tr key={`${row.name}-${row.master}-${index}`}>
-                      <td className="font-medium text-[#f0eee2]">{row.name}</td>
-                      <td>{row.master}</td>
-                      <td>{row.trainer}</td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td className="font-medium text-[#f0eee2]">Дополнительно</td>
-                    <td>1570 Клубная карта</td>
-                    <td>1200 Клубная карта (дети)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <p className="premium-body mt-4 text-[0.82rem] text-soft/72">*(час на персональное занятие, более – приобретается «клубная карта»)</p>
-          </motion.article>
+        <motion.p variants={itemReveal} className="mt-2 max-w-3xl text-soft/75">
+          Выберите удобный формат посещения и держите тренировочный ритм в том темпе, который подходит именно вам.
+        </motion.p>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {tariffs.map((tariff, index) => (
+            <motion.article
+              key={tariff.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.18 }}
+              transition={{ duration: 0.7, delay: index * 0.07, ease: easeOut }}
+              whileHover={{ y: -6, scale: 1.012 }}
+              whileTap={{ scale: 0.995 }}
+              className={`rounded-[1.9rem] p-5 shadow-card premium-transition ${
+                tariff.featured
+                  ? 'glass-card border-lime/35 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(255,255,255,0.04))]'
+                  : 'glass-card bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))]'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <h3 className={`text-xl font-semibold ${tariff.featured ? 'text-lime' : 'text-white'}`}>{tariff.title}</h3>
+                {tariff.featured && <span className="rounded-full border border-lime/25 bg-lime/10 px-3 py-1 text-[0.66rem] uppercase tracking-[0.2em] text-lime">выбор клуба</span>}
+              </div>
+              <p className="mt-3 text-sm leading-relaxed text-soft/85">{tariff.description}</p>
+              <ul className="mt-4 space-y-2 text-sm text-soft/85">
+                {tariff.perks.map((perk) => (
+                  <li key={perk} className="flex items-start gap-2">
+                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
+                    <span>{perk}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.article>
+          ))}
         </div>
       </motion.section>
 
       <motion.section id="schedule" className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
+        <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
           Расписание тренировок
         </motion.h2>
-        <div className="mt-8 grid gap-5 md:mt-9 lg:grid-cols-[1.35fr_1fr]">
-          <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="schedule-shell glass-card rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-[1.4rem] md:p-[1.6rem]">
-            <div className="mb-5 flex flex-wrap gap-2.5">
+        <motion.p variants={itemReveal} className="mt-2 max-w-3xl text-soft/75">
+          Выберите день и задайте темп недели. Полное фото расписания открывается мягко и сразу, без лишних шагов.
+        </motion.p>
+        <div className="mt-6 grid gap-5 lg:grid-cols-[1.35fr_1fr]">
+          <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5">
+            <div className="mb-5 flex flex-wrap gap-2">
               {scheduleByDay.map((day) => (
                 <button
                   key={day.day}
                   type="button"
                   onClick={() => setActiveDay(day.day)}
-                  className="schedule-tab premium-chip relative rounded-full px-4 py-2.5 text-sm text-soft outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/35"
+                  className="relative rounded-full px-4 py-2 text-sm text-soft transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lime/35"
                 >
                   {activeDay === day.day && (
                     <motion.span
                       layoutId="active-day-pill"
-                      className="absolute inset-0 rounded-full bg-[linear-gradient(180deg,rgba(216,230,0,1),rgba(198,214,0,0.94))] shadow-[0_10px_26px_rgba(200,214,0,0.24)]"
+                      className="absolute inset-0 rounded-full bg-lime shadow-[0_8px_20px_rgba(200,214,0,0.28)]"
                       transition={{ type: 'spring', stiffness: 320, damping: 28 }}
                     />
                   )}
@@ -856,7 +738,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.24, delay: index * 0.04, ease: easeOut }}
-                    className="schedule-slot premium-body rounded-[1.15rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.032),rgba(255,255,255,0.018))] px-4 py-3 text-sm text-soft/90 transition hover:border-lime/22 hover:bg-white/[0.048]"
+                    className="rounded-xl border border-white/10 bg-white/[0.025] px-3 py-2.5 text-sm text-soft/90 transition hover:border-lime/25 hover:bg-white/[0.05]"
                   >
                     <span className="schedule-slot-copy block pl-2">{line}</span>
                   </motion.li>
@@ -875,78 +757,56 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             whileHover={{ y: -4, scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
             transition={{ duration: 0.26, ease: easeOut }}
-            className="glass-card schedule-preview premium-transition rounded-[1.9rem] border border-white/10 p-[1.6rem] text-left shadow-card outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0"
+            className="glass-card schedule-preview premium-transition rounded-[1.9rem] border border-white/10 p-6 text-left shadow-card outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0"
           >
-            <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-lime/90">Расписание клуба</p>
-            <h3 className="schedule-promo-title premium-display mt-3 text-[1.82rem] font-semibold text-white">Открыть полное расписание</h3>
+            <p className="text-xs uppercase tracking-[0.22em] text-lime">Официальная сетка</p>
+            <h3 className="mt-3 text-2xl font-semibold text-white">Открыть полное расписание</h3>
+            <p className="mt-2 text-sm text-soft/80">Четкий просмотр фото в фирменном lightbox, с плавным открытием и удобным закрытием.</p>
           </motion.button>
         </div>
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
+        <motion.h2 variants={itemReveal} className="text-2xl font-semibold text-white md:text-3xl">
           Частые вопросы
         </motion.h2>
         <div className="mt-5 space-y-3">
           {faq.map((entry, index) => (
             <motion.div
               key={entry.q}
-              layout
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6, delay: index * 0.03, ease: easeOut }}
-              className="faq-item glass-card rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.038),rgba(255,255,255,0.02))]"
+              className="glass-card rounded-2xl border border-white/10 bg-white/[0.03]"
             >
-              <button className="flex w-full items-center justify-between gap-4 px-5 py-4.5 text-left md:px-5.5 md:py-5" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
-                <span className="faq-question premium-display text-[1rem] font-medium tracking-[-0.018em] md:text-[1.04rem]">{entry.q}</span>
-                <motion.span
-                  animate={{ scale: activeFaq === index ? 1.02 : 1 }}
-                  transition={{ duration: 0.3, ease: easeOut }}
-                  className="faq-indicator inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
-                >
-                  <svg aria-hidden="true" viewBox="0 0 20 20" className="faq-indicator-mark h-[1rem] w-[1rem]">
-                    <path d="M5.25 10H14.75" />
-                    <motion.path
-                      d="M10 5.25V14.75"
-                      animate={{ opacity: activeFaq === index ? 0 : 1, scaleY: activeFaq === index ? 0.7 : 1 }}
-                      transition={{ duration: 0.22, ease: easeOut }}
-                      style={{ originX: '50%', originY: '50%' }}
-                    />
-                  </svg>
+              <button className="flex w-full items-center justify-between px-4 py-4 text-left" onClick={() => setActiveFaq(activeFaq === index ? null : index)}>
+                <span className="text-sm font-medium text-white md:text-base">{entry.q}</span>
+                <motion.span animate={{ rotate: activeFaq === index ? 180 : 0 }} transition={{ duration: 0.24, ease: easeOut }} className="text-lime">
+                  {activeFaq === index ? '−' : '+'}
                 </motion.span>
               </button>
-              <motion.div
-                initial={false}
-                animate={{
-                  gridTemplateRows: activeFaq === index ? '1fr' : '0fr',
-                  opacity: activeFaq === index ? 1 : 0.68
-                }}
-                transition={{ duration: 0.34, ease: easeOut }}
-                className="faq-answer-wrap grid"
-              >
-                <div className="overflow-hidden">
+              <AnimatePresence initial={false}>
+                {activeFaq === index && (
                   <motion.div
-                    initial={false}
-                    animate={{
-                      y: activeFaq === index ? 0 : -8,
-                      opacity: activeFaq === index ? 1 : 0
-                    }}
-                    transition={{ duration: 0.28, ease: easeOut }}
-                    className="faq-answer premium-body px-5 pb-5 pr-12 text-[0.94rem] font-light md:px-5.5 md:pb-5"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.26, ease: easeOut }}
+                    className="overflow-hidden px-4 pb-4 text-sm leading-6 text-soft/80"
                   >
                     {entry.a}
                   </motion.div>
-                </div>
-              </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           ))}
         </div>
       </motion.section>
 
       <motion.section className="section-shell section-accent py-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="contact-shell glass-card rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-6 md:p-8">
-          <h2 className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Контакты</h2>
+        <motion.div variants={softPanelReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="glass-card rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-6 md:p-8">
+          <h2 className="text-2xl font-semibold text-white md:text-3xl">Контакты</h2>
           <div className="mt-5 grid gap-5 md:grid-cols-2">
             <div className="contact-copy premium-body space-y-3.5 text-sm">
               <p className="contact-address-row text-[0.98rem]">
@@ -962,11 +822,11 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     key={phone.href}
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.995 }}
-                    className="contact-link-card group flex items-center justify-between rounded-[1.2rem] border border-white/15 bg-[linear-gradient(180deg,rgba(255,255,255,0.038),rgba(255,255,255,0.024))] px-4 py-3.5 transition hover:border-lime/28 hover:bg-white/[0.048]"
+                    className="group flex items-center justify-between rounded-xl border border-white/15 bg-white/[0.03] px-3 py-3 transition hover:border-lime/32 hover:bg-white/[0.05]"
                     href={phone.href}
                   >
-                    <span className="contact-link-label premium-label text-[0.68rem] uppercase">{phone.label}</span>
-                    <span className="contact-link-value premium-display text-[1.03rem] font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
+                    <span className="text-soft/70">{phone.label}</span>
+                    <span className="font-semibold text-white transition group-hover:translate-x-0.5">{phone.display}</span>
                   </motion.a>
                 ))}
               </div>
@@ -991,8 +851,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   Позвонить
                 </motion.button>
               </div>
-              <div className="contact-hours rounded-[1.6rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-                <p className="premium-label text-[0.68rem] uppercase tracking-[0.28em] text-lime/90">Время работы клуба</p>
+              <div className="rounded-[1.6rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
+                <p className="text-xs uppercase tracking-[0.22em] text-lime">Время работы клуба</p>
                 <div className="mt-4 space-y-3">
                   {clubHours.map((item) => (
                     <div key={item.label} className="contact-hours-row flex items-center justify-between gap-4 border-b border-white/10 pb-2.5 last:border-0 last:pb-0">
@@ -1009,7 +869,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             <iframe
               title="Карта фитнес-клуба"
               src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D0%B0%D1%80%D0%B0%D0%BF%D1%83%D0%BB%2C%20%D0%9F%D0%B5%D1%80%D0%B2%D0%BE%D0%BC%D0%B0%D0%B9%D1%81%D0%BA%D0%B0%D1%8F%2034&z=16"
-              className="contact-map-frame h-64 w-full rounded-2xl border border-white/15 bg-charcoal/70"
+              className="h-64 w-full rounded-2xl border border-white/15 bg-charcoal/70"
               loading="lazy"
             />
           </div>
@@ -1030,33 +890,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
             transition={{ duration: 0.24, ease: easeOut }}
           >
             <span className="pointer-events-none absolute inset-[1px] rounded-full border border-white/35 opacity-50" />
-            <svg aria-hidden="true" viewBox="0 0 24 24" className="relative h-[1.42rem] w-[1.42rem]" fill="none">
-              <defs>
-                <linearGradient id="mobile-call-highlight" x1="7.2" y1="6.1" x2="16.6" y2="16.9" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#F7F7F2" stopOpacity="0.88" />
-                  <stop offset="0.58" stopColor="#F7F7F2" stopOpacity="0.22" />
-                  <stop offset="1" stopColor="#F7F7F2" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path
-                d="M9.06 4.55c0.56-0.32 1.18-0.17 1.52 0.33l1.08 1.62c0.29 0.44 0.28 1.02-0.02 1.45l-0.68 0.96c-0.15 0.22-0.18 0.49-0.08 0.73c0.58 1.37 1.62 2.65 3.06 3.82c0.22 0.17 0.51 0.2 0.75 0.06l1.12-0.62c0.46-0.25 1.01-0.2 1.42 0.12l1.45 1.13c0.47 0.37 0.59 1.02 0.28 1.54c-0.49 0.83-1.34 1.45-2.31 1.46c-1.62 0.03-3.76-0.88-6.02-3.14c-2.27-2.27-3.19-4.44-3.16-6.07c0.02-0.97 0.65-1.8 1.59-2.39Z"
-                fill="#25231F"
-              />
-              <path
-                d="M10.17 6.26l0.88 1.29c0.11 0.16 0.11 0.38 0 0.54l-0.53 0.75c-0.26 0.37-0.31 0.84-0.11 1.25c0.67 1.41 1.76 2.74 3.26 3.92c0.4 0.32 0.93 0.37 1.37 0.13l0.85-0.47c0.17-0.1 0.39-0.08 0.55 0.04l1.17 0.9"
-                stroke="url(#mobile-call-highlight)"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="1.05"
-              />
-              <path
-                d="M9.56 5.42c0.18-0.11 0.4-0.06 0.52 0.12l0.52 0.77"
-                stroke="#F7F7F2"
-                strokeLinecap="round"
-                strokeWidth="0.72"
-                opacity="0.65"
-              />
-            </svg>
+            <span className="relative text-lg leading-none">☎</span>
           </motion.button>,
           document.body
         )}
@@ -1069,22 +903,22 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.32, ease: easeOut }}
-                className="fixed inset-0 z-[88] flex items-start justify-center bg-black/58 p-4 backdrop-blur-[8px] md:items-center"
+                transition={{ duration: 0.28, ease: easeOut }}
+                className="fixed inset-0 z-[88] flex items-center justify-center bg-black/58 p-4 backdrop-blur-[8px]"
                 onClick={closeProgramPanel}
               >
                 <motion.aside
                   initial={{ opacity: 0, y: 24, scale: 0.982 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 16, scale: 0.988 }}
-                  transition={{ duration: 0.38, ease: easeOut }}
-                  className="program-panel-shell relative w-full max-w-[48rem] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.985),rgba(24,24,22,0.99))] shadow-[0_28px_110px_rgba(0,0,0,0.46)]"
+                  transition={{ duration: 0.34, ease: easeOut }}
+                  className="relative w-full max-w-[48rem] overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(145deg,rgba(43,43,38,0.985),rgba(24,24,22,0.99))] shadow-[0_28px_110px_rgba(0,0,0,0.46)]"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="absolute inset-y-0 left-0 w-[2px] bg-gradient-to-b from-lime/95 via-lime/60 to-transparent" />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(191,255,0,0.12),transparent_34%),radial-gradient(circle_at_88%_16%,rgba(255,255,255,0.07),transparent_24%)]" />
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-                  <div className="relative p-[1.5rem] md:p-[2.15rem]">
+                  <div className="relative max-h-[min(86vh,900px)] overflow-y-auto p-5 md:p-7">
                     <div className="flex items-start justify-between gap-4">
                       <div className="space-y-3">
                         <span className="program-panel-label premium-chip inline-flex items-center rounded-full border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.14),rgba(200,214,0,0.08))] px-3.5 py-1.5 text-[0.62rem] font-medium uppercase text-lime/92">
@@ -1101,19 +935,19 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                         initial={{ opacity: 0, y: 16, scale: 0.994, filter: 'blur(10px)' }}
                         animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: -10, scale: 0.994, filter: 'blur(10px)' }}
-                        transition={{ duration: 0.34, ease: easeOut }}
-                        className="mt-[2.05rem] grid gap-[1.6rem]"
+                        transition={{ duration: 0.3, ease: easeOut }}
+                        className="mt-7 grid gap-6"
                       >
                         <div className="max-w-3xl">
-                          <h3 className="program-panel-heading premium-display text-[2.08rem] font-semibold text-white md:text-[3.08rem]">{selectedProgram}</h3>
+                          <h3 className="text-[2rem] font-semibold leading-[1.02] tracking-[-0.03em] text-white md:text-[2.95rem]">{selectedProgram}</h3>
                           <div className="mt-4 h-px w-24 bg-gradient-to-r from-lime via-lime/30 to-transparent" />
                           <p className="program-panel-copy premium-body mt-5 max-w-[38rem] text-[0.99rem] font-light text-soft/84 md:text-[1.04rem]">{programDetails[selectedProgram]}</p>
                         </div>
 
                         <div className="grid gap-3 md:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
-                          <div className="program-panel-block rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),rgba(255,255,255,0.025))] px-[1.125rem] py-[1.125rem] backdrop-blur-sm">
-                            <p className="program-panel-block-title premium-label text-[0.63rem] uppercase text-lime/82">Фокус тренировки</p>
-                            <p className="program-panel-copy premium-body mt-3 text-[0.93rem] font-light text-soft/80 md:text-[0.96rem]">{selectedProgramHighlight}</p>
+                          <div className="rounded-[1.55rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] px-4 py-4 backdrop-blur-sm">
+                            <p className="text-[0.68rem] uppercase tracking-[0.28em] text-lime/80">Фокус тренировки</p>
+                            <p className="mt-3 text-sm leading-6 text-soft/76 md:text-[0.95rem]">{selectedProgramHighlight}</p>
                           </div>
                           <div className="program-panel-block rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] px-[1.125rem] py-[1.125rem]">
                             <p className="program-panel-block-title premium-label text-[0.63rem] uppercase text-soft/58">Ритм и акценты</p>
@@ -1163,8 +997,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   <div className="relative">
                     <div className="mb-4 flex items-start justify-between gap-4">
                       <div>
-                        <p className="premium-label text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
-                        <h3 className="premium-display mt-2 text-xl font-semibold tracking-[-0.026em] text-white">Выберите номер для звонка</h3>
+                        <p className="text-xs uppercase tracking-[0.22em] text-lime">Связь с клубом</p>
+                        <h3 className="mt-2 text-xl font-semibold text-white">Выберите номер для звонка</h3>
                       </div>
                       <ModalCloseButton onClick={() => setCallModal(false)} />
                     </div>
@@ -1179,8 +1013,8 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                           className="group relative flex items-center justify-between overflow-hidden rounded-[1.1rem] border border-white/12 bg-white/[0.035] px-3.5 py-3.5 transition-[border-color,background-color,box-shadow,transform] duration-300 hover:border-lime/24 hover:bg-white/[0.05] hover:shadow-[0_12px_24px_rgba(0,0,0,0.12)]"
                         >
                           <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(125deg,transparent,rgba(255,255,255,0.04),transparent)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                          <span className="premium-label relative text-sm text-soft/68">{phone.label}</span>
-                          <span className="premium-display relative text-base font-semibold tracking-[-0.015em] text-white transition-colors duration-300 group-hover:text-soft">{phone.display}</span>
+                          <span className="relative text-sm text-soft/68">{phone.label}</span>
+                          <span className="relative text-base font-semibold text-white transition-colors duration-300 group-hover:text-soft">{phone.display}</span>
                         </motion.a>
                       ))}
                     </div>
@@ -1201,7 +1035,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={lightboxOverlayTransition}
-                className="fixed inset-0 z-[95] flex items-center justify-center overflow-hidden bg-black/72 p-3 backdrop-blur-[4px] md:p-6"
+                className="fixed inset-0 z-[95] flex items-center justify-center bg-black/72 p-3 backdrop-blur-[4px] md:p-6"
                 onClick={closeLightbox}
               >
                 <motion.div
@@ -1209,7 +1043,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   animate={{ scale: 1, opacity: 1, y: 0 }}
                   exit={{ scale: 0.99, opacity: 0, y: 10 }}
                   transition={lightboxPanelTransition}
-                  className="relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-7xl items-center justify-center overflow-hidden rounded-[1.95rem] border border-white/10 bg-charcoal/72 p-2.5 shadow-[0_28px_100px_rgba(0,0,0,0.42)] md:max-h-[calc(100dvh-3rem)]"
+                  className="relative flex max-h-[95vh] w-full max-w-7xl items-center justify-center rounded-[1.95rem] border border-white/10 bg-charcoal/72 p-2.5 shadow-[0_28px_100px_rgba(0,0,0,0.42)]"
                   onClick={(e) => e.stopPropagation()}
                 >
                   {lightboxMode === 'gallery' && clubImages.length > 1 && (
@@ -1222,7 +1056,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                     <ModalCloseButton onClick={closeLightbox} />
                   </div>
                   <div
-                    className="relative flex max-h-[calc(100dvh-5rem)] min-h-0 w-full items-center justify-center overflow-hidden rounded-[1.4rem] md:max-h-[calc(100dvh-8rem)]"
+                    className="relative flex h-[90vh] w-full items-center justify-center overflow-hidden rounded-[1.4rem]"
                     onTouchStart={(e) => {
                       if (e.touches.length === 1) setTouchStartX(e.touches[0].clientX);
                       if (e.touches.length === 2) {

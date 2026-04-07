@@ -23,13 +23,9 @@ html {
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
   background:
     linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%),
     linear-gradient(145deg, rgba(200, 214, 0, 0.03), transparent 36%);
-  overflow: visible;
 }
 
 .section-shell {
@@ -761,8 +757,8 @@ body {
 .gallery-edge-shell {
   position: relative;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.08) 1.15%, black 2.3%, black 97.7%, rgba(0, 0, 0, 0.08) 98.85%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.08) 1.15%, black 2.3%, black 97.7%, rgba(0, 0, 0, 0.08) 98.85%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.28) 3.5%, rgba(0, 0, 0, 0.72) 8%, black 12%, black 88%, rgba(0, 0, 0, 0.72) 92%, rgba(0, 0, 0, 0.28) 96.5%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.28) 3.5%, rgba(0, 0, 0, 0.72) 8%, black 12%, black 88%, rgba(0, 0, 0, 0.72) 92%, rgba(0, 0, 0, 0.28) 96.5%, transparent 100%);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
@@ -805,8 +801,8 @@ body {
 
 @media (max-width: 768px) {
   .gallery-edge-shell {
-    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.075) 1.1%, black 2.2%, black 97.8%, rgba(0, 0, 0, 0.075) 98.9%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
-    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.02) 0.45%, rgba(0, 0, 0, 0.075) 1.1%, black 2.2%, black 97.8%, rgba(0, 0, 0, 0.075) 98.9%, rgba(0, 0, 0, 0.02) 99.55%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.22) 3%, rgba(0, 0, 0, 0.64) 7%, black 11%, black 89%, rgba(0, 0, 0, 0.64) 93%, rgba(0, 0, 0, 0.22) 97%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0, 0, 0, 0.22) 3%, rgba(0, 0, 0, 0.64) 7%, black 11%, black 89%, rgba(0, 0, 0, 0.64) 93%, rgba(0, 0, 0, 0.22) 97%, transparent 100%);
   }
 }
 
