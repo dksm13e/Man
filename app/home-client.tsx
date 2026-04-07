@@ -683,7 +683,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               </div>
               <p className="mt-3 text-sm leading-relaxed text-soft/85">{tariff.description}</p>
               <ul className="mt-4 space-y-2 text-sm text-soft/85">
-                {tariff.perks.map((perk) => (
+                {(tariff.perks ?? []).map((perk) => (
                   <li key={perk} className="flex items-start gap-2">
                     <span className="mt-1 inline-block h-2 w-2 rounded-full bg-lime" />
                     <span>{perk}</span>
