@@ -1,8 +1,6 @@
 import HomeClient from './home-client';
-import { listMediaFiles } from '../lib/media';
+import { PERMANENT_CLUB_IMAGES, PERMANENT_SCHEDULE_IMAGES } from '../lib/media';
 
 export default async function Page() {
-  const [clubImages, scheduleImages] = await Promise.all([listMediaFiles('club-atmosphere'), listMediaFiles('schedule')]);
-
-  return <HomeClient initialClubImages={clubImages} initialScheduleImages={scheduleImages} />;
+  return <HomeClient initialClubImages={[...PERMANENT_CLUB_IMAGES]} initialScheduleImages={[...PERMANENT_SCHEDULE_IMAGES]} />;
 }
