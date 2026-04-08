@@ -5,6 +5,7 @@ export const IMAGE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avi
 
 export const PERMANENT_CLUB_IMAGES = [
   'https://i.ibb.co/1JhVc8BH/5-6.jpg',
+  'https://i.ibb.co/FbYBckrM/4120.jpg',
   'https://i.ibb.co/zhgG96z0/5-7.jpg',
   'https://i.ibb.co/Xfc5BZwW/5-8.jpg',
   'https://i.ibb.co/chCm7J9N/5-9.jpg',
@@ -48,7 +49,6 @@ export const PERMANENT_CLUB_IMAGES = [
   'https://i.ibb.co/xSYNwnCf/3973.jpg',
   'https://i.ibb.co/8gp8DpgZ/4023.jpg',
   'https://i.ibb.co/gZKFchB9/4103.jpg',
-  'https://i.ibb.co/FbYBckrM/4120.jpg',
   'https://i.ibb.co/RpScsJh5/4123.jpg'
 ] as const;
 export const PERMANENT_SCHEDULE_IMAGES = ['https://i.ibb.co/Vp9Tyr7W/3.jpg'] as const;
