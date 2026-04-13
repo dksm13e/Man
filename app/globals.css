@@ -28,7 +28,6 @@ html {
 }
 
 body {
-<<<<<<< HEAD
   margin: 0;
   padding: 0;
   min-height: 100%;
@@ -38,11 +37,6 @@ body {
     linear-gradient(145deg, rgba(200, 214, 0, 0.03), transparent 36%);
   overflow-x: hidden;
   overflow-y: clip;
-=======
-  background:
-    linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%),
-    linear-gradient(145deg, rgba(200, 214, 0, 0.03), transparent 36%);
->>>>>>> 18c019b84ac1bcda62044f1387933e9dba3128ea
 }
 
 .section-shell {
