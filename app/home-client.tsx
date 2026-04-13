@@ -1,10 +1,38 @@
-'use client';
+﻿'use client';
 
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type DaySchedule = { day: string; classes: string[] };
+type TariffLine = { label: string; value: string };
+type TariffQuickFormat = {
+  title: string;
+  subtitle: string;
+  price: string;
+  targetId: string;
+};
+type SubscriptionPlan = {
+  name: string;
+  summary: string;
+  fromPrice: string;
+  lines: TariffLine[];
+  descriptor?: string;
+  featured?: boolean;
+  featuredBadge?: string;
+  note?: string;
+};
+type PersonalTrainingPlan = {
+  name: string;
+  summary: string;
+  fromPrice: string;
+  master: string;
+  trainer: string;
+  group: 'individual' | 'group';
+  note?: string;
+};
+type LightboxImageState = 'idle' | 'loading' | 'loaded' | 'error';
+type GalleryImageLoadState = 'loading' | 'loaded' | 'error';
 type HomeClientProps = {
   initialClubImages: string[];
   initialScheduleImages: string[];
@@ -17,42 +45,68 @@ const phones = [
 
 const programCategories = [
   {
-    title: 'Силовые программы',
-    items: ['АБТ', '90/60/90', 'АБЛ', 'БЕДРА', 'СУПЕР ПРЕСС', 'АНТИЦЕЛ. ТРЕНИНГ', 'МОЩНЫЙ КЛАСС', 'Функциональный тренинг', 'СКУЛЬПТОР ТЕЛА', 'СИЛОВАЯ С ПЕТЛЯМИ', 'ДЖАМПИНГ', 'КРУГОВАЯ']
+    title: 'Силовые и функциональные',
+    items: ['90/60/90', 'БЕДРА', 'СИЛОВАЯ', 'ТАБАТА', 'СКУЛЬПТОР ТЕЛА', 'ТРХ', 'МСГ', 'ДЖАМПИНГ']
   },
-  { title: 'Аэробные программы', items: ['Смешанный тренинг', 'Фитбол', 'Степ 1'] },
-  { title: 'Танцевальные программы', items: ['ЗУМБА'] }
+  {
+    title: 'Гибкость и восстановление',
+    items: [
+      'ЙОГА ГАМАК',
+      'ФИТНЕС ЙОГА',
+      'ХАТХА ЙОГА',
+      'ЖЕНСКАЯ ЙОГА',
+      'ПИЛАТЕС',
+      'ПИЛАТЕС ПЛОСКАЯ ТАЛИЯ И КРАСИВАЯ СПИНА',
+      'ПИЛАТЕС СТРОЙНЫЕ НОГИ И УПРУГИЕ ЯГОДИЦЫ',
+      'ЗДОРОВАЯ СПИНА',
+      'ЛФК',
+      'СТРЕЙЧ',
+      'РОЛЛ РЕЛАКС',
+      'АКТИВНАЯ МЕДИТАЦИЯ'
+    ]
+  },
+  {
+    title: 'Танцевальные и кардио',
+    items: ['ЗУМБА', 'ВОСТОЧНЫЙ ТАНЕЦ', 'ФИТБОЛ']
+  }
 ];
 
 const programDetails: Record<string, string> = {
-  АБТ: 'Силовой класс для проработки всех групп мышц (работа с инвентарем), помогает развить мышечную силу, улучшает рельеф.',
-  '90/60/90': 'Силовой урок направленный на развитие выносливости мышц живота, ягодиц, груди.',
-  АБЛ: 'Силовой урок для тренировки нижней части тела и брюшного пресса.',
-  'БЕДРА': 'Смешанный формат тренировки (1 часть – аэробная или танцевальная, 2 часть – силовая на ноги, бедра, ягодицы).',
-  'СУПЕР ПРЕСС': 'Силовой урок для тренировки мышц брюшного пресса (работа с инвентарем).',
-  'АНТИЦЕЛ. ТРЕНИНГ': 'Силовой урок для всех основных мышечных групп с акцентом на мышцы бедер, ягодиц и пресса. Способствует уменьшению жировой прослойки и коррекции проблемных зон.',
-  'МОЩНЫЙ КЛАСС': 'Силовая программа на все группы мышц (работа с инвентарем).',
-  'Функциональный тренинг': 'Силовая тренировка, построенная на движениях из жизни, позволяет задействовать максимальное количество мышечных групп.',
-  'СКУЛЬПТОР ТЕЛА': 'Целостная программа низко-ударной тренировки с использованием штанги, направлена на коррекцию фигуры и укрепление мышц. Рекомендована с 17 лет и при высоком уровне подготовленности.',
-  'СИЛОВАЯ С ПЕТЛЯМИ': 'Функциональная тренировка с использованием подвесных петель. Развивает гибкость, координацию, равновесие.',
-  ДЖАМПИНГ: 'Силовая + аэробная кардио-тренировка на специальных шестиугольных батутах.',
-  КРУГОВАЯ: 'Круговая тренировка, поочередное выполнение нескольких упражнений по кругу за определенный промежуток времени с минимальным отдыхом.',
-  'Смешанный тренинг': 'Включает различные танцевальные стили, базовую степ-аэробику и силовой класс.',
-  Фитбол: 'Урок с использованием специальных мячей. Направлен на развитие гибкости, координации и исправление осанки.',
-  'Степ 1': 'Урок для начинающих, состоящий из двух частей: степ-аэробика и силовая часть.',
-  ЗУМБА: 'Танцевальная фитнес-программа, которая подойдет каждому. Сочетает аэробные упражнения и танцевальные элементы.'
+  '90/60/90': 'Интенсивный формат с акцентом на талию, ягодицы и ноги: плотная работа в темпе, который заметно подтягивает силуэт.',
+  БЕДРА: 'Силовой класс для нижней части тела с продуманной нагрузкой на бедра и ягодицы, чтобы укрепить мышечный корсет и рельеф.',
+  СИЛОВАЯ: 'Базовая силовая тренировка на основные мышечные группы с контролем техники и равномерной прогрессией нагрузки.',
+  ТАБАТА: 'Интервальный протокол коротких рабочих отрезков и восстановления, который развивает выносливость и ускоряет метаболический отклик.',
+  'СКУЛЬПТОР ТЕЛА': 'Комплексная работа на все тело для визуально более четкого рельефа, тонуса мышц и устойчивой функциональной формы.',
+  ТРХ: 'Функциональная тренировка на подвесных петлях для силы, стабилизации корпуса, баланса и координации движений.',
+  МСГ: 'Силовой микс с акцентом на мышечную выносливость и технику, чтобы качественно проработать все ключевые зоны за занятие.',
+  ДЖАМПИНГ: 'Кардио-тренировка на батутах с высокой вовлеченностью мышц и мягкой амортизацией, дающая мощный заряд энергии.',
+  'ЙОГА ГАМАК': 'Практика в гамаке на вытяжение, мобильность и декомпрессию позвоночника с бережной нагрузкой на суставы.',
+  'ФИТНЕС ЙОГА': 'Динамичный формат йоги, который сочетает гибкость, силу и контроль дыхания для сбалансированной тренировки.',
+  'ХАТХА ЙОГА': 'Классическая практика с вниманием к асанам, дыханию и концентрации для глубокого восстановления и устойчивости тела.',
+  'ЖЕНСКАЯ ЙОГА': 'Мягкий формат, ориентированный на женскую физиологию: мобильность, дыхание, расслабление и внутренний ресурс.',
+  ПИЛАТЕС: 'Система точных движений для укрепления центра тела, осанки и безопасной стабильности позвоночника.',
+  'ПИЛАТЕС ПЛОСКАЯ ТАЛИЯ И КРАСИВАЯ СПИНА': 'Специализированный пилатес-комплекс для талии, спины и глубоких мышц корпуса с акцентом на осанку.',
+  'ПИЛАТЕС СТРОЙНЫЕ НОГИ И УПРУГИЕ ЯГОДИЦЫ': 'Пилатес-фокус на ноги и ягодицы: аккуратная техника и контролируемая амплитуда для упругого тонуса.',
+  'ЗДОРОВАЯ СПИНА': 'Восстановительный класс для разгрузки и укрепления мышц спины, улучшения подвижности и профилактики дискомфорта.',
+  ЛФК: 'Лечебно-профилактический формат с дозированной нагрузкой для безопасного укрепления опорно-двигательного аппарата.',
+  СТРЕЙЧ: 'Последовательная работа над гибкостью, эластичностью мышц и подвижностью суставов в спокойном темпе.',
+  'РОЛЛ РЕЛАКС': 'Миофасциальный релиз с роллом для снятия напряжения, улучшения восстановления и качества движений.',
+  'АКТИВНАЯ МЕДИТАЦИЯ': 'Практика осознанного движения и дыхания для снижения стресса, перезагрузки внимания и восстановления ресурса.',
+  ЗУМБА: 'Танцевальный кардио-формат с энергичной музыкой, который улучшает выносливость и помогает держать высокий эмоциональный тонус.',
+  'ВОСТОЧНЫЙ ТАНЕЦ': 'Пластичный танцевальный класс на координацию, мобильность таза и выразительность движений.',
+  ФИТБОЛ: 'Тренировка с мячом на стабилизацию, осанку и мышцы корпуса с бережной, но эффективной нагрузкой.'
 };
 
 const programCategoryHighlights: Record<string, string> = {
-  'Силовые программы': 'Акцент на мышечную силу, выносливость и чистую технику движения в насыщенном темпе групповой тренировки.',
-  'Аэробные программы': 'Ровный кардио-ритм, работа с координацией и легкая динамика, которую комфортно встроить в регулярный режим.',
-  'Танцевальные программы': 'Энергичный формат с музыкальной подачей, драйвом движения и заметной эмоциональной отдачей от занятия.'
+  'Силовые и функциональные': 'Собранные форматы для силы, выносливости и четкой техники: структурированная нагрузка и заметный тренировочный результат.',
+  'Гибкость и восстановление': 'Практики для баланса, мобильности и восстановления: осознанное движение, стабильный кор и бережная работа с телом.',
+  'Танцевальные и кардио': 'Динамичные классы с музыкальным ритмом, которые сочетают кардио-нагрузку, координацию и эмоциональный драйв.'
 };
 
 const programCategoryTags: Record<string, string[]> = {
-  'Силовые программы': ['Сила', 'Выносливость', 'Рельеф'],
-  'Аэробные программы': ['Кардио', 'Ритм', 'Координация'],
-  'Танцевальные программы': ['Драйв', 'Пластика', 'Энергия']
+  'Силовые и функциональные': ['Сила', 'Функциональность', 'Выносливость'],
+  'Гибкость и восстановление': ['Баланс', 'Мобильность', 'Восстановление'],
+  'Танцевальные и кардио': ['Кардио', 'Ритм', 'Пластика']
 };
 
 const clubHours = [
@@ -155,14 +209,14 @@ function LightboxArrowButton({ direction, onClick }: { direction: 'prev' | 'next
       whileHover={{ scale: 1.018 }}
       whileTap={{ scale: 0.972 }}
       transition={{ duration: 0.22, ease: easeOut }}
-      className={`group absolute top-[calc(50%-1.5rem)] z-10 inline-flex h-12 w-12 items-center justify-center rounded-full outline-none ${
+      className={`group absolute top-[calc(50%-1.55rem)] z-10 inline-flex h-[3.1rem] w-[3.1rem] items-center justify-center rounded-full outline-none ${
         isPrev ? 'left-3 md:left-4' : 'right-3 md:right-4'
       }`}
       aria-label={isPrev ? 'Предыдущее фото' : 'Следующее фото'}
     >
-      <span className="absolute inset-0 rounded-full border border-white/12 bg-[linear-gradient(180deg,rgba(33,33,31,0.84),rgba(24,24,22,0.78))] shadow-[0_14px_30px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 group-hover:border-lime/24 group-hover:bg-[linear-gradient(180deg,rgba(38,38,35,0.88),rgba(26,26,24,0.8))] group-hover:shadow-[0_18px_34px_rgba(0,0,0,0.34)] group-focus-visible:border-lime/34" />
-      <span className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(191,255,0,0.09),transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      <svg aria-hidden="true" viewBox="0 0 24 24" className="relative z-10 h-[14px] w-[14px] text-soft/92 transition-colors duration-300 group-hover:text-white">
+      <span className="absolute inset-0 rounded-full border border-white/16 bg-[linear-gradient(180deg,rgba(22,22,20,0.94),rgba(14,14,12,0.9))] shadow-[0_18px_34px_rgba(0,0,0,0.34)] backdrop-blur-xl transition-all duration-300 group-hover:border-lime/30 group-hover:bg-[linear-gradient(180deg,rgba(29,29,26,0.94),rgba(18,18,15,0.9))] group-hover:shadow-[0_22px_42px_rgba(0,0,0,0.38)] group-focus-visible:border-lime/38" />
+      <span className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(191,255,0,0.11),transparent_62%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <svg aria-hidden="true" viewBox="0 0 24 24" className="relative z-10 h-[15px] w-[15px] text-soft/95 transition-colors duration-300 group-hover:text-white">
         <path
           d={isPrev ? 'M14.25 5.75L8.75 12L14.25 18.25' : 'M9.75 5.75L15.25 12L9.75 18.25'}
           fill="none"
@@ -180,81 +234,182 @@ const clubCardColumns = ['30 дней', '3 месяца', '6 месяцев', '1
 
 const clubCardRows = [
   {
-    name: 'Безлимитная карта',
+    name: 'Безлимитная клубная карта',
     note: 'Тренажерный зал',
-    time: 'С 7:00 до 21:00',
-    prices: ['Нал - 3150', 'Нал - 7450', 'Нал - 13100', 'Нал - 23100']
+    time: 'с 7:00 до 21:00',
+    prices: ['Наличный расчёт — 3 150 ₽', 'Наличный расчёт — 7 450 ₽', 'Наличный расчёт — 13 100 ₽', 'Наличный расчёт — 23 100 ₽']
   },
   {
-    name: 'Безлимитная карта',
+    name: 'Дневная безлимитная клубная карта',
     note: 'Тренажерный зал',
-    time: 'С 7:00 до 17:00',
-    prices: ['', '', '', '17900']
+    time: 'с 7:00 до 17:00',
+    prices: ['', '', '', '17 900 ₽']
   }
 ];
 
-const subscriptionRows = [
+const tariffQuickFormats: TariffQuickFormat[] = [
   {
-    name: 'Утренний',
-    detail: 'С 7:00 до 13:00',
-    value: ''
+    title: 'Клубные карты',
+    subtitle: 'Безлимитный формат на срок от 30 дней до 12 месяцев',
+    price: 'от 3 150 ₽',
+    targetId: 'tariff-club-cards'
   },
   {
-    name: 'Акция с 14:00 до 16:00',
-    detail: '8 посещений (1 месяц)',
-    value: '1500-00'
+    title: 'Абонементы на посещение',
+    subtitle: 'Гибкие условия по времени, формату и категории клиента',
+    price: 'от 1 500 ₽',
+    targetId: 'tariff-subscriptions'
   },
   {
-    name: 'Школьники, студенты',
-    detail: '8 посещений (1 месяц)\n10 посещений (1 месяц)',
-    value: '2210-00\n2650-00'
-  },
-  {
-    name: 'Универсальный',
-    detail: 'С 7:30 до 21:00\n8 посещений (1 месяц)\n10 посещений (1 месяц)',
-    value: '2750-00\n3350-00'
-  },
-  {
-    name: 'Пенсионеры, Корпоративный',
-    detail: '8 посещений (1 месяц)\n10 посещений (1 месяц)',
-    value: '2650-00\n3250-00'
-  },
-  {
-    name: 'Выходной Fit',
-    detail: 'Тренажерный зал\n(Пятница, суббота, воскресенье)',
-    value: '1700-00'
-  },
-  {
-    name: 'Безлимитный абонемент',
-    detail: 'на месяц в тренажерный\nзал и групповые\nтренировки',
-    value: '4200-00'
-  },
-  {
-    name: 'Разовое посещение',
-    detail:
-      '430* рублей (с 07:30 – 22:00)\n330* рублей (7:00-22:00) Школьники, Студенты\n380* рублей (7:30-22:00) Инвалиды\n380* рублей (7:30-22:00) Пенсионеры',
-    value: ''
+    title: 'Персональный тренинг',
+    subtitle: 'Индивидуальные и парные форматы с тренером и мастер-тренером',
+    price: 'от 600 ₽',
+    targetId: 'tariff-personal-training'
   }
 ];
 
-const personalTrainingRows = [
-  { name: 'Разовое занятие', master: '1000 / 1050-00', trainer: '950-00' },
-  { name: 'Блок из 5 занятий', master: '4750-00 / 5000-00', trainer: '4500-00' },
-  { name: 'Блок из 10 занятий', master: '9300-00 / 9700-00', trainer: '8700-00' },
-  { name: 'Сплит 2 человека', master: '750-00 с каждого', trainer: '750-00 с каждого' },
-  { name: 'Блок из 10 занятий сплит', master: '7000-00 с каждого', trainer: '7000-00 с каждого' },
-  { name: 'Min группа', master: '600 с каждого', trainer: '600 с каждого' },
-  { name: 'Блок из 10 занятий', master: '5500-00 с каждого', trainer: '5500-00 с каждого' }
+const subscriptionPlans: SubscriptionPlan[] = [
+  {
+    name: 'Утренний абонемент',
+    summary: 'с 7:00 до 13:00',
+    fromPrice: '10 посещений — 1 900 ₽',
+    lines: [{ label: '10 посещений / 1 месяц', value: '1 900 ₽' }]
+  },
+  {
+    name: 'Спецтариф 14:00–16:00',
+    summary: 'с 14:00 до 16:00',
+    fromPrice: '1 500 ₽',
+    lines: [{ label: '8 посещений / 1 месяц', value: '1 500 ₽' }],
+    descriptor: 'Фиксированное окно посещения'
+  },
+  {
+    name: 'Абонемент для школьников и студентов',
+    summary: 'Льготный формат',
+    fromPrice: 'от 2 210 ₽',
+    lines: [
+      { label: '8 посещений / 1 месяц', value: '2 210 ₽' },
+      { label: '10 посещений / 1 месяц', value: '2 650 ₽' }
+    ],
+    descriptor: 'Для студентов и школьников'
+  },
+  {
+    name: 'Универсальный абонемент',
+    summary: 'с 7:30 до 21:00',
+    fromPrice: 'от 2 750 ₽',
+    lines: [
+      { label: '8 посещений / 1 месяц', value: '2 750 ₽' },
+      { label: '10 посещений / 1 месяц', value: '3 350 ₽' }
+    ],
+    featured: true,
+    featuredBadge: 'ПОПУЛЯРНЫЙ'
+  },
+  {
+    name: 'Пенсионный / корпоративный',
+    summary: 'Специальные условия клуба',
+    fromPrice: 'от 2 650 ₽',
+    lines: [
+      { label: '8 посещений / 1 месяц', value: '2 650 ₽' },
+      { label: '10 посещений / 1 месяц', value: '3 250 ₽' }
+    ]
+  },
+  {
+    name: 'Абонемент выходного дня',
+    summary: 'тренажерный зал, пятница–воскресенье',
+    fromPrice: '1 700 ₽',
+    lines: [{ label: '1 месяц', value: '1 700 ₽' }]
+  },
+  {
+    name: 'Безлимитный месячный абонемент',
+    summary: 'на месяц в тренажерный зал и групповые тренировки',
+    fromPrice: '4 200 ₽',
+    lines: [{ label: '1 месяц', value: '4 200 ₽' }]
+  }
 ];
+
+const oneTimeVisitPlan: SubscriptionPlan = {
+  name: 'Разовое посещение',
+  summary: 'Разовый вход в клуб',
+  fromPrice: 'от 330 ₽',
+  lines: [
+    { label: 'Взрослые (с 7:30 до 22:00)', value: '430 ₽' },
+    { label: 'Школьники, студенты (с 7:00 до 22:00)', value: '330 ₽' },
+    { label: 'Инвалиды (с 7:30 до 22:00)', value: '380 ₽' },
+    { label: 'Пенсионеры (с 7:30 до 22:00)', value: '380 ₽' }
+  ],
+  note: '* Разовое посещение действует в рамках указанного временного окна.'
+};
+
+const personalTrainingPlans: PersonalTrainingPlan[] = [
+  {
+    name: 'Разовая персональная тренировка',
+    summary: 'Индивидуальная работа, 1 час',
+    fromPrice: 'от 950 ₽',
+    master: '1 000 ₽ / 1 050 ₽',
+    trainer: '950 ₽',
+    group: 'individual'
+  },
+  {
+    name: 'Блок 5 тренировок',
+    summary: 'Пакет с фиксированной стоимостью',
+    fromPrice: 'от 4 500 ₽',
+    master: '4 750 ₽ / 5 000 ₽',
+    trainer: '4 500 ₽',
+    group: 'individual'
+  },
+  {
+    name: 'Блок 10 тренировок',
+    summary: 'Максимально выгодный пакет',
+    fromPrice: 'от 8 700 ₽',
+    master: '9 300 ₽ / 9 700 ₽',
+    trainer: '8 700 ₽',
+    group: 'individual'
+  },
+  {
+    name: 'Сплит на 2 человека',
+    summary: 'Стоимость с каждого участника',
+    fromPrice: '750 ₽ с каждого',
+    master: '750 ₽ с каждого',
+    trainer: '750 ₽ с каждого',
+    group: 'group'
+  },
+  {
+    name: 'Блок 10 сплитов',
+    summary: 'Стоимость с каждого участника',
+    fromPrice: '7 000 ₽ с каждого',
+    master: '7 000 ₽ с каждого',
+    trainer: '7 000 ₽ с каждого',
+    group: 'group'
+  },
+  {
+    name: 'Мини-группа',
+    summary: 'Работа в мини-формате',
+    fromPrice: '600 ₽ с каждого',
+    master: '600 ₽ с каждого',
+    trainer: '600 ₽ с каждого',
+    group: 'group',
+    note: 'Блок 10 тренировок — 5 500 ₽ с каждого'
+  }
+];
+
+const personalTrainingIndividualPlans = personalTrainingPlans.filter((plan) => plan.group === 'individual');
+const personalTrainingGroupPlans = personalTrainingPlans.filter((plan) => plan.group === 'group');
 
 const scheduleByDay: DaySchedule[] = [
-  { day: 'Пн', classes: ['07:30 — Смешанный тренинг', '09:00 — Функциональный тренинг', '18:00 — АБТ', '19:00 — ЗУМБА'] },
-  { day: 'Вт', classes: ['07:30 — Степ 1', '09:00 — СУПЕР ПРЕСС', '18:00 — КРУГОВАЯ', '19:00 — Фитбол'] },
-  { day: 'Ср', classes: ['07:30 — АБЛ', '09:00 — МОЩНЫЙ КЛАСС', '18:00 — 90/60/90', '19:00 — ЗУМБА'] },
-  { day: 'Чт', classes: ['07:30 — СИЛОВАЯ С ПЕТЛЯМИ', '09:00 — СКУЛЬПТОР ТЕЛА', '18:00 — АНТИЦЕЛ. ТРЕНИНГ', '19:00 — Смешанный тренинг'] },
-  { day: 'Пт', classes: ['07:30 — ДЖАМПИНГ', '09:00 — СУПЕР ПРЕСС', '18:00 — Функциональный тренинг', '19:00 — ЗУМБА'] },
-  { day: 'Сб', classes: ['10:00 — КРУГОВАЯ', '11:00 — Фитбол', '12:00 — ЗУМБА'] },
-  { day: 'Вс', classes: ['10:00 — Смешанный тренинг', '11:00 — Степ 1', '12:00 — Функциональный тренинг'] }
+  { day: 'Пн', classes: ['07:30 - ФИТНЕС ЙОГА', '09:00 - ЗДОРОВАЯ СПИНА', '18:00 - СИЛОВАЯ', '19:00 - ЗУМБА'] },
+  { day: 'Вт', classes: ['07:30 - ЛФК', '09:00 - ТРХ', '18:00 - ТАБАТА', '19:00 - ВОСТОЧНЫЙ ТАНЕЦ'] },
+  { day: 'Ср', classes: ['07:30 - ХАТХА ЙОГА', '09:00 - ПИЛАТЕС', '18:00 - 90/60/90', '19:00 - ДЖАМПИНГ'] },
+  { day: 'Чт', classes: ['07:30 - ЙОГА ГАМАК', '09:00 - СТРЕЙЧ', '18:00 - БЕДРА', '19:00 - ФИТБОЛ'] },
+  {
+    day: 'Пт',
+    classes: [
+      '07:30 - РОЛЛ РЕЛАКС',
+      '09:00 - ПИЛАТЕС ПЛОСКАЯ ТАЛИЯ И КРАСИВАЯ СПИНА',
+      '18:00 - СКУЛЬПТОР ТЕЛА',
+      '19:00 - АКТИВНАЯ МЕДИТАЦИЯ'
+    ]
+  },
+  { day: 'Сб', classes: ['10:00 - ЖЕНСКАЯ ЙОГА', '11:00 - ПИЛАТЕС СТРОЙНЫЕ НОГИ И УПРУГИЕ ЯГОДИЦЫ', '12:00 - МСГ'] },
+  { day: 'Вс', classes: ['10:00 - ФИТНЕС ЙОГА', '11:00 - ТРХ', '12:00 - ЗУМБА'] }
 ];
 
 const faq = [
@@ -275,36 +430,38 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const [lightboxMode, setLightboxMode] = useState<'gallery' | 'schedule' | null>(null);
   const [zoom, setZoom] = useState(1);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
   const [pinchStart, setPinchStart] = useState<number | null>(null);
+  const [swipeTriggered, setSwipeTriggered] = useState(false);
+  const [lightboxImageState, setLightboxImageState] = useState<LightboxImageState>('idle');
+  const [lightboxRetryAttempt, setLightboxRetryAttempt] = useState(0);
+  const [lightboxOffset, setLightboxOffset] = useState({ x: 0, y: 0 });
+  const [galleryReady, setGalleryReady] = useState(false);
+  const [galleryPreloadError, setGalleryPreloadError] = useState(false);
+  const [galleryImageStates, setGalleryImageStates] = useState<Record<number, GalleryImageLoadState>>({});
+  const [galleryRetrySeed, setGalleryRetrySeed] = useState(0);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const [galleryTouchStartX, setGalleryTouchStartX] = useState<number | null>(null);
+  const [galleryTouchStartY, setGalleryTouchStartY] = useState<number | null>(null);
+  const [galleryHovering, setGalleryHovering] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [programPanelOpen, setProgramPanelOpen] = useState(false);
   const [clubImages] = useState<string[]>(initialClubImages);
   const [scheduleImages] = useState<string[]>(initialScheduleImages.slice(0, 1));
   const [selectedProgram, setSelectedProgram] = useState(programCategories[0].items[0]);
-  const galleryViewportRef = useRef<HTMLDivElement | null>(null);
-  const galleryResumeAtRef = useRef(0);
-  const galleryLastFrameTimeRef = useRef<number | null>(null);
-  const galleryVirtualScrollRef = useRef(0);
-  const isGalleryInteractingRef = useRef(false);
-
-  const pauseGalleryAutoplay = (delay = 1800) => {
-    galleryLastFrameTimeRef.current = null;
-    galleryResumeAtRef.current = performance.now() + delay;
-  };
-
-  const syncGalleryVirtualPosition = (viewport: HTMLDivElement) => {
-    const segmentWidth = viewport.scrollWidth / 2;
-    if (!segmentWidth) {
-      galleryVirtualScrollRef.current = viewport.scrollLeft;
-      return;
-    }
-
-    const normalizedScrollLeft = ((viewport.scrollLeft % segmentWidth) + segmentWidth) % segmentWidth;
-    galleryVirtualScrollRef.current = normalizedScrollLeft;
-  };
+  const lightboxOverlayPointerRef = useRef<{ x: number; y: number } | null>(null);
+  const lightboxViewportRef = useRef<HTMLDivElement | null>(null);
+  const lightboxPanStartRef = useRef<{ x: number; y: number; originX: number; originY: number } | null>(null);
+  const lightboxLastTapAtRef = useRef(0);
+  const galleryWheelLockedRef = useRef(false);
+  const galleryWheelReleaseTimeoutRef = useRef<number | null>(null);
+  const galleryAutoplayPauseUntilRef = useRef(0);
+  const galleryTouchMovedRef = useRef(false);
+  const galleryOpenGuardUntilRef = useRef(0);
 
   const selectedDay = useMemo(() => scheduleByDay.find((d) => d.day === activeDay) ?? scheduleByDay[0], [activeDay]);
-  const galleryLoopImages = useMemo(() => (clubImages.length > 1 ? [...clubImages, ...clubImages] : clubImages), [clubImages]);
+  const gallerySlides = useMemo(() => clubImages, [clubImages]);
+  const galleryIsInteractive = galleryReady;
   const lightboxImages = lightboxMode === 'schedule' ? scheduleImages : clubImages;
   const currentPhoto = lightboxMode ? lightboxImages[lightboxIndex ?? 0] : null;
   const isAnyOverlayOpen = mounted && (callModal || programPanelOpen || currentPhoto !== null);
@@ -345,8 +502,40 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     setLightboxMode(null);
     setLightboxIndex(null);
     setZoom(1);
+    setLightboxOffset({ x: 0, y: 0 });
     setTouchStartX(null);
+    setTouchStartY(null);
     setPinchStart(null);
+    setSwipeTriggered(false);
+    lightboxPanStartRef.current = null;
+    lightboxLastTapAtRef.current = 0;
+    setLightboxImageState('idle');
+    setLightboxRetryAttempt(0);
+  };
+
+  const clampLightboxOffset = (x: number, y: number, nextZoom: number) => {
+    if (nextZoom <= 1.02) return { x: 0, y: 0 };
+
+    const viewport = lightboxViewportRef.current;
+    if (!viewport) return { x, y };
+
+    const maxX = Math.max(0, (viewport.clientWidth * (nextZoom - 1)) / 2);
+    const maxY = Math.max(0, (viewport.clientHeight * (nextZoom - 1)) / 2);
+
+    return {
+      x: Math.min(maxX, Math.max(-maxX, x)),
+      y: Math.min(maxY, Math.max(-maxY, y))
+    };
+  };
+
+  const retryCurrentPhoto = () => {
+    if (!currentPhoto) return;
+    setLightboxImageState('loading');
+    setLightboxRetryAttempt((attempt) => attempt + 1);
+  };
+
+  const retryGalleryLoad = () => {
+    setGalleryRetrySeed((seed) => seed + 1);
   };
 
   useEffect(() => {
@@ -363,51 +552,216 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   }, []);
 
   useEffect(() => {
-    const viewport = galleryViewportRef.current;
-    if (!viewport || clubImages.length <= 1 || shouldReduceMotion) return;
+    if (!currentPhoto) {
+      setLightboxImageState('idle');
+      setLightboxRetryAttempt(0);
+      setLightboxOffset({ x: 0, y: 0 });
+      return;
+    }
 
-    syncGalleryVirtualPosition(viewport);
+    setLightboxImageState('loading');
+    setLightboxRetryAttempt(0);
+    setLightboxOffset({ x: 0, y: 0 });
+  }, [currentPhoto]);
 
-    const isPaused = (timestamp: number) =>
-      isGalleryInteractingRef.current || timestamp < galleryResumeAtRef.current;
+  useEffect(() => {
+    if (!clubImages.length) {
+      setGalleryReady(true);
+      setGalleryPreloadError(false);
+      setGalleryImageStates({});
+      return;
+    }
 
-    let animationFrame = 0;
-    const isMobileViewport = window.matchMedia('(max-width: 767px)').matches;
-    const pixelsPerSecond = isMobileViewport ? 36 : 31;
-    galleryLastFrameTimeRef.current = null;
+    let cancelled = false;
+    const preloadCount = Math.min(3, clubImages.length);
 
-    const tick = (timestamp: number) => {
-      const segmentWidth = viewport.scrollWidth / 2;
-      const lastFrameTime = galleryLastFrameTimeRef.current ?? timestamp;
-      const delta = Math.min(timestamp - lastFrameTime, isMobileViewport ? 20 : 28);
-      galleryLastFrameTimeRef.current = timestamp;
-
-      if (!isPaused(timestamp) && segmentWidth > 0) {
-        galleryVirtualScrollRef.current += (pixelsPerSecond * delta) / 1000;
-
-        if (galleryVirtualScrollRef.current >= segmentWidth) {
-          galleryVirtualScrollRef.current -= segmentWidth;
-        }
-
-        viewport.scrollLeft = galleryVirtualScrollRef.current;
+    setGalleryReady(false);
+    setGalleryPreloadError(false);
+    setGalleryImageStates(() => {
+      const next: Record<number, GalleryImageLoadState> = {};
+      for (let index = 0; index < clubImages.length; index += 1) {
+        next[index] = 'loading';
       }
+      return next;
+    });
 
-      animationFrame = window.requestAnimationFrame(tick);
-    };
+    let resolvedCount = 0;
+    let loadedCount = 0;
+    const preloadTimeout = window.setTimeout(() => {
+      if (cancelled) return;
+      setGalleryReady(true);
+      setGalleryPreloadError(loadedCount === 0);
+    }, 9000);
 
-    animationFrame = window.requestAnimationFrame(tick);
+    const preloaders = Array.from({ length: preloadCount }, (_, index) => {
+      const preloader = new window.Image();
+      preloader.decoding = 'async';
+      preloader.onload = () => {
+        if (cancelled) return;
+        loadedCount += 1;
+        setGalleryImageStates((prev) => (prev[index] === 'loaded' ? prev : { ...prev, [index]: 'loaded' }));
+        resolvedCount += 1;
+        if (resolvedCount >= preloadCount) {
+          window.clearTimeout(preloadTimeout);
+          setGalleryReady(true);
+          setGalleryPreloadError(loadedCount === 0);
+        }
+      };
+      preloader.onerror = () => {
+        if (cancelled) return;
+        setGalleryImageStates((prev) => (prev[index] === 'error' ? prev : { ...prev, [index]: 'error' }));
+        resolvedCount += 1;
+        if (resolvedCount >= preloadCount) {
+          window.clearTimeout(preloadTimeout);
+          setGalleryReady(true);
+          setGalleryPreloadError(loadedCount === 0);
+        }
+      };
+      const source = clubImages[index];
+      const sourceWithSeed = `${source}${source.includes('?') ? '&' : '?'}g=${galleryRetrySeed}`;
+      preloader.src = sourceWithSeed;
+      return preloader;
+    });
 
     return () => {
-      galleryLastFrameTimeRef.current = null;
-      window.cancelAnimationFrame(animationFrame);
+      cancelled = true;
+      window.clearTimeout(preloadTimeout);
+      preloaders.forEach((preloader) => {
+        preloader.onload = null;
+        preloader.onerror = null;
+      });
     };
-  }, [clubImages.length, shouldReduceMotion]);
+  }, [clubImages, galleryRetrySeed]);
+
+  useEffect(() => {
+    setGalleryIndex((currentIndex) => {
+      if (gallerySlides.length === 0) return 0;
+      return Math.min(currentIndex, gallerySlides.length - 1);
+    });
+  }, [gallerySlides.length]);
+
+  useEffect(() => {
+    if (!galleryIsInteractive || gallerySlides.length < 2) return;
+    if (currentPhoto !== null) return;
+
+    const autoplayTimer = window.setInterval(() => {
+      if (document.hidden) return;
+      if (galleryHovering) return;
+      if (Date.now() < galleryAutoplayPauseUntilRef.current) return;
+      setGalleryIndex((currentIndex) => (currentIndex + 1) % gallerySlides.length);
+    }, 3900);
+
+    return () => {
+      window.clearInterval(autoplayTimer);
+    };
+  }, [currentPhoto, galleryHovering, galleryIsInteractive, gallerySlides.length]);
+
+  useEffect(
+    () => () => {
+      if (galleryWheelReleaseTimeoutRef.current !== null) {
+        window.clearTimeout(galleryWheelReleaseTimeoutRef.current);
+      }
+    },
+    []
+  );
 
   const openGallery = (index: number) => {
-    galleryResumeAtRef.current = performance.now() + 2200;
+    galleryAutoplayPauseUntilRef.current = Date.now() + 9000;
+    setGalleryIndex(index);
     setLightboxMode('gallery');
     setLightboxIndex(index);
     setZoom(1);
+    setLightboxOffset({ x: 0, y: 0 });
+  };
+
+  const pauseGalleryAutoplay = (durationMs = 6400) => {
+    galleryAutoplayPauseUntilRef.current = Date.now() + durationMs;
+  };
+
+  const nextGallerySlide = () => {
+    if (gallerySlides.length < 2) return;
+    pauseGalleryAutoplay();
+    setGalleryIndex((currentIndex) => (currentIndex + 1) % gallerySlides.length);
+  };
+
+  const prevGallerySlide = () => {
+    if (gallerySlides.length < 2) return;
+    pauseGalleryAutoplay();
+    setGalleryIndex((currentIndex) => (currentIndex - 1 + gallerySlides.length) % gallerySlides.length);
+  };
+
+  const onGalleryTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 1) return;
+    pauseGalleryAutoplay();
+    galleryTouchMovedRef.current = false;
+    setGalleryTouchStartX(event.touches[0].clientX);
+    setGalleryTouchStartY(event.touches[0].clientY);
+  };
+
+  const onGalleryTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (event.touches.length !== 1 || galleryTouchStartX === null || galleryTouchStartY === null) return;
+
+    const deltaX = event.touches[0].clientX - galleryTouchStartX;
+    const deltaY = event.touches[0].clientY - galleryTouchStartY;
+    if (Math.abs(deltaX) > 12 || Math.abs(deltaY) > 12) {
+      galleryTouchMovedRef.current = true;
+    }
+  };
+
+  const onGalleryTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    if (gallerySlides.length < 2 || event.changedTouches.length !== 1 || galleryTouchStartX === null || galleryTouchStartY === null) {
+      setGalleryTouchStartX(null);
+      setGalleryTouchStartY(null);
+      return;
+    }
+
+    const deltaX = event.changedTouches[0].clientX - galleryTouchStartX;
+    const deltaY = event.changedTouches[0].clientY - galleryTouchStartY;
+    const isIntentionalSwipe = Math.abs(deltaX) > Math.abs(deltaY) * 1.2 && Math.abs(deltaX) > 58;
+    const isMeaningfulMove = galleryTouchMovedRef.current || Math.abs(deltaX) > 14 || Math.abs(deltaY) > 14;
+
+    if (isIntentionalSwipe) {
+      if (deltaX < 0) {
+        nextGallerySlide();
+      } else {
+        prevGallerySlide();
+      }
+    }
+
+    if (isMeaningfulMove) {
+      galleryOpenGuardUntilRef.current = Date.now() + 320;
+    }
+
+    galleryTouchMovedRef.current = false;
+    setGalleryTouchStartX(null);
+    setGalleryTouchStartY(null);
+  };
+
+  const onGalleryWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+    if (gallerySlides.length < 2) return;
+
+    const horizontalIntent = Math.abs(event.deltaX) > Math.abs(event.deltaY) * 1.15 && Math.abs(event.deltaX) > 14;
+    if (!horizontalIntent) return;
+
+    event.preventDefault();
+    if (galleryWheelLockedRef.current) return;
+
+    pauseGalleryAutoplay(7200);
+    galleryWheelLockedRef.current = true;
+    if (event.deltaX > 0 || event.deltaY > 0) {
+      nextGallerySlide();
+    } else {
+      prevGallerySlide();
+    }
+
+    if (galleryWheelReleaseTimeoutRef.current !== null) {
+      window.clearTimeout(galleryWheelReleaseTimeoutRef.current);
+    }
+
+    galleryWheelReleaseTimeoutRef.current = window.setTimeout(() => {
+      galleryWheelLockedRef.current = false;
+      galleryWheelReleaseTimeoutRef.current = null;
+    }, 330);
   };
 
   const openSchedule = () => {
@@ -415,6 +769,7 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     setLightboxMode('schedule');
     setLightboxIndex(0);
     setZoom(1);
+    setLightboxOffset({ x: 0, y: 0 });
   };
 
   const closeProgramPanel = () => {
@@ -423,20 +778,33 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
 
   const next = () => {
     if (lightboxMode !== 'gallery' || lightboxIndex === null || clubImages.length === 0) return;
-    setLightboxIndex((lightboxIndex + 1) % clubImages.length);
+    const nextIndex = (lightboxIndex + 1) % clubImages.length;
+    setLightboxIndex(nextIndex);
+    setGalleryIndex(nextIndex);
     setZoom(1);
+    setLightboxOffset({ x: 0, y: 0 });
   };
 
   const prev = () => {
     if (lightboxMode !== 'gallery' || lightboxIndex === null || clubImages.length === 0) return;
-    setLightboxIndex((lightboxIndex - 1 + clubImages.length) % clubImages.length);
+    const prevIndex = (lightboxIndex - 1 + clubImages.length) % clubImages.length;
+    setLightboxIndex(prevIndex);
+    setGalleryIndex(prevIndex);
     setZoom(1);
+    setLightboxOffset({ x: 0, y: 0 });
   };
 
   const openProgramPanel = (program: string) => {
     setSelectedProgram(program);
     setProgramPanelOpen(true);
   };
+
+  const scrollToTariffSection = (targetId: string) => {
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const galleryTrackTranslate = gallerySlides.length > 0 ? (galleryIndex * 100) / gallerySlides.length : 0;
+  const gallerySlideWidth = gallerySlides.length > 0 ? 100 / gallerySlides.length : 100;
 
   return (
     <main className="site-bg relative bg-carbon text-soft">
@@ -570,85 +938,154 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       <motion.section className="section-shell section-accent pt-12 md:pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
         <h2 className="premium-display mb-5 text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">Залы и атмосфера</h2>
         <div className="gallery-rail relative">
-          {galleryLoopImages.length > 0 ? (
-            <div className="gallery-edge-shell">
-              <motion.div
-                ref={galleryViewportRef}
-                className="-mx-4 flex gap-[0.55rem] overflow-x-auto overflow-y-hidden px-4 pb-4 scrollbar-hidden md:gap-[0.68rem]"
-                variants={staggerReveal}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
-                onPointerDown={() => {
-                  isGalleryInteractingRef.current = true;
-                  pauseGalleryAutoplay(2600);
-                }}
-                onPointerUp={(event) => {
-                  isGalleryInteractingRef.current = false;
-                  syncGalleryVirtualPosition(event.currentTarget);
-                  pauseGalleryAutoplay(1800);
-                }}
-                onPointerCancel={(event) => {
-                  isGalleryInteractingRef.current = false;
-                  syncGalleryVirtualPosition(event.currentTarget);
-                  pauseGalleryAutoplay(1800);
-                }}
-                onPointerLeave={(event) => {
-                  if (isGalleryInteractingRef.current) {
-                    syncGalleryVirtualPosition(event.currentTarget);
-                  }
-                  isGalleryInteractingRef.current = false;
-                }}
-                onTouchStart={() => {
-                  isGalleryInteractingRef.current = true;
-                  pauseGalleryAutoplay(3000);
-                }}
-                onTouchEnd={(event) => {
-                  isGalleryInteractingRef.current = false;
-                  syncGalleryVirtualPosition(event.currentTarget);
-                  pauseGalleryAutoplay(2200);
-                }}
-                onWheel={(event) => {
-                  syncGalleryVirtualPosition(event.currentTarget);
-                  pauseGalleryAutoplay(1800);
-                }}
-                onScroll={(event) => {
-                  syncGalleryVirtualPosition(event.currentTarget);
-
-                  if (isGalleryInteractingRef.current) {
+          {gallerySlides.length > 0 ? (
+            galleryIsInteractive ? (
+              <div className="gallery-edge-shell">
+                <div
+                  className="gallery-carousel-viewport"
+                  onWheel={onGalleryWheel}
+                  onTouchStart={onGalleryTouchStart}
+                  onTouchMove={onGalleryTouchMove}
+                  onTouchEnd={onGalleryTouchEnd}
+                  onTouchCancel={() => {
+                    galleryTouchMovedRef.current = false;
+                    setGalleryTouchStartX(null);
+                    setGalleryTouchStartY(null);
+                  }}
+                  onPointerDown={() => {
+                    pauseGalleryAutoplay(5600);
+                  }}
+                  onMouseEnter={() => {
+                    setGalleryHovering(true);
                     pauseGalleryAutoplay(1800);
-                  }
-                }}
-              >
-                {galleryLoopImages.map((src, i) => (
-                  <motion.button
-                    key={`${src}-${i}`}
-                    type="button"
-                    onClick={() => openGallery(i % clubImages.length)}
-                    variants={itemReveal}
-                    whileHover={{ y: -5 }}
-                    whileTap={{ scale: 0.995 }}
-                    transition={{ duration: 0.32, ease: easeOut }}
-                    className="group relative h-[278px] min-w-[86%] flex-none overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,rgba(45,44,39,0.72),rgba(23,22,19,0.96))] p-[1.5px] text-left shadow-[0_0_0_1px_rgba(29,28,24,0.78),0_18px_44px_rgba(0,0,0,0.18)] outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 md:h-[378px] md:min-w-[48%]"
+                  }}
+                  onMouseLeave={() => {
+                    setGalleryHovering(false);
+                    pauseGalleryAutoplay(1200);
+                  }}
+                >
+                  <div
+                    className="gallery-carousel-track"
+                    style={{ width: `${gallerySlides.length * 100}%`, transform: `translate3d(-${galleryTrackTranslate}%, 0, 0)` }}
                   >
-                    <div className="absolute inset-px rounded-[1.86rem] bg-[linear-gradient(180deg,rgba(24,23,20,0.74),rgba(14,14,12,0.9))]" />
-                    <div className="relative h-full w-full overflow-hidden rounded-[1.65rem] bg-charcoal">
-                      <motion.img
-                        src={src}
-                        alt={`Атмосфера клуба — фото ${i + 1}`}
-                        className="absolute inset-0 h-full w-full object-cover object-center"
-                        loading={i < 3 ? 'eager' : 'lazy'}
-                        whileHover={{ scale: 1.035 }}
-                        transition={{ duration: 0.6, ease: easeOut }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/0 opacity-78 transition-opacity duration-400 group-hover:opacity-86" />
-                      <div className="absolute inset-0 rounded-[1.65rem] shadow-[inset_0_0_0_1px_rgba(60,58,52,0.18)]" />
-                      <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.01),transparent_18%)] opacity-[0.07] transition-opacity duration-500 group-hover:opacity-[0.12]" />
+                    {gallerySlides.map((src, i) => {
+                      const baseIndex = i;
+                      const imageState = galleryImageStates[baseIndex] ?? 'loading';
+                      const isLoaded = imageState === 'loaded';
+                      const isActiveSlide = i === galleryIndex;
+                      const imageSourceWithSeed = `${src}${src.includes('?') ? '&' : '?'}g=${galleryRetrySeed}`;
+
+                      return (
+                        <div key={`${src}-${i}`} className="gallery-carousel-slide" style={{ width: `${gallerySlideWidth}%` }}>
+                          <motion.button
+                            type="button"
+                            onClick={() => {
+                              if (Date.now() < galleryOpenGuardUntilRef.current) return;
+                              openGallery(baseIndex);
+                            }}
+                            aria-busy={!isLoaded}
+                            whileHover={isLoaded ? { y: -4 } : undefined}
+                            whileTap={isLoaded ? { scale: 0.996 } : undefined}
+                            transition={{ duration: 0.3, ease: easeOut }}
+                            className={`group relative h-[278px] w-full overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,rgba(45,44,39,0.72),rgba(23,22,19,0.96))] p-[1.5px] text-left shadow-[0_0_0_1px_rgba(29,28,24,0.78),0_18px_44px_rgba(0,0,0,0.18)] outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-0 md:h-[378px] ${
+                              isLoaded ? '' : 'cursor-progress'
+                            }`}
+                          >
+                            <div className="absolute inset-px rounded-[1.86rem] bg-[linear-gradient(180deg,rgba(24,23,20,0.74),rgba(14,14,12,0.9))]" />
+                            <div className="relative h-full w-full overflow-hidden rounded-[1.65rem] bg-charcoal">
+                              <motion.img
+                                src={imageSourceWithSeed}
+                                alt={`Атмосфера клуба — фото ${i + 1}`}
+                                className={`absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-300 ${
+                                  isLoaded ? 'opacity-100' : 'opacity-0'
+                                }`}
+                                loading={baseIndex < 3 ? 'eager' : 'lazy'}
+                                animate={{ opacity: isLoaded ? 1 : 0, scale: isLoaded ? (isActiveSlide ? 1.032 : 1.01) : 1 }}
+                                whileHover={isLoaded ? { scale: isActiveSlide ? 1.046 : 1.024 } : undefined}
+                                transition={{ duration: shouldReduceMotion ? 0.01 : 0.62, ease: easeOut }}
+                                onLoad={() => {
+                                  setGalleryImageStates((prev) => (prev[baseIndex] === 'loaded' ? prev : { ...prev, [baseIndex]: 'loaded' }));
+                                }}
+                                onError={() => {
+                                  setGalleryImageStates((prev) => (prev[baseIndex] === 'error' ? prev : { ...prev, [baseIndex]: 'error' }));
+                                }}
+                              />
+                              {imageState === 'loading' && (
+                                <div className="gallery-card-state gallery-card-state-loading absolute inset-0" />
+                              )}
+                              {imageState === 'error' && (
+                                <div className="gallery-card-state gallery-card-state-error absolute inset-0 flex items-center justify-center px-4">
+                                  <div className="text-center">
+                                    <p className="premium-body text-[0.82rem] text-soft/78">Не удалось загрузить фото</p>
+                                    <p className="premium-body mt-1.5 text-[0.72rem] text-soft/62">Нажмите, чтобы открыть просмотр</p>
+                                  </div>
+                                </div>
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-black/0 opacity-78 transition-opacity duration-400 group-hover:opacity-86" />
+                              <div className="absolute inset-0 rounded-[1.65rem] shadow-[inset_0_0_0_1px_rgba(60,58,52,0.18)]" />
+                              <div className="pointer-events-none absolute inset-[1px] rounded-[1.58rem] bg-[radial-gradient(circle_at_18%_22%,rgba(200,214,0,0.01),transparent_18%)] opacity-[0.07] transition-opacity duration-500 group-hover:opacity-[0.12]" />
+                            </div>
+                          </motion.button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+                {gallerySlides.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      className="gallery-carousel-control gallery-carousel-control-prev"
+                      onClick={prevGallerySlide}
+                      aria-label="Предыдущее фото"
+                    >
+                      <span aria-hidden="true">‹</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="gallery-carousel-control gallery-carousel-control-next"
+                      onClick={nextGallerySlide}
+                      aria-label="Следующее фото"
+                    >
+                      <span aria-hidden="true">›</span>
+                    </button>
+                    <div className="gallery-carousel-dots" aria-hidden="true">
+                      {gallerySlides.map((_, dotIndex) => (
+                        <span key={`gallery-dot-${dotIndex}`} className={`gallery-carousel-dot ${dotIndex === galleryIndex ? 'is-active' : ''}`} />
+                      ))}
                     </div>
-                  </motion.button>
-                ))}
-              </motion.div>
-            </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <div className="gallery-loading-shell rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.016))] px-2.5 pt-2.5 pb-3 md:px-3.5 md:pt-3 md:pb-3.5">
+                <div className="flex overflow-hidden pb-2.5">
+                  {[0].map((placeholderIndex) => (
+                    <div
+                      key={`gallery-loading-${placeholderIndex}`}
+                      className="gallery-loading-card relative h-[278px] w-full flex-none overflow-hidden rounded-[2rem] bg-[linear-gradient(180deg,rgba(45,44,39,0.72),rgba(23,22,19,0.96))] p-[1.5px] md:h-[378px]"
+                    >
+                      <div className="absolute inset-px rounded-[1.86rem] bg-[linear-gradient(180deg,rgba(24,23,20,0.74),rgba(14,14,12,0.9))]" />
+                      <div className="gallery-loading-shimmer absolute inset-[6px] rounded-[1.58rem]" />
+                    </div>
+                  ))}
+                </div>
+                <div className="px-1 pb-0.5 md:px-0">
+                  <p className="premium-body text-[0.83rem] text-soft/74">
+                    {galleryPreloadError ? 'Не удалось загрузить фотографии. Попробуйте ещё раз.' : 'Загружаем фотографии клуба…'}
+                  </p>
+                  {galleryPreloadError && (
+                    <button
+                      type="button"
+                      onClick={retryGalleryLoad}
+                      className="ghost-button mt-3 px-4 py-2 text-[0.76rem] font-medium"
+                    >
+                      Повторить загрузку
+                    </button>
+                  )}
+                </div>
+              </div>
+            )
           ) : (
             <div className="glass-card rounded-3xl border border-white/10 px-5 py-12 text-center text-sm text-soft/70">
               Добавьте фотографии клуба в <span className="text-lime">public/images/club-atmosphere/</span>, и они автоматически появятся в галерее.
@@ -701,27 +1138,51 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
       </motion.section>
 
       <motion.section className="section-shell section-accent pt-16" variants={sectionReveal} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}>
-        <motion.h2 variants={itemReveal} className="premium-display text-2xl font-semibold tracking-[-0.028em] text-white md:text-3xl">
-          Тарифы
+        <motion.h2 variants={itemReveal} className="premium-display text-[2rem] font-semibold tracking-[-0.034em] text-white md:text-[2.3rem]">
+          Клубные карты и персональный тренинг
         </motion.h2>
-        <p className="premium-body mt-3 max-w-3xl text-[0.96rem] text-soft/82">Клубные карты, абонементы и персональные тренировки</p>
+        <p className="tariff-section-subtitle premium-body mt-3 max-w-[44rem] text-[0.98rem] text-soft/80 md:text-[1.02rem]">
+          Выберите формат тренировок, который подходит именно вам — от свободного посещения клуба до индивидуального сопровождения с тренером.
+        </p>
 
-        <div className="mt-8 space-y-5 md:mt-9">
+        <div className="tariff-quick-grid mt-8 grid gap-4 md:mt-9 md:grid-cols-3">
+          {tariffQuickFormats.map((format, index) => (
+            <motion.button
+              key={format.title}
+              type="button"
+              onClick={() => scrollToTariffSection(format.targetId)}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              whileHover={{ y: -2.5 }}
+              whileTap={{ scale: 0.992 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.62, delay: index * 0.04, ease: easeOut }}
+              className="tariff-quick-card tariff-quick-card-action rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-[1.1rem] py-[1.08rem] text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime/35 md:px-[1.2rem] md:py-[1.16rem]"
+            >
+              <p className="tariff-quick-title premium-display text-[1.02rem] font-semibold text-white">{format.title}</p>
+              <p className="tariff-quick-copy premium-body mt-1.5 text-[0.84rem] text-soft/76">{format.subtitle}</p>
+              <p className="tariff-quick-price premium-display mt-3.5 text-[1.03rem] font-semibold text-lime/94">{format.price}</p>
+            </motion.button>
+          ))}
+        </div>
+
+        <div className="mt-11 space-y-7 md:mt-12 md:space-y-8">
           <motion.article
+            id="tariff-club-cards"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.18 }}
             transition={{ duration: 0.76, ease: easeOut }}
-            className="tariff-card tariff-card-standard rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
+            className="tariff-card tariff-card-standard rounded-[2rem] p-[1.45rem] shadow-card premium-transition md:p-[1.85rem]"
           >
-            <p className="premium-label text-[0.66rem] uppercase tracking-[0.26em] text-lime/88">Система оплаты в ФК «Energy» с 12.01.2026</p>
-            <h3 className="tariff-title premium-display mt-3 text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Клубные карты</h3>
-            <p className="premium-chip mt-2 text-[0.75rem] text-soft/65">Вид клубной карты / Срок действия клубной карты</p>
-            <div className="mt-4 overflow-x-auto">
+            <p className="tariff-kicker premium-label text-[0.62rem] uppercase tracking-[0.3em] text-lime/85 md:text-[0.66rem]">Действующие тарифы клуба ENERGY с 12.01.2026</p>
+            <h3 className="tariff-title premium-display mt-3 text-[1.34rem] font-semibold text-lime/94 md:text-[1.5rem]">Клубные карты</h3>
+            <p className="tariff-meta-line premium-chip mt-2 text-[0.77rem] text-soft/68 md:text-[0.79rem]">Выберите срок действия клубной карты</p>
+            <div className="mt-5 overflow-x-auto">
               <table className="pricing-table min-w-[760px]">
                 <thead>
                   <tr>
-                    <th>Вид клубной карты</th>
+                    <th>Формат клубной карты</th>
                     {clubCardColumns.map((column) => (
                       <th key={column}>{column}</th>
                     ))}
@@ -731,12 +1192,12 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   {clubCardRows.map((row) => (
                     <tr key={`${row.name}-${row.time}`}>
                       <td>
-                        <p className="font-medium text-[#f0eee2]">{row.name}</p>
-                        <p className="mt-1 text-soft/70">{row.note}</p>
-                        <p className="mt-1 text-soft/62">{row.time}</p>
+                        <p className="font-medium leading-[1.4] text-[#f0eee2]">{row.name}</p>
+                        <p className="mt-1 leading-relaxed text-soft/72">{row.note}</p>
+                        <p className="mt-1 leading-relaxed text-soft/64">{row.time}</p>
                       </td>
                       {row.prices.map((price, index) => (
-                        <td key={`${row.time}-${clubCardColumns[index]}`}>{price || '—'}</td>
+                        <td key={`${row.time}-${clubCardColumns[index]}`} className="tariff-price">{price}</td>
                       ))}
                     </tr>
                   ))}
@@ -746,73 +1207,166 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
           </motion.article>
 
           <motion.article
+            id="tariff-subscriptions"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.18 }}
             transition={{ duration: 0.76, delay: 0.05, ease: easeOut }}
-            className="tariff-card tariff-card-standard rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
+            className="tariff-card tariff-card-standard rounded-[2rem] p-[1.45rem] shadow-card premium-transition md:p-[1.85rem]"
           >
-            <h3 className="tariff-title premium-display text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Абонементы</h3>
-            <p className="premium-chip mt-2 text-[0.75rem] text-soft/65">Вид абонемента / Количество занятий и срок действия абонемента (месяц)</p>
-            <div className="mt-4 overflow-x-auto">
-              <table className="pricing-table min-w-[760px]">
-                <thead>
-                  <tr>
-                    <th>Вид абонемента</th>
-                    <th>Количество занятий и срок действия</th>
-                    <th>Стоимость</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {subscriptionRows.map((row) => (
-                    <tr key={`${row.name}-${row.detail}`}>
-                      <td className="font-medium text-[#f0eee2]">{row.name}</td>
-                      <td>{row.detail}</td>
-                      <td>{row.value || '—'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <h3 className="tariff-title premium-display text-[1.34rem] font-semibold text-lime/94 md:text-[1.5rem]">Абонементы на посещение</h3>
+            <p className="tariff-meta-line premium-chip mt-2 text-[0.77rem] text-soft/68 md:text-[0.79rem]">Выберите формат посещения и подходящий тариф</p>
+            <div className="tariff-plan-grid mt-5 grid gap-5 md:grid-cols-2 md:[grid-auto-rows:1fr]">
+              {subscriptionPlans.map((plan) => (
+                <article
+                  key={plan.name}
+                  className={`tariff-plan-card flex h-full flex-col rounded-[1.3rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-[1.06rem] md:p-[1.22rem] ${
+                    plan.featured || plan.featuredBadge ? 'tariff-plan-card-featured' : ''
+                  } ${!plan.featuredBadge ? 'tariff-plan-card-muted' : ''} ${plan.featuredBadge ? 'tariff-plan-card-popular' : ''}`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <h4 className="tariff-plan-title premium-display text-[1rem] font-semibold tracking-[-0.016em] text-white">{plan.name}</h4>
+                      {plan.featuredBadge && (
+                        <span className="tariff-plan-badge tariff-plan-badge-popular premium-label mt-2 inline-flex rounded-full border border-lime/26 px-2.5 py-1 text-[0.64rem] font-semibold uppercase tracking-[0.12em] text-lime/92">
+                          {plan.featuredBadge}
+                        </span>
+                      )}
+                    </div>
+                    <span
+                      className={`tariff-plan-price tariff-plan-price-accent premium-display shrink-0 rounded-full border border-lime/30 bg-[linear-gradient(180deg,rgba(200,214,0,0.22),rgba(200,214,0,0.1))] px-3.5 py-1.5 text-[0.84rem] font-semibold text-lime/95 ${
+                        plan.featuredBadge ? 'tariff-plan-price-popular' : ''
+                      }`}
+                    >
+                      {plan.fromPrice}
+                    </span>
+                  </div>
+                  <p className="tariff-plan-summary premium-body mt-2.5 text-[0.9rem] text-soft/84">{plan.summary}</p>
+                  {plan.descriptor && <p className="tariff-plan-note premium-body mt-1.5 text-[0.78rem] text-soft/62">{plan.descriptor}</p>}
+                  <div className="mt-3.5 flex-1 space-y-3">
+                    {plan.lines.map((line) => (
+                      <div key={`${plan.name}-${line.label}`} className="tariff-plan-line flex items-start justify-between gap-4 border-b border-white/10 pb-2.5 last:border-0 last:pb-0">
+                        <span className="tariff-line-label premium-body text-[0.84rem] text-soft/78">{line.label}</span>
+                        <span className="tariff-line-value tariff-price premium-display text-[1rem]">{line.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {plan.note && <p className="premium-body mt-3 text-[0.76rem] text-soft/66">{plan.note}</p>}
+                </article>
+              ))}
+            </div>
+
+            <div className="tariff-one-time-block mt-5 rounded-[1.4rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02))] p-[1.08rem] md:p-[1.3rem]">
+              <div className="flex items-start justify-between gap-3">
+                <h4 className="premium-display text-[1.04rem] font-semibold tracking-[-0.016em] text-white">{oneTimeVisitPlan.name}</h4>
+                <span className="tariff-plan-price tariff-plan-price-accent premium-display shrink-0 rounded-full border border-lime/30 bg-[linear-gradient(180deg,rgba(200,214,0,0.22),rgba(200,214,0,0.1))] px-3.5 py-1.5 text-[0.84rem] font-semibold text-lime/95">
+                  {oneTimeVisitPlan.fromPrice}
+                </span>
+              </div>
+              <p className="premium-body mt-2.5 text-[0.9rem] text-soft/84">{oneTimeVisitPlan.summary}</p>
+              <div className="mt-3.5 space-y-3">
+                {oneTimeVisitPlan.lines.map((line) => (
+                  <div key={`one-time-${line.label}`} className="flex items-start justify-between gap-4 border-b border-white/10 pb-2.5 last:border-0 last:pb-0">
+                    <span className="tariff-line-label premium-body text-[0.84rem] text-soft/78">{line.label}</span>
+                    <span className="tariff-line-value tariff-price premium-display text-[1rem]">{line.value}</span>
+                  </div>
+                ))}
+              </div>
+              {oneTimeVisitPlan.note && <p className="premium-body mt-3.5 text-[0.76rem] text-soft/68">{oneTimeVisitPlan.note}</p>}
             </div>
           </motion.article>
 
           <motion.article
+            id="tariff-personal-training"
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.18 }}
             transition={{ duration: 0.76, delay: 0.1, ease: easeOut }}
-            className="tariff-card tariff-card-featured rounded-[2rem] p-[1.3rem] shadow-card premium-transition md:p-[1.6rem]"
+            className="tariff-card tariff-card-featured rounded-[2rem] p-[1.45rem] shadow-card premium-transition md:p-[1.85rem]"
           >
-            <p className="premium-label text-[0.66rem] uppercase tracking-[0.26em] text-lime/88">СИСТЕМА ОПЛАТЫ ПЕРСОНАЛЬНЫХ ТРЕНИРОВОК ФИТНЕС КЛУБА «ENERGY» С 12.01.2026</p>
-            <h3 className="tariff-title premium-display mt-3 text-[1.3rem] font-semibold text-[#f5f2e9] md:text-[1.42rem]">Абонементы</h3>
-            <p className="premium-display mt-1 text-[1.02rem] font-medium text-[#f5f2e9]">Персональные тренировки</p>
-            <div className="mt-4 overflow-x-auto">
-              <table className="pricing-table min-w-[760px]">
-                <thead>
-                  <tr>
-                    <th>Вид абонемента персональной тренировки</th>
-                    <th>«Мастер-тренер»</th>
-                    <th>«Тренер»</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {personalTrainingRows.map((row, index) => (
-                    <tr key={`${row.name}-${row.master}-${index}`}>
-                      <td className="font-medium text-[#f0eee2]">{row.name}</td>
-                      <td>{row.master}</td>
-                      <td>{row.trainer}</td>
-                    </tr>
+            <p className="tariff-kicker premium-label text-[0.62rem] uppercase tracking-[0.3em] text-lime/85 md:text-[0.66rem]">Действующие тарифы персонального тренинга клуба ENERGY с 12.01.2026</p>
+            <h3 className="tariff-title premium-display mt-3 text-[1.34rem] font-semibold text-lime/94 md:text-[1.5rem]">Персональный тренинг</h3>
+            <p className="tariff-subtitle premium-display mt-1.5 text-[1.04rem] font-medium text-[#f5f2e9] md:text-[1.08rem]">Выберите формат персональных тренировок</p>
+
+            <div className="mt-6 space-y-5">
+              <div>
+                <p className="tariff-group-title premium-label text-[0.67rem] uppercase tracking-[0.19em] text-lime/88">Индивидуальные форматы</p>
+                <div className="tariff-personal-grid mt-3 grid gap-5 md:grid-cols-2 md:[grid-auto-rows:1fr]">
+                  {personalTrainingIndividualPlans.map((plan) => (
+                    <article key={plan.name} className="tariff-personal-card flex h-full flex-col rounded-[1.3rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),rgba(255,255,255,0.022))] p-[1.06rem] md:p-[1.22rem]">
+                      <div className="flex items-start justify-between gap-3">
+                        <h4 className="premium-display text-[1rem] font-semibold tracking-[-0.016em] text-white">{plan.name}</h4>
+                        <span className="tariff-plan-price tariff-plan-price-accent premium-display shrink-0 rounded-full border border-lime/30 bg-[linear-gradient(180deg,rgba(200,214,0,0.22),rgba(200,214,0,0.1))] px-3.5 py-1.5 text-[0.84rem] font-semibold text-lime/95">
+                          {plan.fromPrice}
+                        </span>
+                      </div>
+                      <p className="premium-body mt-2.5 text-[0.9rem] text-soft/84">{plan.summary}</p>
+                      <div className="mt-3.5 flex-1 space-y-3">
+                        <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-2.5">
+                          <span className="tariff-line-label premium-body text-[0.84rem] text-soft/80">Мастер-тренер</span>
+                          <span className="tariff-line-value tariff-price premium-display text-[1rem]">{plan.master}</span>
+                        </div>
+                        <div className="flex items-start justify-between gap-4">
+                          <span className="tariff-line-label premium-body text-[0.84rem] text-soft/80">Тренер</span>
+                          <span className="tariff-line-value tariff-price premium-display text-[1rem]">{plan.trainer}</span>
+                        </div>
+                      </div>
+                      {plan.note && <p className="premium-body mt-3.5 text-[0.79rem] text-soft/70">{plan.note}</p>}
+                    </article>
                   ))}
-                  <tr>
-                    <td className="font-medium text-[#f0eee2]">Дополнительно</td>
-                    <td>1570 Клубная карта</td>
-                    <td>1200 Клубная карта (дети)</td>
-                  </tr>
-                </tbody>
-              </table>
+                </div>
+              </div>
+
+              <div>
+                <p className="tariff-group-title premium-label text-[0.67rem] uppercase tracking-[0.19em] text-lime/88">Форматы с несколькими участниками</p>
+                <div className="tariff-personal-grid mt-3 grid gap-5 md:grid-cols-2 md:[grid-auto-rows:1fr]">
+                  {personalTrainingGroupPlans.map((plan) => (
+                    <article key={plan.name} className="tariff-personal-card flex h-full flex-col rounded-[1.3rem] border border-white/12 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),rgba(255,255,255,0.022))] p-[1.06rem] md:p-[1.22rem]">
+                      <div className="flex items-start justify-between gap-3">
+                        <h4 className="premium-display text-[1rem] font-semibold tracking-[-0.016em] text-white">{plan.name}</h4>
+                        <span className="tariff-plan-price tariff-plan-price-accent premium-display shrink-0 rounded-full border border-lime/30 bg-[linear-gradient(180deg,rgba(200,214,0,0.22),rgba(200,214,0,0.1))] px-3.5 py-1.5 text-[0.84rem] font-semibold text-lime/95">
+                          {plan.fromPrice}
+                        </span>
+                      </div>
+                      <p className="premium-body mt-2.5 text-[0.9rem] text-soft/84">{plan.summary}</p>
+                      <div className="mt-3.5 flex-1 space-y-3">
+                        <div className="flex items-start justify-between gap-4 border-b border-white/10 pb-2.5">
+                          <span className="tariff-line-label premium-body text-[0.84rem] text-soft/80">Мастер-тренер</span>
+                          <span className="tariff-line-value tariff-price premium-display text-[1rem]">{plan.master}</span>
+                        </div>
+                        <div className="flex items-start justify-between gap-4">
+                          <span className="tariff-line-label premium-body text-[0.84rem] text-soft/80">Тренер</span>
+                          <span className="tariff-line-value tariff-price premium-display text-[1rem]">{plan.trainer}</span>
+                        </div>
+                      </div>
+                      {plan.note && <p className="premium-body mt-3.5 text-[0.79rem] text-soft/70">{plan.note}</p>}
+                    </article>
+                  ))}
+                </div>
+              </div>
             </div>
-            <p className="premium-body mt-4 text-[0.82rem] text-soft/72">*(час на персональное занятие, более – приобретается «клубная карта»)</p>
+
+            <div className="tariff-personal-extra mt-6 rounded-[1.2rem] border border-lime/20 bg-[linear-gradient(180deg,rgba(200,214,0,0.13),rgba(200,214,0,0.06))] px-[1.1rem] py-[0.95rem] md:px-[1.25rem] md:py-[1.05rem]">
+              <p className="premium-label text-[0.66rem] uppercase tracking-[0.2em] text-lime/90">Клубная карта для персонального формата</p>
+              <div className="mt-2.5 grid gap-2.5 md:grid-cols-2">
+                <p className="premium-body text-[0.84rem] text-soft/86">1 570 ₽ клубная карта</p>
+                <p className="premium-body text-[0.84rem] text-soft/86">1 200 ₽ клубная карта (дети)</p>
+              </div>
+            </div>
+            <p className="premium-body mt-5 text-[0.82rem] leading-relaxed text-soft/74 md:text-[0.84rem]">* Продолжительность персональной тренировки — 1 час. Для более длительного пребывания в клубе требуется клубная карта.</p>
           </motion.article>
+        </div>
+
+        <div className="mt-10 flex justify-center md:mt-11">
+          <motion.button
+            type="button"
+            onClick={() => setCallModal(true)}
+            className="brand-button tariff-cta-button premium-transition"
+            {...ctaMotion}
+            transition={{ duration: 0.22, ease: easeOut }}
+          >
+            Подобрать тариф
+          </motion.button>
         </div>
       </motion.section>
 
@@ -1202,7 +1756,29 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                 exit={{ opacity: 0 }}
                 transition={lightboxOverlayTransition}
                 className="fixed inset-0 z-[95] flex items-center justify-center overflow-hidden bg-black/72 p-3 backdrop-blur-[4px] md:p-6"
-                onClick={closeLightbox}
+                onPointerDown={(event) => {
+                  if (event.target === event.currentTarget) {
+                    lightboxOverlayPointerRef.current = { x: event.clientX, y: event.clientY };
+                  } else {
+                    lightboxOverlayPointerRef.current = null;
+                  }
+                }}
+                onPointerUp={(event) => {
+                  const pointerStart = lightboxOverlayPointerRef.current;
+                  lightboxOverlayPointerRef.current = null;
+
+                  if (!pointerStart || event.target !== event.currentTarget) return;
+
+                  const deltaX = Math.abs(event.clientX - pointerStart.x);
+                  const deltaY = Math.abs(event.clientY - pointerStart.y);
+
+                  if (deltaX < 10 && deltaY < 10) {
+                    closeLightbox();
+                  }
+                }}
+                onPointerCancel={() => {
+                  lightboxOverlayPointerRef.current = null;
+                }}
               >
                 <motion.div
                   initial={{ scale: 0.984, opacity: 0, y: 12 }}
@@ -1212,64 +1788,157 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
                   className="relative flex max-h-[calc(100dvh-1.5rem)] w-full max-w-7xl items-center justify-center overflow-hidden rounded-[1.95rem] border border-white/10 bg-charcoal/72 p-2.5 shadow-[0_28px_100px_rgba(0,0,0,0.42)] md:max-h-[calc(100dvh-3rem)]"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {lightboxMode === 'gallery' && clubImages.length > 1 && (
+                  {lightboxMode === 'gallery' && clubImages.length > 1 && lightboxImageState === 'loaded' && (
                     <>
                       <LightboxArrowButton direction="prev" onClick={prev} />
                       <LightboxArrowButton direction="next" onClick={next} />
                     </>
                   )}
+                  <div className="pointer-events-none absolute left-3 top-3 z-10 rounded-full border border-white/14 bg-black/38 px-3 py-1.5">
+                    <p className="premium-label text-[0.6rem] uppercase tracking-[0.16em] text-soft/84">
+                      {lightboxMode === 'schedule'
+                        ? 'Просмотр расписания'
+                        : `Просмотр фото ${((lightboxIndex ?? 0) % Math.max(clubImages.length, 1)) + 1}/${Math.max(clubImages.length, 1)}`}
+                    </p>
+                  </div>
                   <div className="absolute right-3 top-3 z-10">
                     <ModalCloseButton onClick={closeLightbox} />
                   </div>
                   <div
-                    className="relative flex max-h-[calc(100dvh-5rem)] min-h-0 w-full items-center justify-center overflow-hidden rounded-[1.4rem] md:max-h-[calc(100dvh-8rem)]"
+                    ref={lightboxViewportRef}
+                    className="relative flex max-h-[calc(100dvh-5rem)] min-h-0 w-full touch-none items-center justify-center overflow-hidden rounded-[1.4rem] md:max-h-[calc(100dvh-8rem)]"
                     onTouchStart={(e) => {
-                      if (e.touches.length === 1) setTouchStartX(e.touches[0].clientX);
+                      if (e.touches.length === 1) {
+                        setTouchStartX(e.touches[0].clientX);
+                        setTouchStartY(e.touches[0].clientY);
+                        setSwipeTriggered(false);
+                        if (zoom > 1.02) {
+                          lightboxPanStartRef.current = {
+                            x: e.touches[0].clientX,
+                            y: e.touches[0].clientY,
+                            originX: lightboxOffset.x,
+                            originY: lightboxOffset.y
+                          };
+                        } else {
+                          lightboxPanStartRef.current = null;
+                        }
+                      }
                       if (e.touches.length === 2) {
                         setPinchStart(Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY));
+                        lightboxPanStartRef.current = null;
                       }
                     }}
                     onTouchMove={(e) => {
                       if (e.touches.length === 2 && pinchStart) {
                         const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-                        setZoom((z) => Math.min(3, Math.max(1, z * (d / pinchStart))));
+                        setZoom((z) => {
+                          const nextZoom = Math.min(3, Math.max(1, z * (d / pinchStart)));
+                          setLightboxOffset((offset) => clampLightboxOffset(offset.x, offset.y, nextZoom));
+                          return nextZoom;
+                        });
                         setPinchStart(d);
                         return;
                       }
-                      if (e.touches.length === 1 && touchStartX !== null && zoom <= 1.05 && lightboxMode === 'gallery') {
+                      if (e.touches.length === 1 && zoom > 1.02 && lightboxPanStartRef.current) {
+                        const panStart = lightboxPanStartRef.current;
+                        const nextX = panStart.originX + (e.touches[0].clientX - panStart.x);
+                        const nextY = panStart.originY + (e.touches[0].clientY - panStart.y);
+                        setLightboxOffset(clampLightboxOffset(nextX, nextY, zoom));
+                        return;
+                      }
+                      if (
+                        e.touches.length === 1 &&
+                        touchStartX !== null &&
+                        touchStartY !== null &&
+                        !swipeTriggered &&
+                        zoom <= 1.02 &&
+                        lightboxMode === 'gallery'
+                      ) {
                         const delta = e.touches[0].clientX - touchStartX;
-                        if (delta > 70) {
+                        const deltaY = e.touches[0].clientY - touchStartY;
+                        const isIntentionalHorizontalSwipe = Math.abs(delta) > Math.abs(deltaY) * 1.35;
+
+                        if (isIntentionalHorizontalSwipe && delta > 120) {
                           prev();
-                          setTouchStartX(e.touches[0].clientX);
-                        } else if (delta < -70) {
+                          setSwipeTriggered(true);
+                        } else if (isIntentionalHorizontalSwipe && delta < -120) {
                           next();
-                          setTouchStartX(e.touches[0].clientX);
+                          setSwipeTriggered(true);
                         }
                       }
                     }}
-                    onTouchEnd={() => {
+                    onTouchEnd={(e) => {
+                      const now = Date.now();
+                      if (e.changedTouches.length === 1 && !swipeTriggered && pinchStart === null) {
+                        if (now - lightboxLastTapAtRef.current < 280) {
+                          setZoom((z) => {
+                            const nextZoom = z > 1.02 ? 1 : 2;
+                            setLightboxOffset((offset) => clampLightboxOffset(offset.x, offset.y, nextZoom));
+                            return nextZoom;
+                          });
+                          lightboxLastTapAtRef.current = 0;
+                        } else {
+                          lightboxLastTapAtRef.current = now;
+                        }
+                      }
+
+                      lightboxPanStartRef.current = null;
                       setTouchStartX(null);
+                      setTouchStartY(null);
                       setPinchStart(null);
-                      if (zoom < 1.03) setZoom(1);
+                      setSwipeTriggered(false);
+                      if (zoom < 1.03) {
+                        setZoom(1);
+                        setLightboxOffset({ x: 0, y: 0 });
+                      } else {
+                        setLightboxOffset((offset) => clampLightboxOffset(offset.x, offset.y, zoom));
+                      }
                     }}
                   >
-                    {lightboxMode === 'schedule' && (
-                      <>
-                        <div className="pointer-events-none absolute inset-y-3 left-2 z-[1] w-5 rounded-[1rem] bg-gradient-to-r from-white/[0.08] via-white/[0.025] to-transparent md:inset-y-4 md:left-3 md:w-8" />
-                        <div className="pointer-events-none absolute inset-y-3 right-2 z-[1] w-5 rounded-[1rem] bg-gradient-to-l from-white/[0.08] via-white/[0.025] to-transparent md:inset-y-4 md:right-3 md:w-8" />
-                      </>
-                    )}
                     <motion.img
-                      key={currentPhoto}
+                      key={`${currentPhoto}-${lightboxRetryAttempt}`}
                       src={currentPhoto}
                       alt={lightboxMode === 'schedule' ? 'Полное расписание клуба' : 'Фото клуба'}
-                      className="max-h-[88vh] max-w-full object-contain transition-transform duration-200"
-                      style={{ transform: `scale(${zoom})` }}
-                      initial={{ opacity: 0, scale: 0.994 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                      className={`max-h-[88vh] max-w-full object-contain transition-all duration-220 ${
+                        lightboxImageState === 'loaded' ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      style={{ transform: `translate3d(${lightboxOffset.x}px, ${lightboxOffset.y}px, 0) scale(${zoom})` }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       transition={lightboxImageTransition}
-                      onDoubleClick={() => setZoom((z) => (z > 1 ? 1 : 2))}
+                      onLoad={() => setLightboxImageState('loaded')}
+                      onError={() => setLightboxImageState('error')}
+                      onDoubleClick={() =>
+                        setZoom((z) => {
+                          const nextZoom = z > 1.02 ? 1 : 2;
+                          setLightboxOffset((offset) => clampLightboxOffset(offset.x, offset.y, nextZoom));
+                          return nextZoom;
+                        })
+                      }
                     />
+                    {lightboxImageState === 'loading' && (
+                      <div className="absolute inset-0 z-[2] flex items-center justify-center bg-[radial-gradient(circle_at_50%_42%,rgba(200,214,0,0.12),rgba(16,16,14,0.74)_62%)]">
+                        <div className="flex flex-col items-center gap-3 text-center">
+                          <span className="h-8 w-8 animate-spin rounded-full border-2 border-white/24 border-t-lime/80" />
+                          <p className="premium-body text-[0.85rem] text-soft/80">Загружаем изображение…</p>
+                        </div>
+                      </div>
+                    )}
+                    {lightboxImageState === 'error' && (
+                      <div className="absolute inset-0 z-[3] flex items-center justify-center bg-[radial-gradient(circle_at_50%_42%,rgba(200,214,0,0.08),rgba(14,14,12,0.8)_62%)] px-5">
+                        <div className="w-full max-w-md rounded-2xl border border-white/12 bg-black/42 p-5 text-center">
+                          <p className="premium-display text-[1rem] font-semibold text-white">Не удалось загрузить изображение</p>
+                          <p className="premium-body mt-2 text-[0.84rem] text-soft/74">Проверьте соединение и попробуйте ещё раз.</p>
+                          <button
+                            type="button"
+                            onClick={retryCurrentPhoto}
+                            className="brand-button mt-4 px-5 py-2.5 text-[0.78rem] font-semibold"
+                          >
+                            Повторить
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               </motion.div>
@@ -1280,3 +1949,4 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
     </main>
   );
 }
+

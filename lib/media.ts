@@ -11,8 +11,6 @@ export const PERMANENT_CLUB_IMAGES = [
   'https://i.ibb.co/chCm7J9N/5-9.jpg',
   'https://i.ibb.co/ZR1fYtM7/5-10.jpg',
   'https://i.ibb.co/393ZHwhS/5-11.jpg',
-  'https://i.ibb.co/PzPhdvDH/5-12.jpg',
-  'https://i.ibb.co/wrWH7kCY/5-13.jpg',
   'https://i.ibb.co/bgZSF6Tr/5-14.jpg',
   'https://i.ibb.co/6c4bV9VF/5-15.jpg',
   'https://i.ibb.co/jPHrMwCJ/2679.jpg',
