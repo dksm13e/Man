@@ -138,11 +138,6 @@ const sectionReveal = {
     opacity: 1,
     y: 0,
     transition: { duration: motionDurations.revealSection, ease: easeOut }
-<<<<<<< Updated upstream
-=======
-    transition: { duration: 0.82, ease: easeOut }
-=======
->>>>>>> Stashed changes
   }
 } as const;
 const staggerReveal = {
