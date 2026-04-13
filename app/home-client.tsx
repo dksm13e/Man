@@ -137,11 +137,9 @@ const sectionReveal = {
   visible: {
     opacity: 1,
     y: 0,
-<<<<<<< HEAD
     transition: { duration: motionDurations.revealSection, ease: easeOut }
 =======
     transition: { duration: 0.82, ease: easeOut }
->>>>>>> 18c019b84ac1bcda62044f1387933e9dba3128ea
   }
 } as const;
 const staggerReveal = {
