@@ -1,0 +1,10 @@
+
+> energy-fitness-club@1.0.0 start
+> next start -H 0.0.0.0 -p 3002
+
+  ▲ Next.js 14.2.5
+  - Local:        http://localhost:3002
+  - Network:      http://0.0.0.0:3002
+
+ ✓ Starting...
+ ✓ Ready in 386ms

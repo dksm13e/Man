@@ -1,0 +1,17 @@
+
+> energy-fitness-club@1.0.0 dev
+> next dev --hostname 0.0.0.0 --port 3000
+
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at spawn (node:child_process:796:9)
+    at fork (node:child_process:174:10)
+    at E:\Sale\zzz\z2\Man-codex-redesign-energy-fitness-club-website-55u2jc\node_modules\next\dist\cli\next-dev.js:213:45
+    at new Promise (<anonymous>)
+    at startServer (E:\Sale\zzz\z2\Man-codex-redesign-energy-fitness-club-website-55u2jc\node_modules\next\dist\cli\next-dev.js:199:16)
+    at runDevServer (E:\Sale\zzz\z2\Man-codex-redesign-energy-fitness-club-website-55u2jc\node_modules\next\dist\cli\next-dev.js:280:23)
+    at Module.nextDev (E:\Sale\zzz\z2\Man-codex-redesign-energy-fitness-club-website-55u2jc\node_modules\next\dist\cli\next-dev.js:288:11) {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'spawn'
+}
