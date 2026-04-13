@@ -23,13 +23,9 @@ html {
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  min-height: 100%;
   background:
     linear-gradient(160deg, #23231f 0%, #2b2b26 45%, #24241f 100%),
     linear-gradient(145deg, rgba(200, 214, 0, 0.03), transparent 36%);
-  overflow: visible;
 }
 
 .section-shell {
