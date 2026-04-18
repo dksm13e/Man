@@ -200,6 +200,22 @@ const ctaMotion = {
   whileHover: { y: -1.4, scale: 1.005 },
   whileTap: { scale: 0.987 }
 } as const;
+const HERO_PROMO_PRICE_SYMBOLS = ['1', '0', '0', '0', '₽'] as const;
+const heroPromoRevealTransition = { duration: 0.76, delay: 0.9, ease: easeOut } as const;
+const heroCtaRevealTransition = { duration: 0.68, delay: 1.22, ease: easeOut } as const;
+const heroPromoPriceSequenceStartDelay = 1.86;
+const heroPromoPriceSymbolStagger = 0.17;
+const heroPromoPriceSymbolTransition = {
+  duration: 0.62,
+  times: [0, 0.34, 0.72, 1],
+  ease: easeOut
+} as const;
+const heroPromoPriceSettleTransition = {
+  duration: 0.52,
+  delay: heroPromoPriceSequenceStartDelay + heroPromoPriceSymbolStagger * (HERO_PROMO_PRICE_SYMBOLS.length - 1) + 0.18,
+  times: [0, 0.4, 1],
+  ease: easeOut
+} as const;
 
 function ModalCloseButton({ onClick }: { onClick: () => void }) {
   return (
@@ -1151,6 +1167,16 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
   const scrollToTariffSection = (targetId: string) => {
     document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+  const heroPromoTransition = shouldReduceMotion ? { duration: 0.01, delay: 0 } : heroPromoRevealTransition;
+  const heroPromoPriceSettle = shouldReduceMotion ? { duration: 0.01, delay: 0 } : heroPromoPriceSettleTransition;
+  const getHeroPromoPriceSymbolTransition = (index: number) =>
+    shouldReduceMotion
+      ? { duration: 0.01, delay: 0 }
+      : {
+          ...heroPromoPriceSymbolTransition,
+          delay: heroPromoPriceSequenceStartDelay + index * heroPromoPriceSymbolStagger
+        };
+  const heroCtaTransition = shouldReduceMotion ? { duration: 0.01, delay: 0.05 } : heroCtaRevealTransition;
 
   return (
     <main className="site-bg relative bg-carbon text-soft">
@@ -1257,7 +1283,64 @@ export default function HomeClient({ initialClubImages, initialScheduleImages }:
               <span className="md:block">Современный фитнес-клуб с сильным тренировочным ритмом,</span>{' '}
               <span className="md:block">удобным расписанием и атмосферой, где хочется возвращаться к результату каждую неделю.</span>
             </motion.p>
-            <motion.div variants={itemReveal} className="mt-10 flex flex-wrap gap-4 md:mt-11">
+            <motion.div
+              className="hero-offer-card mt-6 md:mt-7"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={heroPromoTransition}
+            >
+              <p className="hero-offer-main premium-body">
+                <span className="hero-offer-main-text">Начни с недели</span>
+                <span aria-hidden="true" className="hero-offer-separator">
+                  —
+                </span>
+                <motion.span
+                  className="hero-offer-price"
+                  initial={{
+                    opacity: 0.9,
+                    filter: 'brightness(0.97) saturate(0.96)',
+                    textShadow: '0 0 16px rgba(200,214,0,0.2)'
+                  }}
+                  animate={{
+                    opacity: [0.9, 1, 1],
+                    filter: ['brightness(0.97) saturate(0.96)', 'brightness(1.06) saturate(1.04)', 'brightness(1.02) saturate(1.01)'],
+                    textShadow: ['0 0 16px rgba(200,214,0,0.2)', '0 0 28px rgba(200,214,0,0.45)', '0 0 20px rgba(200,214,0,0.28)']
+                  }}
+                  transition={heroPromoPriceSettle}
+                >
+                  {HERO_PROMO_PRICE_SYMBOLS.map((symbol, index) => (
+                    <motion.span
+                      key={`${symbol}-${index}`}
+                      className={`hero-offer-price-char${
+                        index === 1 ? ' hero-offer-price-char--gap-thousands' : ''
+                      }${index === HERO_PROMO_PRICE_SYMBOLS.length - 1 ? ' hero-offer-price-char--gap-currency hero-offer-price-char--currency' : ''}`}
+                      initial={{
+                        color: 'rgba(210,223,26,0.84)',
+                        filter: 'brightness(0.96) saturate(0.94)',
+                        textShadow: '0 0 10px rgba(200,214,0,0.16)',
+                        opacity: 0.92
+                      }}
+                      animate={{
+                        color: ['rgba(210,223,26,0.84)', 'rgba(243,248,170,1)', 'rgba(210,223,26,1)'],
+                        filter: ['brightness(0.96) saturate(0.94)', 'brightness(1.2) saturate(1.1)', 'brightness(1.03) saturate(1.02)'],
+                        textShadow: ['0 0 10px rgba(200,214,0,0.16)', '0 0 24px rgba(200,214,0,0.48)', '0 0 15px rgba(200,214,0,0.28)'],
+                        opacity: [0.92, 1, 1, 0.98]
+                      }}
+                      transition={getHeroPromoPriceSymbolTransition(index)}
+                    >
+                      {symbol}
+                    </motion.span>
+                  ))}
+                </motion.span>
+              </p>
+              <p className="hero-offer-sub premium-label">Полный доступ к тренировкам ЭНЕРДЖИ</p>
+            </motion.div>
+            <motion.div
+              className="mt-10 flex flex-wrap gap-4 md:mt-11"
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={heroCtaTransition}
+            >
               <motion.button
                 type="button"
                 className="brand-button premium-transition"
