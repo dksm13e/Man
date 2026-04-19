@@ -49,7 +49,7 @@ export const PERMANENT_CLUB_IMAGES = [
   'https://i.ibb.co/gZKFchB9/4103.jpg',
   'https://i.ibb.co/RpScsJh5/4123.jpg'
 ] as const;
-export const PERMANENT_SCHEDULE_IMAGES = ['https://i.ibb.co/Vp9Tyr7W/3.jpg'] as const;
+export const PERMANENT_SCHEDULE_IMAGES = ['https://i.ibb.co/rR7xXqWV/19-04-2026.jpg'] as const;
 
 const mediaPaths: Record<string, string[]> = {
   'club-atmosphere': ['images/club-atmosphere'],
