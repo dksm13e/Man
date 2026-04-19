@@ -117,7 +117,7 @@ const clubHours = [
 
 const heroTitleLetters = Array.from('ЭНЕРДЖИ');
 const heroLetterSpacingAdjustments = ['0.024em', '0.01em', '0.012em', '0.022em', '0.008em', '0.024em', '0em'] as const;
-const SCHEDULE_SPOTLIGHT_IMAGE_URL = 'https://i.ibb.co/VpN2kKxY/08-04.jpg';
+const SCHEDULE_SPOTLIGHT_IMAGE_URL = 'https://i.ibb.co/rR7xXqWV/19-04-2026.jpg';
 const easeOut = [0.22, 1, 0.36, 1] as const;
 const motionDurations = {
   micro: 0.22,
